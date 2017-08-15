@@ -1,0 +1,38 @@
+build/py/nlrsetjmp.o: ../py/nlrsetjmp.c /usr/include/stdc-predef.h \
+ ../py/nlr.h /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h \
+ /usr/include/limits.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h /usr/include/setjmp.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp2.h /usr/include/assert.h \
+ ../py/mpconfig.h mpconfigport.h /usr/include/alloca.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h
+../py/nlrsetjmp.c /usr/include/stdc-predef.h :
+ ../py/nlr.h /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h :
+ /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h :
+ /usr/include/limits.h /usr/include/features.h :
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h :
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h :
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h :
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h :
+ /usr/include/x86_64-linux-gnu/bits/posix1_lim.h :
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h :
+ /usr/include/linux/limits.h :
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h /usr/include/setjmp.h :
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h :
+ /usr/include/x86_64-linux-gnu/bits/sigset.h :
+ /usr/include/x86_64-linux-gnu/bits/setjmp2.h /usr/include/assert.h :
+ ../py/mpconfig.h mpconfigport.h /usr/include/alloca.h :
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h :
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h :
+ /usr/include/x86_64-linux-gnu/bits/wchar.h :

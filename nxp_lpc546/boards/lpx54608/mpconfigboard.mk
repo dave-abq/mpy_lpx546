@@ -1,0 +1,4 @@
+MCU_SERIES = LPC54
+CMSIS_MCU = LPC54608
+AF_FILE = boards/lpc54608_af.csv
+LD_FILE = boards/lpc54608.ld

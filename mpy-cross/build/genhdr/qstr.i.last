@@ -1,0 +1,2922 @@
+# 1 "../py/argcheck.c"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "../py/argcheck.c"
+# 27 "../py/argcheck.c"
+# 1 "/usr/include/stdlib.h" 1 3 4
+# 24 "/usr/include/stdlib.h" 3 4
+# 1 "/usr/include/features.h" 1 3 4
+# 367 "/usr/include/features.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 1 3 4
+# 410 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 411 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 2 3 4
+# 368 "/usr/include/features.h" 2 3 4
+# 391 "/usr/include/features.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 1 3 4
+# 10 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/gnu/stubs-64.h" 1 3 4
+# 11 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 2 3 4
+# 392 "/usr/include/features.h" 2 3 4
+# 25 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 1 3 4
+# 216 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 3 4
+
+# 216 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 328 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 3 4
+typedef int wchar_t;
+# 33 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/waitflags.h" 1 3 4
+# 50 "/usr/include/x86_64-linux-gnu/bits/waitflags.h" 3 4
+typedef enum
+{
+  P_ALL,
+  P_PID,
+  P_PGID
+} idtype_t;
+# 42 "/usr/include/stdlib.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/waitstatus.h" 1 3 4
+# 64 "/usr/include/x86_64-linux-gnu/bits/waitstatus.h" 3 4
+# 1 "/usr/include/endian.h" 1 3 4
+# 36 "/usr/include/endian.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/endian.h" 1 3 4
+# 37 "/usr/include/endian.h" 2 3 4
+# 60 "/usr/include/endian.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 28 "/usr/include/x86_64-linux-gnu/bits/types.h" 2 3 4
+
+
+typedef unsigned char __u_char;
+typedef unsigned short int __u_short;
+typedef unsigned int __u_int;
+typedef unsigned long int __u_long;
+
+
+typedef signed char __int8_t;
+typedef unsigned char __uint8_t;
+typedef signed short int __int16_t;
+typedef unsigned short int __uint16_t;
+typedef signed int __int32_t;
+typedef unsigned int __uint32_t;
+
+typedef signed long int __int64_t;
+typedef unsigned long int __uint64_t;
+
+
+
+
+
+
+
+typedef long int __quad_t;
+typedef unsigned long int __u_quad_t;
+# 121 "/usr/include/x86_64-linux-gnu/bits/types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/typesizes.h" 1 3 4
+# 122 "/usr/include/x86_64-linux-gnu/bits/types.h" 2 3 4
+
+
+typedef unsigned long int __dev_t;
+typedef unsigned int __uid_t;
+typedef unsigned int __gid_t;
+typedef unsigned long int __ino_t;
+typedef unsigned long int __ino64_t;
+typedef unsigned int __mode_t;
+typedef unsigned long int __nlink_t;
+typedef long int __off_t;
+typedef long int __off64_t;
+typedef int __pid_t;
+typedef struct { int __val[2]; } __fsid_t;
+typedef long int __clock_t;
+typedef unsigned long int __rlim_t;
+typedef unsigned long int __rlim64_t;
+typedef unsigned int __id_t;
+typedef long int __time_t;
+typedef unsigned int __useconds_t;
+typedef long int __suseconds_t;
+
+typedef int __daddr_t;
+typedef int __key_t;
+
+
+typedef int __clockid_t;
+
+
+typedef void * __timer_t;
+
+
+typedef long int __blksize_t;
+
+
+
+
+typedef long int __blkcnt_t;
+typedef long int __blkcnt64_t;
+
+
+typedef unsigned long int __fsblkcnt_t;
+typedef unsigned long int __fsblkcnt64_t;
+
+
+typedef unsigned long int __fsfilcnt_t;
+typedef unsigned long int __fsfilcnt64_t;
+
+
+typedef long int __fsword_t;
+
+typedef long int __ssize_t;
+
+
+typedef long int __syscall_slong_t;
+
+typedef unsigned long int __syscall_ulong_t;
+
+
+
+typedef __off64_t __loff_t;
+typedef __quad_t *__qaddr_t;
+typedef char *__caddr_t;
+
+
+typedef long int __intptr_t;
+
+
+typedef unsigned int __socklen_t;
+# 28 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 29 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 2 3 4
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/byteswap-16.h" 1 3 4
+# 36 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 2 3 4
+# 44 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 3 4
+static __inline unsigned int
+__bswap_32 (unsigned int __bsx)
+{
+  return __builtin_bswap32 (__bsx);
+}
+# 108 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 3 4
+static __inline __uint64_t
+__bswap_64 (__uint64_t __bsx)
+{
+  return __builtin_bswap64 (__bsx);
+}
+# 61 "/usr/include/endian.h" 2 3 4
+# 65 "/usr/include/x86_64-linux-gnu/bits/waitstatus.h" 2 3 4
+
+union wait
+  {
+    int w_status;
+    struct
+      {
+
+ unsigned int __w_termsig:7;
+ unsigned int __w_coredump:1;
+ unsigned int __w_retcode:8;
+ unsigned int:16;
+
+
+
+
+
+
+
+      } __wait_terminated;
+    struct
+      {
+
+ unsigned int __w_stopval:8;
+ unsigned int __w_stopsig:8;
+ unsigned int:16;
+
+
+
+
+
+
+      } __wait_stopped;
+  };
+# 43 "/usr/include/stdlib.h" 2 3 4
+# 67 "/usr/include/stdlib.h" 3 4
+typedef union
+  {
+    union wait *__uptr;
+    int *__iptr;
+  } __WAIT_STATUS __attribute__ ((__transparent_union__));
+# 95 "/usr/include/stdlib.h" 3 4
+
+
+typedef struct
+  {
+    int quot;
+    int rem;
+  } div_t;
+
+
+
+typedef struct
+  {
+    long int quot;
+    long int rem;
+  } ldiv_t;
+
+
+
+
+
+
+
+__extension__ typedef struct
+  {
+    long long int quot;
+    long long int rem;
+  } lldiv_t;
+
+
+# 139 "/usr/include/stdlib.h" 3 4
+extern size_t __ctype_get_mb_cur_max (void) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__warn_unused_result__));
+
+
+
+
+extern double atof (const char *__nptr)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+
+extern int atoi (const char *__nptr)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+
+extern long int atol (const char *__nptr)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+
+__extension__ extern long long int atoll (const char *__nptr)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+
+extern double strtod (const char *__restrict __nptr,
+        char **__restrict __endptr)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+extern float strtof (const char *__restrict __nptr,
+       char **__restrict __endptr) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+extern long double strtold (const char *__restrict __nptr,
+       char **__restrict __endptr)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+extern long int strtol (const char *__restrict __nptr,
+   char **__restrict __endptr, int __base)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+extern unsigned long int strtoul (const char *__restrict __nptr,
+      char **__restrict __endptr, int __base)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+__extension__
+extern long long int strtoq (const char *__restrict __nptr,
+        char **__restrict __endptr, int __base)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+__extension__
+extern unsigned long long int strtouq (const char *__restrict __nptr,
+           char **__restrict __endptr, int __base)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+__extension__
+extern long long int strtoll (const char *__restrict __nptr,
+         char **__restrict __endptr, int __base)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+__extension__
+extern unsigned long long int strtoull (const char *__restrict __nptr,
+     char **__restrict __endptr, int __base)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+# 305 "/usr/include/stdlib.h" 3 4
+extern char *l64a (long int __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__warn_unused_result__));
+
+
+extern long int a64l (const char *__s)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/sys/types.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+
+
+
+
+
+
+typedef __u_char u_char;
+typedef __u_short u_short;
+typedef __u_int u_int;
+typedef __u_long u_long;
+typedef __quad_t quad_t;
+typedef __u_quad_t u_quad_t;
+typedef __fsid_t fsid_t;
+
+
+
+
+typedef __loff_t loff_t;
+
+
+
+typedef __ino_t ino_t;
+# 60 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+typedef __dev_t dev_t;
+
+
+
+
+typedef __gid_t gid_t;
+
+
+
+
+typedef __mode_t mode_t;
+
+
+
+
+typedef __nlink_t nlink_t;
+
+
+
+
+typedef __uid_t uid_t;
+
+
+
+
+
+typedef __off_t off_t;
+# 98 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+typedef __pid_t pid_t;
+
+
+
+
+
+typedef __id_t id_t;
+
+
+
+
+typedef __ssize_t ssize_t;
+
+
+
+
+
+typedef __daddr_t daddr_t;
+typedef __caddr_t caddr_t;
+
+
+
+
+
+typedef __key_t key_t;
+# 132 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+# 1 "/usr/include/time.h" 1 3 4
+# 57 "/usr/include/time.h" 3 4
+
+
+typedef __clock_t clock_t;
+
+
+
+# 73 "/usr/include/time.h" 3 4
+
+
+typedef __time_t time_t;
+
+
+
+# 91 "/usr/include/time.h" 3 4
+typedef __clockid_t clockid_t;
+# 103 "/usr/include/time.h" 3 4
+typedef __timer_t timer_t;
+# 133 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+# 146 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 1 3 4
+# 147 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+typedef unsigned long int ulong;
+typedef unsigned short int ushort;
+typedef unsigned int uint;
+# 194 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+typedef int int8_t __attribute__ ((__mode__ (__QI__)));
+typedef int int16_t __attribute__ ((__mode__ (__HI__)));
+typedef int int32_t __attribute__ ((__mode__ (__SI__)));
+typedef int int64_t __attribute__ ((__mode__ (__DI__)));
+
+
+typedef unsigned int u_int8_t __attribute__ ((__mode__ (__QI__)));
+typedef unsigned int u_int16_t __attribute__ ((__mode__ (__HI__)));
+typedef unsigned int u_int32_t __attribute__ ((__mode__ (__SI__)));
+typedef unsigned int u_int64_t __attribute__ ((__mode__ (__DI__)));
+
+typedef int register_t __attribute__ ((__mode__ (__word__)));
+# 219 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/sys/select.h" 1 3 4
+# 30 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/select.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/select.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/select.h" 2 3 4
+# 31 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigset.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/sigset.h" 3 4
+typedef int __sig_atomic_t;
+
+
+
+
+typedef struct
+  {
+    unsigned long int __val[(1024 / (8 * sizeof (unsigned long int)))];
+  } __sigset_t;
+# 34 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+
+
+
+typedef __sigset_t sigset_t;
+
+
+
+
+
+# 1 "/usr/include/time.h" 1 3 4
+# 120 "/usr/include/time.h" 3 4
+struct timespec
+  {
+    __time_t tv_sec;
+    __syscall_slong_t tv_nsec;
+  };
+# 44 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/time.h" 1 3 4
+# 30 "/usr/include/x86_64-linux-gnu/bits/time.h" 3 4
+struct timeval
+  {
+    __time_t tv_sec;
+    __suseconds_t tv_usec;
+  };
+# 46 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+
+
+typedef __suseconds_t suseconds_t;
+
+
+
+
+
+typedef long int __fd_mask;
+# 64 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+typedef struct
+  {
+
+
+
+
+
+
+    __fd_mask __fds_bits[1024 / (8 * (int) sizeof (__fd_mask))];
+
+
+  } fd_set;
+
+
+
+
+
+
+typedef __fd_mask fd_mask;
+# 96 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+
+# 106 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+extern int select (int __nfds, fd_set *__restrict __readfds,
+     fd_set *__restrict __writefds,
+     fd_set *__restrict __exceptfds,
+     struct timeval *__restrict __timeout);
+# 118 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+extern int pselect (int __nfds, fd_set *__restrict __readfds,
+      fd_set *__restrict __writefds,
+      fd_set *__restrict __exceptfds,
+      const struct timespec *__restrict __timeout,
+      const __sigset_t *__restrict __sigmask);
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/select2.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/select2.h" 3 4
+extern long int __fdelt_chk (long int __d);
+extern long int __fdelt_warn (long int __d)
+  __attribute__((__warning__ ("bit outside of fd_set selected")));
+# 129 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+
+
+
+# 220 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/sys/sysmacros.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/sys/sysmacros.h" 3 4
+
+
+__extension__
+extern unsigned int gnu_dev_major (unsigned long long int __dev)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__));
+__extension__
+extern unsigned int gnu_dev_minor (unsigned long long int __dev)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__));
+__extension__
+extern unsigned long long int gnu_dev_makedev (unsigned int __major,
+            unsigned int __minor)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__));
+# 58 "/usr/include/x86_64-linux-gnu/sys/sysmacros.h" 3 4
+
+# 223 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+
+
+typedef __blksize_t blksize_t;
+
+
+
+
+
+
+typedef __blkcnt_t blkcnt_t;
+
+
+
+typedef __fsblkcnt_t fsblkcnt_t;
+
+
+
+typedef __fsfilcnt_t fsfilcnt_t;
+# 270 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 1 3 4
+# 21 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 2 3 4
+# 60 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3 4
+typedef unsigned long int pthread_t;
+
+
+union pthread_attr_t
+{
+  char __size[56];
+  long int __align;
+};
+
+typedef union pthread_attr_t pthread_attr_t;
+
+
+
+
+
+typedef struct __pthread_internal_list
+{
+  struct __pthread_internal_list *__prev;
+  struct __pthread_internal_list *__next;
+} __pthread_list_t;
+# 90 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3 4
+typedef union
+{
+  struct __pthread_mutex_s
+  {
+    int __lock;
+    unsigned int __count;
+    int __owner;
+
+    unsigned int __nusers;
+
+
+
+    int __kind;
+
+    short __spins;
+    short __elision;
+    __pthread_list_t __list;
+# 125 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3 4
+  } __data;
+  char __size[40];
+  long int __align;
+} pthread_mutex_t;
+
+typedef union
+{
+  char __size[4];
+  int __align;
+} pthread_mutexattr_t;
+
+
+
+
+typedef union
+{
+  struct
+  {
+    int __lock;
+    unsigned int __futex;
+    __extension__ unsigned long long int __total_seq;
+    __extension__ unsigned long long int __wakeup_seq;
+    __extension__ unsigned long long int __woken_seq;
+    void *__mutex;
+    unsigned int __nwaiters;
+    unsigned int __broadcast_seq;
+  } __data;
+  char __size[48];
+  __extension__ long long int __align;
+} pthread_cond_t;
+
+typedef union
+{
+  char __size[4];
+  int __align;
+} pthread_condattr_t;
+
+
+
+typedef unsigned int pthread_key_t;
+
+
+
+typedef int pthread_once_t;
+
+
+
+
+
+typedef union
+{
+
+  struct
+  {
+    int __lock;
+    unsigned int __nr_readers;
+    unsigned int __readers_wakeup;
+    unsigned int __writer_wakeup;
+    unsigned int __nr_readers_queued;
+    unsigned int __nr_writers_queued;
+    int __writer;
+    int __shared;
+    signed char __rwelision;
+
+
+
+
+    unsigned char __pad1[7];
+
+
+    unsigned long int __pad2;
+
+
+    unsigned int __flags;
+
+  } __data;
+# 220 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3 4
+  char __size[56];
+  long int __align;
+} pthread_rwlock_t;
+
+typedef union
+{
+  char __size[8];
+  long int __align;
+} pthread_rwlockattr_t;
+
+
+
+
+
+typedef volatile int pthread_spinlock_t;
+
+
+
+
+typedef union
+{
+  char __size[32];
+  long int __align;
+} pthread_barrier_t;
+
+typedef union
+{
+  char __size[4];
+  int __align;
+} pthread_barrierattr_t;
+# 271 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+# 315 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+
+extern long int random (void) __attribute__ ((__nothrow__ , __leaf__));
+
+
+extern void srandom (unsigned int __seed) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+
+extern char *initstate (unsigned int __seed, char *__statebuf,
+   size_t __statelen) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2)));
+
+
+
+extern char *setstate (char *__statebuf) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+
+struct random_data
+  {
+    int32_t *fptr;
+    int32_t *rptr;
+    int32_t *state;
+    int rand_type;
+    int rand_deg;
+    int rand_sep;
+    int32_t *end_ptr;
+  };
+
+extern int random_r (struct random_data *__restrict __buf,
+       int32_t *__restrict __result) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+extern int srandom_r (unsigned int __seed, struct random_data *__buf)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2)));
+
+extern int initstate_r (unsigned int __seed, char *__restrict __statebuf,
+   size_t __statelen,
+   struct random_data *__restrict __buf)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2, 4)));
+
+extern int setstate_r (char *__restrict __statebuf,
+         struct random_data *__restrict __buf)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+
+extern int rand (void) __attribute__ ((__nothrow__ , __leaf__));
+
+extern void srand (unsigned int __seed) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+extern int rand_r (unsigned int *__seed) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+
+
+
+extern double drand48 (void) __attribute__ ((__nothrow__ , __leaf__));
+extern double erand48 (unsigned short int __xsubi[3]) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+extern long int lrand48 (void) __attribute__ ((__nothrow__ , __leaf__));
+extern long int nrand48 (unsigned short int __xsubi[3])
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+extern long int mrand48 (void) __attribute__ ((__nothrow__ , __leaf__));
+extern long int jrand48 (unsigned short int __xsubi[3])
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+extern void srand48 (long int __seedval) __attribute__ ((__nothrow__ , __leaf__));
+extern unsigned short int *seed48 (unsigned short int __seed16v[3])
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern void lcong48 (unsigned short int __param[7]) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+struct drand48_data
+  {
+    unsigned short int __x[3];
+    unsigned short int __old_x[3];
+    unsigned short int __c;
+    unsigned short int __init;
+    __extension__ unsigned long long int __a;
+
+  };
+
+
+extern int drand48_r (struct drand48_data *__restrict __buffer,
+        double *__restrict __result) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+extern int erand48_r (unsigned short int __xsubi[3],
+        struct drand48_data *__restrict __buffer,
+        double *__restrict __result) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int lrand48_r (struct drand48_data *__restrict __buffer,
+        long int *__restrict __result)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+extern int nrand48_r (unsigned short int __xsubi[3],
+        struct drand48_data *__restrict __buffer,
+        long int *__restrict __result)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int mrand48_r (struct drand48_data *__restrict __buffer,
+        long int *__restrict __result)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+extern int jrand48_r (unsigned short int __xsubi[3],
+        struct drand48_data *__restrict __buffer,
+        long int *__restrict __result)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+extern int srand48_r (long int __seedval, struct drand48_data *__buffer)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2)));
+
+extern int seed48_r (unsigned short int __seed16v[3],
+       struct drand48_data *__buffer) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+extern int lcong48_r (unsigned short int __param[7],
+        struct drand48_data *__buffer)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
+
+
+
+
+
+
+
+
+extern void *malloc (size_t __size) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__)) __attribute__ ((__warn_unused_result__));
+
+extern void *calloc (size_t __nmemb, size_t __size)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__)) __attribute__ ((__warn_unused_result__));
+
+
+
+
+
+
+
+
+
+
+extern void *realloc (void *__ptr, size_t __size)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__warn_unused_result__));
+
+extern void free (void *__ptr) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+extern void cfree (void *__ptr) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+# 1 "/usr/include/alloca.h" 1 3 4
+# 24 "/usr/include/alloca.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 1 3 4
+# 25 "/usr/include/alloca.h" 2 3 4
+
+
+
+
+
+
+
+extern void *alloca (size_t __size) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+
+
+# 493 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+extern void *valloc (size_t __size) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__)) __attribute__ ((__warn_unused_result__));
+
+
+
+
+extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+# 513 "/usr/include/stdlib.h" 3 4
+
+
+extern void abort (void) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__noreturn__));
+
+
+
+extern int atexit (void (*__func) (void)) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+# 530 "/usr/include/stdlib.h" 3 4
+
+
+
+
+
+extern int on_exit (void (*__func) (int __status, void *__arg), void *__arg)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+extern void exit (int __status) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__noreturn__));
+
+
+
+
+
+
+
+
+
+
+
+
+
+extern void _Exit (int __status) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__noreturn__));
+
+
+
+
+
+
+extern char *getenv (const char *__name) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+
+# 578 "/usr/include/stdlib.h" 3 4
+extern int putenv (char *__string) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+extern int setenv (const char *__name, const char *__value, int __replace)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2)));
+
+
+extern int unsetenv (const char *__name) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+
+
+
+
+extern int clearenv (void) __attribute__ ((__nothrow__ , __leaf__));
+# 606 "/usr/include/stdlib.h" 3 4
+extern char *mktemp (char *__template) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+# 619 "/usr/include/stdlib.h" 3 4
+extern int mkstemp (char *__template) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+# 641 "/usr/include/stdlib.h" 3 4
+extern int mkstemps (char *__template, int __suffixlen) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+# 662 "/usr/include/stdlib.h" 3 4
+extern char *mkdtemp (char *__template) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+# 711 "/usr/include/stdlib.h" 3 4
+
+
+
+
+
+extern int system (const char *__command) __attribute__ ((__warn_unused_result__));
+
+# 733 "/usr/include/stdlib.h" 3 4
+extern char *realpath (const char *__restrict __name,
+         char *__restrict __resolved) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__warn_unused_result__));
+
+
+
+
+
+
+typedef int (*__compar_fn_t) (const void *, const void *);
+# 751 "/usr/include/stdlib.h" 3 4
+
+
+
+extern void *bsearch (const void *__key, const void *__base,
+        size_t __nmemb, size_t __size, __compar_fn_t __compar)
+     __attribute__ ((__nonnull__ (1, 2, 5))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+
+
+
+extern void qsort (void *__base, size_t __nmemb, size_t __size,
+     __compar_fn_t __compar) __attribute__ ((__nonnull__ (1, 4)));
+# 774 "/usr/include/stdlib.h" 3 4
+extern int abs (int __x) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__)) __attribute__ ((__warn_unused_result__));
+extern long int labs (long int __x) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__)) __attribute__ ((__warn_unused_result__));
+
+
+
+__extension__ extern long long int llabs (long long int __x)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__)) __attribute__ ((__warn_unused_result__));
+
+
+
+
+
+
+
+extern div_t div (int __numer, int __denom)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__)) __attribute__ ((__warn_unused_result__));
+extern ldiv_t ldiv (long int __numer, long int __denom)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__)) __attribute__ ((__warn_unused_result__));
+
+
+
+
+__extension__ extern lldiv_t lldiv (long long int __numer,
+        long long int __denom)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__)) __attribute__ ((__warn_unused_result__));
+
+# 811 "/usr/include/stdlib.h" 3 4
+extern char *ecvt (double __value, int __ndigit, int *__restrict __decpt,
+     int *__restrict __sign) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+extern char *fcvt (double __value, int __ndigit, int *__restrict __decpt,
+     int *__restrict __sign) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+extern char *gcvt (double __value, int __ndigit, char *__buf)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+extern char *qecvt (long double __value, int __ndigit,
+      int *__restrict __decpt, int *__restrict __sign)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4))) __attribute__ ((__warn_unused_result__));
+extern char *qfcvt (long double __value, int __ndigit,
+      int *__restrict __decpt, int *__restrict __sign)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4))) __attribute__ ((__warn_unused_result__));
+extern char *qgcvt (long double __value, int __ndigit, char *__buf)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3))) __attribute__ ((__warn_unused_result__));
+
+
+
+
+extern int ecvt_r (double __value, int __ndigit, int *__restrict __decpt,
+     int *__restrict __sign, char *__restrict __buf,
+     size_t __len) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4, 5)));
+extern int fcvt_r (double __value, int __ndigit, int *__restrict __decpt,
+     int *__restrict __sign, char *__restrict __buf,
+     size_t __len) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4, 5)));
+
+extern int qecvt_r (long double __value, int __ndigit,
+      int *__restrict __decpt, int *__restrict __sign,
+      char *__restrict __buf, size_t __len)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4, 5)));
+extern int qfcvt_r (long double __value, int __ndigit,
+      int *__restrict __decpt, int *__restrict __sign,
+      char *__restrict __buf, size_t __len)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (3, 4, 5)));
+
+
+
+
+
+
+extern int mblen (const char *__s, size_t __n) __attribute__ ((__nothrow__ , __leaf__));
+
+
+extern int mbtowc (wchar_t *__restrict __pwc,
+     const char *__restrict __s, size_t __n) __attribute__ ((__nothrow__ , __leaf__));
+
+
+extern int wctomb (char *__s, wchar_t __wchar) __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+extern size_t mbstowcs (wchar_t *__restrict __pwcs,
+   const char *__restrict __s, size_t __n) __attribute__ ((__nothrow__ , __leaf__));
+
+extern size_t wcstombs (char *__restrict __s,
+   const wchar_t *__restrict __pwcs, size_t __n)
+     __attribute__ ((__nothrow__ , __leaf__));
+
+
+
+
+
+
+
+
+extern int rpmatch (const char *__response) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1))) __attribute__ ((__warn_unused_result__));
+# 898 "/usr/include/stdlib.h" 3 4
+extern int getsubopt (char **__restrict __optionp,
+        char *const *__restrict __tokens,
+        char **__restrict __valuep)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2, 3))) __attribute__ ((__warn_unused_result__));
+# 950 "/usr/include/stdlib.h" 3 4
+extern int getloadavg (double __loadavg[], int __nelem)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdlib-float.h" 1 3 4
+# 955 "/usr/include/stdlib.h" 2 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdlib.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/stdlib.h" 3 4
+extern char *__realpath_chk (const char *__restrict __name,
+        char *__restrict __resolved,
+        size_t __resolvedlen) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__warn_unused_result__));
+extern char *__realpath_alias (const char *__restrict __name, char *__restrict __resolved) __asm__ ("" "realpath") __attribute__ ((__nothrow__ , __leaf__))
+
+                                                 __attribute__ ((__warn_unused_result__));
+extern char *__realpath_chk_warn (const char *__restrict __name, char *__restrict __resolved, size_t __resolvedlen) __asm__ ("" "__realpath_chk") __attribute__ ((__nothrow__ , __leaf__))
+
+
+                                                __attribute__ ((__warn_unused_result__))
+     __attribute__((__warning__ ("second argument of realpath must be either NULL or at " "least PATH_MAX bytes long buffer")))
+                                      ;
+
+extern __inline __attribute__ ((__always_inline__)) __attribute__ ((__gnu_inline__)) __attribute__ ((__artificial__)) __attribute__ ((__warn_unused_result__)) char *
+__attribute__ ((__nothrow__ , __leaf__)) realpath (const char *__restrict __name, char *__restrict __resolved)
+{
+  if (__builtin_object_size (__resolved, 2 > 1) != (size_t) -1)
+    {
+
+
+
+
+      return __realpath_chk (__name, __resolved, __builtin_object_size (__resolved, 2 > 1));
+    }
+
+  return __realpath_alias (__name, __resolved);
+}
+
+
+extern int __ptsname_r_chk (int __fd, char *__buf, size_t __buflen,
+       size_t __nreal) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (2)));
+extern int __ptsname_r_alias (int __fd, char *__buf, size_t __buflen) __asm__ ("" "ptsname_r") __attribute__ ((__nothrow__ , __leaf__))
+
+     __attribute__ ((__nonnull__ (2)));
+extern int __ptsname_r_chk_warn (int __fd, char *__buf, size_t __buflen, size_t __nreal) __asm__ ("" "__ptsname_r_chk") __attribute__ ((__nothrow__ , __leaf__))
+
+
+     __attribute__ ((__nonnull__ (2))) __attribute__((__warning__ ("ptsname_r called with buflen bigger than " "size of buf")))
+                   ;
+
+extern __inline __attribute__ ((__always_inline__)) __attribute__ ((__gnu_inline__)) __attribute__ ((__artificial__)) int
+__attribute__ ((__nothrow__ , __leaf__)) ptsname_r (int __fd, char *__buf, size_t __buflen)
+{
+  if (__builtin_object_size (__buf, 2 > 1) != (size_t) -1)
+    {
+      if (!__builtin_constant_p (__buflen))
+ return __ptsname_r_chk (__fd, __buf, __buflen, __builtin_object_size (__buf, 2 > 1));
+      if (__buflen > __builtin_object_size (__buf, 2 > 1))
+ return __ptsname_r_chk_warn (__fd, __buf, __buflen, __builtin_object_size (__buf, 2 > 1));
+    }
+  return __ptsname_r_alias (__fd, __buf, __buflen);
+}
+
+
+extern int __wctomb_chk (char *__s, wchar_t __wchar, size_t __buflen)
+  __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__warn_unused_result__));
+extern int __wctomb_alias (char *__s, wchar_t __wchar) __asm__ ("" "wctomb") __attribute__ ((__nothrow__ , __leaf__))
+              __attribute__ ((__warn_unused_result__));
+
+extern __inline __attribute__ ((__always_inline__)) __attribute__ ((__gnu_inline__)) __attribute__ ((__artificial__)) __attribute__ ((__warn_unused_result__)) int
+__attribute__ ((__nothrow__ , __leaf__)) wctomb (char *__s, wchar_t __wchar)
+{
+
+
+
+
+
+
+
+  if (__builtin_object_size (__s, 2 > 1) != (size_t) -1 && 16 > __builtin_object_size (__s, 2 > 1))
+    return __wctomb_chk (__s, __wchar, __builtin_object_size (__s, 2 > 1));
+  return __wctomb_alias (__s, __wchar);
+}
+
+
+extern size_t __mbstowcs_chk (wchar_t *__restrict __dst,
+         const char *__restrict __src,
+         size_t __len, size_t __dstlen) __attribute__ ((__nothrow__ , __leaf__));
+extern size_t __mbstowcs_alias (wchar_t *__restrict __dst, const char *__restrict __src, size_t __len) __asm__ ("" "mbstowcs") __attribute__ ((__nothrow__ , __leaf__))
+
+
+                                  ;
+extern size_t __mbstowcs_chk_warn (wchar_t *__restrict __dst, const char *__restrict __src, size_t __len, size_t __dstlen) __asm__ ("" "__mbstowcs_chk") __attribute__ ((__nothrow__ , __leaf__))
+
+
+
+     __attribute__((__warning__ ("mbstowcs called with dst buffer smaller than len " "* sizeof (wchar_t)")))
+                        ;
+
+extern __inline __attribute__ ((__always_inline__)) __attribute__ ((__gnu_inline__)) __attribute__ ((__artificial__)) size_t
+__attribute__ ((__nothrow__ , __leaf__)) mbstowcs (wchar_t *__restrict __dst, const char *__restrict __src, size_t __len)
+
+{
+  if (__builtin_object_size (__dst, 2 > 1) != (size_t) -1)
+    {
+      if (!__builtin_constant_p (__len))
+ return __mbstowcs_chk (__dst, __src, __len,
+          __builtin_object_size (__dst, 2 > 1) / sizeof (wchar_t));
+
+      if (__len > __builtin_object_size (__dst, 2 > 1) / sizeof (wchar_t))
+ return __mbstowcs_chk_warn (__dst, __src, __len,
+         __builtin_object_size (__dst, 2 > 1) / sizeof (wchar_t));
+    }
+  return __mbstowcs_alias (__dst, __src, __len);
+}
+
+
+extern size_t __wcstombs_chk (char *__restrict __dst,
+         const wchar_t *__restrict __src,
+         size_t __len, size_t __dstlen) __attribute__ ((__nothrow__ , __leaf__));
+extern size_t __wcstombs_alias (char *__restrict __dst, const wchar_t *__restrict __src, size_t __len) __asm__ ("" "wcstombs") __attribute__ ((__nothrow__ , __leaf__))
+
+
+                                  ;
+extern size_t __wcstombs_chk_warn (char *__restrict __dst, const wchar_t *__restrict __src, size_t __len, size_t __dstlen) __asm__ ("" "__wcstombs_chk") __attribute__ ((__nothrow__ , __leaf__))
+
+
+
+     __attribute__((__warning__ ("wcstombs called with dst buffer smaller than len")));
+
+extern __inline __attribute__ ((__always_inline__)) __attribute__ ((__gnu_inline__)) __attribute__ ((__artificial__)) size_t
+__attribute__ ((__nothrow__ , __leaf__)) wcstombs (char *__restrict __dst, const wchar_t *__restrict __src, size_t __len)
+
+{
+  if (__builtin_object_size (__dst, 2 > 1) != (size_t) -1)
+    {
+      if (!__builtin_constant_p (__len))
+ return __wcstombs_chk (__dst, __src, __len, __builtin_object_size (__dst, 2 > 1));
+      if (__len > __builtin_object_size (__dst, 2 > 1))
+ return __wcstombs_chk_warn (__dst, __src, __len, __builtin_object_size (__dst, 2 > 1));
+    }
+  return __wcstombs_alias (__dst, __src, __len);
+}
+# 959 "/usr/include/stdlib.h" 2 3 4
+# 967 "/usr/include/stdlib.h" 3 4
+
+# 28 "../py/argcheck.c" 2
+# 1 "/usr/include/assert.h" 1 3 4
+# 66 "/usr/include/assert.h" 3 4
+
+
+
+extern void __assert_fail (const char *__assertion, const char *__file,
+      unsigned int __line, const char *__function)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__noreturn__));
+
+
+extern void __assert_perror_fail (int __errnum, const char *__file,
+      unsigned int __line, const char *__function)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__noreturn__));
+
+
+
+
+extern void __assert (const char *__assertion, const char *__file, int __line)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__noreturn__));
+
+
+
+# 29 "../py/argcheck.c" 2
+
+# 1 "../py/nlr.h" 1
+# 32 "../py/nlr.h"
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h" 1 3 4
+# 34 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h" 1 3 4
+
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h" 1 3 4
+# 168 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h" 3 4
+# 1 "/usr/include/limits.h" 1 3 4
+# 143 "/usr/include/limits.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/posix1_lim.h" 1 3 4
+# 160 "/usr/include/x86_64-linux-gnu/bits/posix1_lim.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/local_lim.h" 1 3 4
+# 38 "/usr/include/x86_64-linux-gnu/bits/local_lim.h" 3 4
+# 1 "/usr/include/linux/limits.h" 1 3 4
+# 39 "/usr/include/x86_64-linux-gnu/bits/local_lim.h" 2 3 4
+# 161 "/usr/include/x86_64-linux-gnu/bits/posix1_lim.h" 2 3 4
+# 144 "/usr/include/limits.h" 2 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/posix2_lim.h" 1 3 4
+# 148 "/usr/include/limits.h" 2 3 4
+# 169 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h" 2 3 4
+# 8 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h" 2 3 4
+# 35 "/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h" 2 3 4
+# 33 "../py/nlr.h" 2
+# 1 "/usr/include/setjmp.h" 1 3 4
+# 27 "/usr/include/setjmp.h" 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/setjmp.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/setjmp.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/setjmp.h" 2 3 4
+
+
+
+
+typedef long int __jmp_buf[8];
+# 30 "/usr/include/setjmp.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigset.h" 1 3 4
+# 31 "/usr/include/setjmp.h" 2 3 4
+
+
+
+struct __jmp_buf_tag
+  {
+
+
+
+
+    __jmp_buf __jmpbuf;
+    int __mask_was_saved;
+    __sigset_t __saved_mask;
+  };
+
+
+
+
+typedef struct __jmp_buf_tag jmp_buf[1];
+
+
+
+extern int setjmp (jmp_buf __env) __attribute__ ((__nothrow__));
+
+
+
+
+
+
+extern int __sigsetjmp (struct __jmp_buf_tag __env[1], int __savemask) __attribute__ ((__nothrow__));
+
+
+
+extern int _setjmp (struct __jmp_buf_tag __env[1]) __attribute__ ((__nothrow__));
+
+
+
+
+
+
+
+
+
+
+extern void longjmp (struct __jmp_buf_tag __env[1], int __val)
+     __attribute__ ((__nothrow__)) __attribute__ ((__noreturn__));
+
+
+
+
+
+
+
+extern void _longjmp (struct __jmp_buf_tag __env[1], int __val)
+     __attribute__ ((__nothrow__)) __attribute__ ((__noreturn__));
+
+
+
+
+
+
+
+typedef struct __jmp_buf_tag sigjmp_buf[1];
+# 102 "/usr/include/setjmp.h" 3 4
+extern void siglongjmp (sigjmp_buf __env, int __val)
+     __attribute__ ((__nothrow__)) __attribute__ ((__noreturn__));
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/setjmp2.h" 1 3 4
+# 25 "/usr/include/x86_64-linux-gnu/bits/setjmp2.h" 3 4
+extern void longjmp (struct __jmp_buf_tag __env[1], int __val) __asm__ ("" "__longjmp_chk") __attribute__ ((__nothrow__))
+
+                        __attribute__ ((__noreturn__));
+extern void _longjmp (struct __jmp_buf_tag __env[1], int __val) __asm__ ("" "__longjmp_chk") __attribute__ ((__nothrow__))
+
+                        __attribute__ ((__noreturn__));
+extern void siglongjmp (struct __jmp_buf_tag __env[1], int __val) __asm__ ("" "__longjmp_chk") __attribute__ ((__nothrow__))
+
+                        __attribute__ ((__noreturn__));
+# 110 "/usr/include/setjmp.h" 2 3 4
+
+
+
+# 34 "../py/nlr.h" 2
+# 1 "/usr/include/assert.h" 1 3 4
+# 35 "../py/nlr.h" 2
+
+# 1 "../py/mpconfig.h" 1
+# 45 "../py/mpconfig.h"
+# 1 "./mpconfigport.h" 1
+# 91 "./mpconfigport.h"
+
+# 91 "./mpconfigport.h"
+typedef long mp_int_t;
+typedef unsigned long mp_uint_t;
+# 108 "./mpconfigport.h"
+typedef long mp_off_t;
+# 126 "./mpconfigport.h"
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h" 3 4
+# 1 "/usr/include/stdint.h" 1 3 4
+# 26 "/usr/include/stdint.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wchar.h" 1 3 4
+# 27 "/usr/include/stdint.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 28 "/usr/include/stdint.h" 2 3 4
+# 48 "/usr/include/stdint.h" 3 4
+
+# 48 "/usr/include/stdint.h" 3 4
+typedef unsigned char uint8_t;
+typedef unsigned short int uint16_t;
+
+typedef unsigned int uint32_t;
+
+
+
+typedef unsigned long int uint64_t;
+# 65 "/usr/include/stdint.h" 3 4
+typedef signed char int_least8_t;
+typedef short int int_least16_t;
+typedef int int_least32_t;
+
+typedef long int int_least64_t;
+
+
+
+
+
+
+typedef unsigned char uint_least8_t;
+typedef unsigned short int uint_least16_t;
+typedef unsigned int uint_least32_t;
+
+typedef unsigned long int uint_least64_t;
+# 90 "/usr/include/stdint.h" 3 4
+typedef signed char int_fast8_t;
+
+typedef long int int_fast16_t;
+typedef long int int_fast32_t;
+typedef long int int_fast64_t;
+# 103 "/usr/include/stdint.h" 3 4
+typedef unsigned char uint_fast8_t;
+
+typedef unsigned long int uint_fast16_t;
+typedef unsigned long int uint_fast32_t;
+typedef unsigned long int uint_fast64_t;
+# 119 "/usr/include/stdint.h" 3 4
+typedef long int intptr_t;
+
+
+typedef unsigned long int uintptr_t;
+# 134 "/usr/include/stdint.h" 3 4
+typedef long int intmax_t;
+typedef unsigned long int uintmax_t;
+# 10 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h" 2 3 4
+# 126 "./mpconfigport.h" 2
+# 46 "../py/mpconfig.h" 2
+# 548 "../py/mpconfig.h"
+
+# 548 "../py/mpconfig.h"
+typedef double mp_float_t;
+# 37 "../py/nlr.h" 2
+
+typedef struct _nlr_buf_t nlr_buf_t;
+struct _nlr_buf_t {
+
+    nlr_buf_t *prev;
+    void *ret_val;
+
+
+
+
+
+
+
+    void *regs[8];
+# 65 "../py/nlr.h"
+};
+# 77 "../py/nlr.h"
+unsigned int nlr_push(nlr_buf_t *);
+void nlr_pop(void);
+__attribute__((noreturn)) void nlr_jump(void *val);
+
+
+
+
+
+__attribute__((noreturn)) void nlr_jump_fail(void *val);
+# 31 "../py/argcheck.c" 2
+# 1 "../py/runtime.h" 1
+# 29 "../py/runtime.h"
+# 1 "../py/mpstate.h" 1
+# 32 "../py/mpstate.h"
+# 1 "../py/mpthread.h" 1
+# 33 "../py/mpstate.h" 2
+# 1 "../py/misc.h" 1
+# 33 "../py/misc.h"
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h" 1 3 4
+# 34 "../py/misc.h" 2
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 1 3 4
+# 149 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 3 4
+
+# 149 "/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h" 3 4
+typedef long int ptrdiff_t;
+# 36 "../py/misc.h" 2
+
+
+# 37 "../py/misc.h"
+typedef unsigned char byte;
+typedef unsigned int uint;
+# 82 "../py/misc.h"
+void *m_malloc(size_t num_bytes);
+void *m_malloc_maybe(size_t num_bytes);
+void *m_malloc_with_finaliser(size_t num_bytes);
+void *m_malloc0(size_t num_bytes);
+
+
+
+
+
+void *m_realloc(void *ptr, size_t new_num_bytes);
+void *m_realloc_maybe(void *ptr, size_t new_num_bytes, 
+# 92 "../py/misc.h" 3 4
+                                                      _Bool 
+# 92 "../py/misc.h"
+                                                           allow_move);
+void m_free(void *ptr);
+
+void *m_malloc_fail(size_t num_bytes);
+# 115 "../py/misc.h"
+typedef uint32_t unichar;
+
+
+
+
+
+
+unichar utf8_get_char(const byte *s);
+const byte *utf8_next_char(const byte *s);
+
+
+# 125 "../py/misc.h" 3 4
+_Bool 
+# 125 "../py/misc.h"
+    unichar_isspace(unichar c);
+
+# 126 "../py/misc.h" 3 4
+_Bool 
+# 126 "../py/misc.h"
+    unichar_isalpha(unichar c);
+
+# 127 "../py/misc.h" 3 4
+_Bool 
+# 127 "../py/misc.h"
+    unichar_isprint(unichar c);
+
+# 128 "../py/misc.h" 3 4
+_Bool 
+# 128 "../py/misc.h"
+    unichar_isdigit(unichar c);
+
+# 129 "../py/misc.h" 3 4
+_Bool 
+# 129 "../py/misc.h"
+    unichar_isxdigit(unichar c);
+
+# 130 "../py/misc.h" 3 4
+_Bool 
+# 130 "../py/misc.h"
+    unichar_isident(unichar c);
+
+# 131 "../py/misc.h" 3 4
+_Bool 
+# 131 "../py/misc.h"
+    unichar_isupper(unichar c);
+
+# 132 "../py/misc.h" 3 4
+_Bool 
+# 132 "../py/misc.h"
+    unichar_islower(unichar c);
+unichar unichar_tolower(unichar c);
+unichar unichar_toupper(unichar c);
+mp_uint_t unichar_xdigit_value(unichar c);
+mp_uint_t unichar_charlen(const char *str, mp_uint_t len);
+
+
+
+
+
+typedef struct _vstr_t {
+    size_t alloc;
+    size_t len;
+    char *buf;
+    
+# 146 "../py/misc.h" 3 4
+   _Bool 
+# 146 "../py/misc.h"
+        fixed_buf : 1;
+} vstr_t;
+
+
+
+
+void vstr_init(vstr_t *vstr, size_t alloc);
+void vstr_init_len(vstr_t *vstr, size_t len);
+void vstr_init_fixed_buf(vstr_t *vstr, size_t alloc, char *buf);
+struct _mp_print_t;
+void vstr_init_print(vstr_t *vstr, size_t alloc, struct _mp_print_t *print);
+void vstr_clear(vstr_t *vstr);
+vstr_t *vstr_new(size_t alloc);
+void vstr_free(vstr_t *vstr);
+static inline void vstr_reset(vstr_t *vstr) { vstr->len = 0; }
+static inline char *vstr_str(vstr_t *vstr) { return vstr->buf; }
+static inline size_t vstr_len(vstr_t *vstr) { return vstr->len; }
+void vstr_hint_size(vstr_t *vstr, size_t size);
+char *vstr_extend(vstr_t *vstr, size_t size);
+char *vstr_add_len(vstr_t *vstr, size_t len);
+char *vstr_null_terminated_str(vstr_t *vstr);
+void vstr_add_byte(vstr_t *vstr, byte v);
+void vstr_add_char(vstr_t *vstr, unichar chr);
+void vstr_add_str(vstr_t *vstr, const char *str);
+void vstr_add_strn(vstr_t *vstr, const char *str, size_t len);
+void vstr_ins_byte(vstr_t *vstr, size_t byte_pos, byte b);
+void vstr_ins_char(vstr_t *vstr, size_t char_pos, unichar chr);
+void vstr_cut_head_bytes(vstr_t *vstr, size_t bytes_to_cut);
+void vstr_cut_tail_bytes(vstr_t *vstr, size_t bytes_to_cut);
+void vstr_cut_out_bytes(vstr_t *vstr, size_t byte_pos, size_t bytes_to_cut);
+void vstr_printf(vstr_t *vstr, const char *fmt, ...);
+# 195 "../py/misc.h"
+int DEBUG_printf(const char *fmt, ...);
+
+extern mp_uint_t mp_verbose_flag;
+
+
+
+
+
+
+static inline mp_uint_t count_lead_ones(byte val) {
+    mp_uint_t c = 0;
+    for (byte mask = 0x80; val & mask; mask >>= 1) {
+        c++;
+    }
+    return c;
+}
+# 34 "../py/mpstate.h" 2
+
+# 1 "../py/obj.h" 1
+# 31 "../py/obj.h"
+# 1 "../py/qstr.h" 1
+# 46 "../py/qstr.h"
+    MP_QSTRnumber_of,
+};
+
+
+typedef size_t qstr;
+
+typedef struct _qstr_pool_t {
+    struct _qstr_pool_t *prev;
+    size_t total_prev_len;
+    size_t alloc;
+    size_t len;
+    const byte *qstrs[];
+} qstr_pool_t;
+
+
+
+void qstr_init(void);
+
+mp_uint_t qstr_compute_hash(const byte *data, size_t len);
+qstr qstr_find_strn(const char *str, size_t str_len);
+
+qstr qstr_from_str(const char *str);
+qstr qstr_from_strn(const char *str, size_t len);
+
+byte *qstr_build_start(size_t len, byte **q_ptr);
+qstr qstr_build_end(byte *q_ptr);
+
+mp_uint_t qstr_hash(qstr q);
+const char *qstr_str(qstr q);
+size_t qstr_len(qstr q);
+const byte *qstr_data(qstr q, size_t *len);
+
+void qstr_pool_info(size_t *n_pool, size_t *n_qstr, size_t *n_str_data_bytes, size_t *n_total_bytes);
+void qstr_dump_data(void);
+# 32 "../py/obj.h" 2
+# 1 "../py/mpprint.h" 1
+# 48 "../py/mpprint.h"
+typedef void (*mp_print_strn_t)(void *data, const char *str, size_t len);
+
+typedef struct _mp_print_t {
+    void *data;
+    mp_print_strn_t print_strn;
+} mp_print_t;
+
+
+
+extern const mp_print_t mp_plat_print;
+
+
+
+
+
+int mp_print_str(const mp_print_t *print, const char *str);
+int mp_print_strn(const mp_print_t *print, const char *str, size_t len, int flags, char fill, int width);
+
+int mp_print_float(const mp_print_t *print, mp_float_t f, char fmt, int flags, char fill, int width, int prec);
+
+
+int mp_printf(const mp_print_t *print, const char *fmt, ...);
+# 33 "../py/obj.h" 2
+# 41 "../py/obj.h"
+typedef void *mp_obj_t;
+typedef const void *mp_const_obj_t;
+
+
+
+
+typedef struct _mp_obj_type_t mp_obj_type_t;
+
+
+
+struct _mp_obj_base_t {
+    const mp_obj_type_t *type ;
+};
+typedef struct _mp_obj_base_t mp_obj_base_t;
+# 83 "../py/obj.h"
+ static inline 
+# 83 "../py/obj.h" 3 4
+              _Bool 
+# 83 "../py/obj.h"
+                   MP_OBJ_IS_SMALL_INT(mp_const_obj_t o)
+     { return ((((mp_int_t)(o)) & 1) != 0); }
+
+
+
+ static inline 
+# 88 "../py/obj.h" 3 4
+              _Bool 
+# 88 "../py/obj.h"
+                   MP_OBJ_IS_QSTR(mp_const_obj_t o)
+     { return ((((mp_int_t)(o)) & 3) == 2); }
+
+
+
+
+
+
+ extern const struct _mp_obj_float_t mp_const_float_e_obj;
+ extern const struct _mp_obj_float_t mp_const_float_pi_obj;
+
+
+ mp_float_t mp_obj_float_get(mp_obj_t self_in);
+ mp_obj_t mp_obj_new_float(mp_float_t value);
+
+
+ static inline 
+# 104 "../py/obj.h" 3 4
+              _Bool 
+# 104 "../py/obj.h"
+                   MP_OBJ_IS_OBJ(mp_const_obj_t o)
+     { return ((((mp_int_t)(o)) & 3) == 0); }
+# 238 "../py/obj.h"
+typedef mp_const_obj_t mp_rom_obj_t;
+# 264 "../py/obj.h"
+extern const mp_obj_type_t mp_type_int;
+extern const mp_obj_type_t mp_type_bool;
+static inline 
+# 266 "../py/obj.h" 3 4
+             _Bool 
+# 266 "../py/obj.h"
+                  mp_obj_is_integer(mp_const_obj_t o) { return (MP_OBJ_IS_SMALL_INT(o) || (MP_OBJ_IS_OBJ(o) && (((mp_obj_base_t*)((void*)o))->type == (&mp_type_int)))) || (MP_OBJ_IS_OBJ(o) && (((mp_obj_base_t*)((void*)o))->type == (&mp_type_bool))); }
+# 340 "../py/obj.h"
+typedef struct _mp_map_elem_t {
+    mp_obj_t key;
+    mp_obj_t value;
+} mp_map_elem_t;
+
+typedef struct _mp_rom_map_elem_t {
+    mp_rom_obj_t key;
+    mp_rom_obj_t value;
+} mp_rom_map_elem_t;
+
+
+
+
+
+
+typedef struct _mp_map_t {
+    size_t all_keys_are_qstrs : 1;
+    size_t is_fixed : 1;
+    size_t is_ordered : 1;
+    size_t used : (8 * sizeof(size_t) - 3);
+    size_t alloc;
+    mp_map_elem_t *table;
+} mp_map_t;
+
+
+typedef enum _mp_map_lookup_kind_t {
+    MP_MAP_LOOKUP = 0,
+    MP_MAP_LOOKUP_ADD_IF_NOT_FOUND = 1,
+    MP_MAP_LOOKUP_REMOVE_IF_FOUND = 2,
+    MP_MAP_LOOKUP_ADD_IF_NOT_FOUND_OR_REMOVE_IF_FOUND = 3,
+} mp_map_lookup_kind_t;
+
+extern const mp_map_t mp_const_empty_map;
+
+static inline 
+# 374 "../py/obj.h" 3 4
+             _Bool 
+# 374 "../py/obj.h"
+                  MP_MAP_SLOT_IS_FILLED(const mp_map_t *map, size_t pos) { return ((map)->table[pos].key != (((mp_obj_t)(void*)0)) && (map)->table[pos].key != (((mp_obj_t)(void*)8))); }
+
+void mp_map_init(mp_map_t *map, size_t n);
+void mp_map_init_fixed_table(mp_map_t *map, size_t n, const mp_obj_t *table);
+mp_map_t *mp_map_new(size_t n);
+void mp_map_deinit(mp_map_t *map);
+void mp_map_free(mp_map_t *map);
+mp_map_elem_t *mp_map_lookup(mp_map_t *map, mp_obj_t index, mp_map_lookup_kind_t lookup_kind);
+void mp_map_clear(mp_map_t *map);
+void mp_map_dump(mp_map_t *map);
+
+
+
+typedef struct _mp_set_t {
+    size_t alloc;
+    size_t used;
+    mp_obj_t *table;
+} mp_set_t;
+
+static inline 
+# 393 "../py/obj.h" 3 4
+             _Bool 
+# 393 "../py/obj.h"
+                  MP_SET_SLOT_IS_FILLED(const mp_set_t *set, size_t pos) { return ((set)->table[pos] != (((mp_obj_t)(void*)0)) && (set)->table[pos] != (((mp_obj_t)(void*)8))); }
+
+void mp_set_init(mp_set_t *set, size_t n);
+mp_obj_t mp_set_lookup(mp_set_t *set, mp_obj_t index, mp_map_lookup_kind_t lookup_kind);
+mp_obj_t mp_set_remove_first(mp_set_t *set);
+void mp_set_clear(mp_set_t *set);
+
+
+
+typedef mp_obj_t (*mp_fun_0_t)(void);
+typedef mp_obj_t (*mp_fun_1_t)(mp_obj_t);
+typedef mp_obj_t (*mp_fun_2_t)(mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_3_t)(mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_var_t)(size_t n, const mp_obj_t *);
+
+
+typedef mp_obj_t (*mp_fun_kw_t)(size_t n, const mp_obj_t *, mp_map_t *);
+
+typedef enum {
+    PRINT_STR = 0,
+    PRINT_REPR = 1,
+    PRINT_EXC = 2,
+    PRINT_JSON = 3,
+    PRINT_RAW = 4,
+    PRINT_EXC_SUBCLASS = 0x80,
+} mp_print_kind_t;
+
+typedef struct _mp_obj_iter_buf_t {
+    mp_obj_base_t base;
+    mp_obj_t buf[3];
+} mp_obj_iter_buf_t;
+
+
+
+
+
+typedef void (*mp_print_fun_t)(const mp_print_t *print, mp_obj_t o, mp_print_kind_t kind);
+typedef mp_obj_t (*mp_make_new_fun_t)(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args);
+typedef mp_obj_t (*mp_call_fun_t)(mp_obj_t fun, size_t n_args, size_t n_kw, const mp_obj_t *args);
+typedef mp_obj_t (*mp_unary_op_fun_t)(mp_uint_t op, mp_obj_t);
+typedef mp_obj_t (*mp_binary_op_fun_t)(mp_uint_t op, mp_obj_t, mp_obj_t);
+typedef void (*mp_attr_fun_t)(mp_obj_t self_in, qstr attr, mp_obj_t *dest);
+typedef mp_obj_t (*mp_subscr_fun_t)(mp_obj_t self_in, mp_obj_t index, mp_obj_t value);
+typedef mp_obj_t (*mp_getiter_fun_t)(mp_obj_t self_in, mp_obj_iter_buf_t *iter_buf);
+
+
+typedef struct _mp_buffer_info_t {
+
+
+
+
+
+    void *buf;
+    size_t len;
+    int typecode;
+
+
+
+
+} mp_buffer_info_t;
+
+
+
+typedef struct _mp_buffer_p_t {
+    mp_int_t (*get_buffer)(mp_obj_t obj, mp_buffer_info_t *bufinfo, mp_uint_t flags);
+} mp_buffer_p_t;
+
+# 459 "../py/obj.h" 3 4
+_Bool 
+# 459 "../py/obj.h"
+    mp_get_buffer(mp_obj_t obj, mp_buffer_info_t *bufinfo, mp_uint_t flags);
+void mp_get_buffer_raise(mp_obj_t obj, mp_buffer_info_t *bufinfo, mp_uint_t flags);
+
+
+typedef struct _mp_stream_p_t {
+
+
+    mp_uint_t (*read)(mp_obj_t obj, void *buf, mp_uint_t size, int *errcode);
+    mp_uint_t (*write)(mp_obj_t obj, const void *buf, mp_uint_t size, int *errcode);
+    mp_uint_t (*ioctl)(mp_obj_t obj, mp_uint_t request, uintptr_t arg, int *errcode);
+    mp_uint_t is_text : 1;
+} mp_stream_p_t;
+
+struct _mp_obj_type_t {
+
+    mp_obj_base_t base;
+
+
+    qstr name;
+
+
+    mp_print_fun_t print;
+
+
+    mp_make_new_fun_t make_new;
+
+
+    mp_call_fun_t call;
+
+
+
+    mp_unary_op_fun_t unary_op;
+    mp_binary_op_fun_t binary_op;
+# 504 "../py/obj.h"
+    mp_attr_fun_t attr;
+
+
+
+
+
+
+    mp_subscr_fun_t subscr;
+
+
+
+
+    mp_getiter_fun_t getiter;
+
+
+
+    mp_fun_1_t iternext;
+
+
+    mp_buffer_p_t buffer_p;
+
+
+    const void *protocol;
+
+
+
+
+
+    const void *parent;
+
+
+    struct _mp_obj_dict_t *locals_dict;
+};
+
+
+extern const mp_obj_type_t mp_type_type;
+extern const mp_obj_type_t mp_type_object;
+extern const mp_obj_type_t mp_type_NoneType;
+extern const mp_obj_type_t mp_type_bool;
+extern const mp_obj_type_t mp_type_int;
+extern const mp_obj_type_t mp_type_str;
+extern const mp_obj_type_t mp_type_bytes;
+extern const mp_obj_type_t mp_type_bytearray;
+extern const mp_obj_type_t mp_type_memoryview;
+extern const mp_obj_type_t mp_type_float;
+extern const mp_obj_type_t mp_type_complex;
+extern const mp_obj_type_t mp_type_tuple;
+extern const mp_obj_type_t mp_type_list;
+extern const mp_obj_type_t mp_type_map;
+extern const mp_obj_type_t mp_type_enumerate;
+extern const mp_obj_type_t mp_type_filter;
+extern const mp_obj_type_t mp_type_dict;
+extern const mp_obj_type_t mp_type_ordereddict;
+extern const mp_obj_type_t mp_type_range;
+extern const mp_obj_type_t mp_type_set;
+extern const mp_obj_type_t mp_type_frozenset;
+extern const mp_obj_type_t mp_type_slice;
+extern const mp_obj_type_t mp_type_zip;
+extern const mp_obj_type_t mp_type_array;
+extern const mp_obj_type_t mp_type_super;
+extern const mp_obj_type_t mp_type_gen_instance;
+extern const mp_obj_type_t mp_type_fun_builtin_0;
+extern const mp_obj_type_t mp_type_fun_builtin_1;
+extern const mp_obj_type_t mp_type_fun_builtin_2;
+extern const mp_obj_type_t mp_type_fun_builtin_3;
+extern const mp_obj_type_t mp_type_fun_builtin_var;
+extern const mp_obj_type_t mp_type_fun_bc;
+extern const mp_obj_type_t mp_type_module;
+extern const mp_obj_type_t mp_type_staticmethod;
+extern const mp_obj_type_t mp_type_classmethod;
+extern const mp_obj_type_t mp_type_property;
+extern const mp_obj_type_t mp_type_stringio;
+extern const mp_obj_type_t mp_type_bytesio;
+extern const mp_obj_type_t mp_type_reversed;
+extern const mp_obj_type_t mp_type_polymorph_iter;
+
+
+extern const mp_obj_type_t mp_type_BaseException;
+extern const mp_obj_type_t mp_type_ArithmeticError;
+extern const mp_obj_type_t mp_type_AssertionError;
+extern const mp_obj_type_t mp_type_AttributeError;
+extern const mp_obj_type_t mp_type_EOFError;
+extern const mp_obj_type_t mp_type_Exception;
+extern const mp_obj_type_t mp_type_GeneratorExit;
+extern const mp_obj_type_t mp_type_ImportError;
+extern const mp_obj_type_t mp_type_IndentationError;
+extern const mp_obj_type_t mp_type_IndexError;
+extern const mp_obj_type_t mp_type_KeyboardInterrupt;
+extern const mp_obj_type_t mp_type_KeyError;
+extern const mp_obj_type_t mp_type_LookupError;
+extern const mp_obj_type_t mp_type_MemoryError;
+extern const mp_obj_type_t mp_type_NameError;
+extern const mp_obj_type_t mp_type_NotImplementedError;
+extern const mp_obj_type_t mp_type_OSError;
+extern const mp_obj_type_t mp_type_TimeoutError;
+extern const mp_obj_type_t mp_type_OverflowError;
+extern const mp_obj_type_t mp_type_RuntimeError;
+extern const mp_obj_type_t mp_type_StopAsyncIteration;
+extern const mp_obj_type_t mp_type_StopIteration;
+extern const mp_obj_type_t mp_type_SyntaxError;
+extern const mp_obj_type_t mp_type_SystemExit;
+extern const mp_obj_type_t mp_type_TypeError;
+extern const mp_obj_type_t mp_type_UnicodeError;
+extern const mp_obj_type_t mp_type_ValueError;
+extern const mp_obj_type_t mp_type_ViperTypeError;
+extern const mp_obj_type_t mp_type_ZeroDivisionError;
+# 618 "../py/obj.h"
+extern const struct _mp_obj_none_t mp_const_none_obj;
+extern const struct _mp_obj_bool_t mp_const_false_obj;
+extern const struct _mp_obj_bool_t mp_const_true_obj;
+extern const struct _mp_obj_str_t mp_const_empty_bytes_obj;
+extern const struct _mp_obj_tuple_t mp_const_empty_tuple_obj;
+extern const struct _mp_obj_singleton_t mp_const_ellipsis_obj;
+extern const struct _mp_obj_singleton_t mp_const_notimplemented_obj;
+extern const struct _mp_obj_exception_t mp_const_MemoryError_obj;
+extern const struct _mp_obj_exception_t mp_const_GeneratorExit_obj;
+
+
+
+mp_obj_t mp_obj_new_type(qstr name, mp_obj_t bases_tuple, mp_obj_t locals_dict);
+mp_obj_t mp_obj_new_none(void);
+static inline mp_obj_t mp_obj_new_bool(mp_int_t x) { return x ? (((mp_obj_t)&mp_const_true_obj)) : (((mp_obj_t)&mp_const_false_obj)); }
+mp_obj_t mp_obj_new_cell(mp_obj_t obj);
+mp_obj_t mp_obj_new_int(mp_int_t value);
+mp_obj_t mp_obj_new_int_from_uint(mp_uint_t value);
+mp_obj_t mp_obj_new_int_from_str_len(const char **str, size_t len, 
+# 636 "../py/obj.h" 3 4
+                                                                  _Bool 
+# 636 "../py/obj.h"
+                                                                       neg, unsigned int base);
+mp_obj_t mp_obj_new_int_from_ll(long long val);
+mp_obj_t mp_obj_new_int_from_ull(unsigned long long val);
+mp_obj_t mp_obj_new_str(const char* data, size_t len, 
+# 639 "../py/obj.h" 3 4
+                                                     _Bool 
+# 639 "../py/obj.h"
+                                                          make_qstr_if_not_already);
+mp_obj_t mp_obj_new_str_from_vstr(const mp_obj_type_t *type, vstr_t *vstr);
+mp_obj_t mp_obj_new_bytes(const byte* data, size_t len);
+mp_obj_t mp_obj_new_bytearray(size_t n, void *items);
+mp_obj_t mp_obj_new_bytearray_by_ref(size_t n, void *items);
+
+mp_obj_t mp_obj_new_int_from_float(mp_float_t val);
+mp_obj_t mp_obj_new_complex(mp_float_t real, mp_float_t imag);
+
+mp_obj_t mp_obj_new_exception(const mp_obj_type_t *exc_type);
+mp_obj_t mp_obj_new_exception_arg1(const mp_obj_type_t *exc_type, mp_obj_t arg);
+mp_obj_t mp_obj_new_exception_args(const mp_obj_type_t *exc_type, size_t n_args, const mp_obj_t *args);
+mp_obj_t mp_obj_new_exception_msg(const mp_obj_type_t *exc_type, const char *msg);
+mp_obj_t mp_obj_new_exception_msg_varg(const mp_obj_type_t *exc_type, const char *fmt, ...);
+mp_obj_t mp_obj_new_fun_bc(mp_obj_t def_args, mp_obj_t def_kw_args, const byte *code, const mp_uint_t *const_table);
+mp_obj_t mp_obj_new_fun_native(mp_obj_t def_args_in, mp_obj_t def_kw_args, const void *fun_data, const mp_uint_t *const_table);
+mp_obj_t mp_obj_new_fun_viper(size_t n_args, void *fun_data, mp_uint_t type_sig);
+mp_obj_t mp_obj_new_fun_asm(size_t n_args, void *fun_data, mp_uint_t type_sig);
+mp_obj_t mp_obj_new_gen_wrap(mp_obj_t fun);
+mp_obj_t mp_obj_new_closure(mp_obj_t fun, size_t n_closed, const mp_obj_t *closed);
+mp_obj_t mp_obj_new_tuple(size_t n, const mp_obj_t *items);
+mp_obj_t mp_obj_new_list(size_t n, mp_obj_t *items);
+mp_obj_t mp_obj_new_dict(size_t n_args);
+mp_obj_t mp_obj_new_set(size_t n_args, mp_obj_t *items);
+mp_obj_t mp_obj_new_slice(mp_obj_t start, mp_obj_t stop, mp_obj_t step);
+mp_obj_t mp_obj_new_bound_meth(mp_obj_t meth, mp_obj_t self);
+mp_obj_t mp_obj_new_getitem_iter(mp_obj_t *args, mp_obj_iter_buf_t *iter_buf);
+mp_obj_t mp_obj_new_module(qstr module_name);
+mp_obj_t mp_obj_new_memoryview(byte typecode, size_t nitems, void *items);
+
+mp_obj_type_t *mp_obj_get_type(mp_const_obj_t o_in);
+const char *mp_obj_get_type_str(mp_const_obj_t o_in);
+
+# 671 "../py/obj.h" 3 4
+_Bool 
+# 671 "../py/obj.h"
+    mp_obj_is_subclass_fast(mp_const_obj_t object, mp_const_obj_t classinfo);
+mp_obj_t mp_instance_cast_to_native_base(mp_const_obj_t self_in, mp_const_obj_t native_type);
+
+void mp_obj_print_helper(const mp_print_t *print, mp_obj_t o_in, mp_print_kind_t kind);
+void mp_obj_print(mp_obj_t o, mp_print_kind_t kind);
+void mp_obj_print_exception(const mp_print_t *print, mp_obj_t exc);
+
+
+# 678 "../py/obj.h" 3 4
+_Bool 
+# 678 "../py/obj.h"
+    mp_obj_is_true(mp_obj_t arg);
+
+# 679 "../py/obj.h" 3 4
+_Bool 
+# 679 "../py/obj.h"
+    mp_obj_is_callable(mp_obj_t o_in);
+
+# 680 "../py/obj.h" 3 4
+_Bool 
+# 680 "../py/obj.h"
+    mp_obj_equal(mp_obj_t o1, mp_obj_t o2);
+
+mp_int_t mp_obj_get_int(mp_const_obj_t arg);
+mp_int_t mp_obj_get_int_truncated(mp_const_obj_t arg);
+
+# 684 "../py/obj.h" 3 4
+_Bool 
+# 684 "../py/obj.h"
+    mp_obj_get_int_maybe(mp_const_obj_t arg, mp_int_t *value);
+
+mp_float_t mp_obj_get_float(mp_obj_t self_in);
+void mp_obj_get_complex(mp_obj_t self_in, mp_float_t *real, mp_float_t *imag);
+
+
+void mp_obj_get_array(mp_obj_t o, size_t *len, mp_obj_t **items);
+void mp_obj_get_array_fixed_n(mp_obj_t o, size_t len, mp_obj_t **items);
+size_t mp_get_index(const mp_obj_type_t *type, size_t len, mp_obj_t index, 
+# 692 "../py/obj.h" 3 4
+                                                                          _Bool 
+# 692 "../py/obj.h"
+                                                                               is_slice);
+mp_obj_t mp_obj_id(mp_obj_t o_in);
+mp_obj_t mp_obj_len(mp_obj_t o_in);
+mp_obj_t mp_obj_len_maybe(mp_obj_t o_in);
+mp_obj_t mp_obj_subscr(mp_obj_t base, mp_obj_t index, mp_obj_t val);
+mp_obj_t mp_generic_unary_op(mp_uint_t op, mp_obj_t o_in);
+
+
+mp_obj_t mp_obj_cell_get(mp_obj_t self_in);
+void mp_obj_cell_set(mp_obj_t self_in, mp_obj_t obj);
+
+
+
+mp_int_t mp_obj_int_get_truncated(mp_const_obj_t self_in);
+
+mp_int_t mp_obj_int_get_checked(mp_const_obj_t self_in);
+
+
+
+
+# 711 "../py/obj.h" 3 4
+_Bool 
+# 711 "../py/obj.h"
+    mp_obj_is_exception_type(mp_obj_t self_in);
+
+# 712 "../py/obj.h" 3 4
+_Bool 
+# 712 "../py/obj.h"
+    mp_obj_is_exception_instance(mp_obj_t self_in);
+
+# 713 "../py/obj.h" 3 4
+_Bool 
+# 713 "../py/obj.h"
+    mp_obj_exception_match(mp_obj_t exc, mp_const_obj_t exc_type);
+void mp_obj_exception_clear_traceback(mp_obj_t self_in);
+void mp_obj_exception_add_traceback(mp_obj_t self_in, qstr file, size_t line, qstr block);
+void mp_obj_exception_get_traceback(mp_obj_t self_in, size_t *n, size_t **values);
+mp_obj_t mp_obj_exception_get_value(mp_obj_t self_in);
+mp_obj_t mp_obj_exception_make_new(const mp_obj_type_t *type_in, size_t n_args, size_t n_kw, const mp_obj_t *args);
+mp_obj_t mp_alloc_emergency_exception_buf(mp_obj_t size_in);
+void mp_init_emergency_exception_buf(void);
+
+
+
+# 723 "../py/obj.h" 3 4
+_Bool 
+# 723 "../py/obj.h"
+    mp_obj_str_equal(mp_obj_t s1, mp_obj_t s2);
+qstr mp_obj_str_get_qstr(mp_obj_t self_in);
+const char *mp_obj_str_get_str(mp_obj_t self_in);
+const char *mp_obj_str_get_data(mp_obj_t self_in, size_t *len);
+mp_obj_t mp_obj_str_intern(mp_obj_t str);
+void mp_str_print_quoted(const mp_print_t *print, const byte *str_data, size_t str_len, 
+# 728 "../py/obj.h" 3 4
+                                                                                       _Bool 
+# 728 "../py/obj.h"
+                                                                                            is_bytes);
+
+
+
+
+
+
+static inline mp_int_t mp_float_hash(mp_float_t val) { return (mp_int_t)val; }
+
+mp_obj_t mp_obj_float_binary_op(mp_uint_t op, mp_float_t lhs_val, mp_obj_t rhs);
+
+
+void mp_obj_complex_get(mp_obj_t self_in, mp_float_t *real, mp_float_t *imag);
+mp_obj_t mp_obj_complex_binary_op(mp_uint_t op, mp_float_t lhs_real, mp_float_t lhs_imag, mp_obj_t rhs_in);
+
+
+
+
+
+void mp_obj_tuple_get(mp_obj_t self_in, size_t *len, mp_obj_t **items);
+void mp_obj_tuple_del(mp_obj_t self_in);
+mp_int_t mp_obj_tuple_hash(mp_obj_t self_in);
+
+
+struct _mp_obj_list_t;
+void mp_obj_list_init(struct _mp_obj_list_t *o, size_t n);
+mp_obj_t mp_obj_list_append(mp_obj_t self_in, mp_obj_t arg);
+mp_obj_t mp_obj_list_remove(mp_obj_t self_in, mp_obj_t value);
+void mp_obj_list_get(mp_obj_t self_in, size_t *len, mp_obj_t **items);
+void mp_obj_list_set_len(mp_obj_t self_in, size_t len);
+void mp_obj_list_store(mp_obj_t self_in, mp_obj_t index, mp_obj_t value);
+mp_obj_t mp_obj_list_sort(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs);
+
+
+typedef struct _mp_obj_dict_t {
+    mp_obj_base_t base;
+    mp_map_t map;
+} mp_obj_dict_t;
+void mp_obj_dict_init(mp_obj_dict_t *dict, size_t n_args);
+size_t mp_obj_dict_len(mp_obj_t self_in);
+mp_obj_t mp_obj_dict_get(mp_obj_t self_in, mp_obj_t index);
+mp_obj_t mp_obj_dict_store(mp_obj_t self_in, mp_obj_t key, mp_obj_t value);
+mp_obj_t mp_obj_dict_delete(mp_obj_t self_in, mp_obj_t key);
+mp_map_t *mp_obj_dict_get_map(mp_obj_t self_in);
+
+
+void mp_obj_set_store(mp_obj_t self_in, mp_obj_t item);
+
+
+void mp_obj_slice_get(mp_obj_t self_in, mp_obj_t *start, mp_obj_t *stop, mp_obj_t *step);
+
+
+
+typedef struct _mp_obj_fun_builtin_fixed_t {
+    mp_obj_base_t base;
+    union {
+        mp_fun_0_t _0;
+        mp_fun_1_t _1;
+        mp_fun_2_t _2;
+        mp_fun_3_t _3;
+    } fun;
+} mp_obj_fun_builtin_fixed_t;
+
+
+typedef struct _mp_obj_fun_builtin_var_t {
+    mp_obj_base_t base;
+    
+# 794 "../py/obj.h" 3 4
+   _Bool 
+# 794 "../py/obj.h"
+        is_kw : 1;
+    mp_uint_t n_args_min : 15;
+    mp_uint_t n_args_max : 16;
+    union {
+        mp_fun_var_t var;
+        mp_fun_kw_t kw;
+    } fun;
+} mp_obj_fun_builtin_var_t;
+
+qstr mp_obj_fun_get_name(mp_const_obj_t fun);
+qstr mp_obj_code_get_name(const byte *code_info);
+
+mp_obj_t mp_identity(mp_obj_t self);
+extern const mp_obj_fun_builtin_fixed_t mp_identity_obj;
+mp_obj_t mp_identity_getiter(mp_obj_t self, mp_obj_iter_buf_t *iter_buf);
+
+
+typedef struct _mp_obj_module_t {
+    mp_obj_base_t base;
+    mp_obj_dict_t *globals;
+} mp_obj_module_t;
+mp_obj_dict_t *mp_obj_module_get_globals(mp_obj_t self_in);
+
+
+# 817 "../py/obj.h" 3 4
+_Bool 
+# 817 "../py/obj.h"
+    mp_obj_is_package(mp_obj_t module);
+
+
+
+typedef struct _mp_obj_static_class_method_t {
+    mp_obj_base_t base;
+    mp_obj_t fun;
+} mp_obj_static_class_method_t;
+typedef struct _mp_rom_obj_static_class_method_t {
+    mp_obj_base_t base;
+    mp_rom_obj_t fun;
+} mp_rom_obj_static_class_method_t;
+
+
+const mp_obj_t *mp_obj_property_get(mp_obj_t self_in);
+
+
+
+
+typedef struct {
+    mp_uint_t start;
+    mp_uint_t stop;
+    mp_int_t step;
+} mp_bound_slice_t;
+
+void mp_seq_multiply(const void *items, size_t item_sz, size_t len, size_t times, void *dest);
+
+
+# 844 "../py/obj.h" 3 4
+_Bool 
+# 844 "../py/obj.h"
+    mp_seq_get_fast_slice_indexes(mp_uint_t len, mp_obj_t slice, mp_bound_slice_t *indexes);
+
+
+
+
+# 848 "../py/obj.h" 3 4
+_Bool 
+# 848 "../py/obj.h"
+    mp_seq_cmp_bytes(mp_uint_t op, const byte *data1, size_t len1, const byte *data2, size_t len2);
+
+# 849 "../py/obj.h" 3 4
+_Bool 
+# 849 "../py/obj.h"
+    mp_seq_cmp_objs(mp_uint_t op, const mp_obj_t *items1, size_t len1, const mp_obj_t *items2, size_t len2);
+mp_obj_t mp_seq_index_obj(const mp_obj_t *items, size_t len, size_t n_args, const mp_obj_t *args);
+mp_obj_t mp_seq_count_obj(const mp_obj_t *items, size_t len, mp_obj_t value);
+mp_obj_t mp_seq_extract_slice(size_t len, const mp_obj_t *seq, mp_bound_slice_t *indexes);
+# 36 "../py/mpstate.h" 2
+# 1 "../py/objlist.h" 1
+# 31 "../py/objlist.h"
+typedef struct _mp_obj_list_t {
+    mp_obj_base_t base;
+    size_t alloc;
+    size_t len;
+    mp_obj_t *items;
+} mp_obj_list_t;
+# 37 "../py/mpstate.h" 2
+# 1 "../py/objexcept.h" 1
+# 30 "../py/objexcept.h"
+# 1 "../py/objtuple.h" 1
+# 31 "../py/objtuple.h"
+typedef struct _mp_obj_tuple_t {
+    mp_obj_base_t base;
+    size_t len;
+    mp_obj_t items[];
+} mp_obj_tuple_t;
+
+typedef struct _mp_rom_obj_tuple_t {
+    mp_obj_base_t base;
+    size_t len;
+    mp_rom_obj_t items[];
+} mp_rom_obj_tuple_t;
+
+void mp_obj_tuple_print(const mp_print_t *print, mp_obj_t o_in, mp_print_kind_t kind);
+mp_obj_t mp_obj_tuple_unary_op(mp_uint_t op, mp_obj_t self_in);
+mp_obj_t mp_obj_tuple_binary_op(mp_uint_t op, mp_obj_t lhs, mp_obj_t rhs);
+mp_obj_t mp_obj_tuple_subscr(mp_obj_t base, mp_obj_t index, mp_obj_t value);
+mp_obj_t mp_obj_tuple_getiter(mp_obj_t o_in, mp_obj_iter_buf_t *iter_buf);
+
+extern const mp_obj_type_t mp_type_attrtuple;
+# 62 "../py/objtuple.h"
+mp_obj_t mp_obj_new_attrtuple(const qstr *fields, size_t n, const mp_obj_t *items);
+# 31 "../py/objexcept.h" 2
+
+typedef struct _mp_obj_exception_t {
+    mp_obj_base_t base;
+    size_t traceback_alloc : (8 * sizeof(size_t) / 2);
+    size_t traceback_len : (8 * sizeof(size_t) / 2);
+    size_t *traceback_data;
+    mp_obj_tuple_t *args;
+} mp_obj_exception_t;
+# 38 "../py/mpstate.h" 2
+
+
+
+
+
+
+
+typedef struct mp_dynamic_compiler_t {
+    uint8_t small_int_bits;
+    
+# 47 "../py/mpstate.h" 3 4
+   _Bool 
+# 47 "../py/mpstate.h"
+        opt_cache_map_lookup_in_bytecode;
+    
+# 48 "../py/mpstate.h" 3 4
+   _Bool 
+# 48 "../py/mpstate.h"
+        py_builtins_str_unicode;
+} mp_dynamic_compiler_t;
+extern mp_dynamic_compiler_t mp_dynamic_compiler;
+
+
+
+
+
+
+
+typedef struct _mp_sched_item_t {
+    mp_obj_t func;
+    mp_obj_t arg;
+} mp_sched_item_t;
+
+
+typedef struct _mp_state_mem_t {
+
+
+
+
+
+
+    byte *gc_alloc_table_start;
+    size_t gc_alloc_table_byte_len;
+
+
+
+    byte *gc_pool_start;
+    byte *gc_pool_end;
+
+    int gc_stack_overflow;
+    size_t gc_stack[(64)];
+    size_t *gc_sp;
+    uint16_t gc_lock_depth;
+
+
+
+
+    uint16_t gc_auto_collect_enabled;
+
+
+    size_t gc_alloc_amount;
+    size_t gc_alloc_threshold;
+
+
+    size_t gc_last_free_atb_index;
+# 104 "../py/mpstate.h"
+} mp_state_mem_t;
+
+
+
+typedef struct _mp_state_vm_t {
+
+
+
+
+
+
+    qstr_pool_t *last_pool;
+
+
+    mp_obj_exception_t mp_emergency_exception_obj;
+# 137 "../py/mpstate.h"
+    mp_obj_dict_t mp_loaded_modules_dict;
+
+
+    volatile mp_obj_t mp_pending_exception;
+# 154 "../py/mpstate.h"
+    mp_obj_dict_t dict_main;
+
+
+    mp_obj_list_t mp_sys_path_obj;
+    mp_obj_list_t mp_sys_argv_obj;
+
+
+
+
+
+
+
+   
+# 190 "../py/mpstate.h"
+    byte *qstr_last_chunk;
+    size_t qstr_last_alloc;
+    size_t qstr_last_used;
+
+
+
+
+
+
+    mp_uint_t mp_optimise_value;
+# 210 "../py/mpstate.h"
+} mp_state_vm_t;
+
+
+
+typedef struct _mp_state_thread_t {
+    mp_obj_dict_t *dict_locals;
+    mp_obj_dict_t *dict_globals;
+
+
+    nlr_buf_t *nlr_top;
+
+
+    char *stack_top;
+
+
+    size_t stack_limit;
+
+} mp_state_thread_t;
+
+
+
+
+
+typedef struct _mp_state_ctx_t {
+    mp_state_thread_t thread;
+    mp_state_vm_t vm;
+    mp_state_mem_t mem;
+} mp_state_ctx_t;
+
+extern mp_state_ctx_t mp_state_ctx;
+# 30 "../py/runtime.h" 2
+
+
+typedef enum {
+    MP_VM_RETURN_NORMAL,
+    MP_VM_RETURN_YIELD,
+    MP_VM_RETURN_EXCEPTION,
+} mp_vm_return_kind_t;
+
+typedef enum {
+    MP_ARG_BOOL = 0x001,
+    MP_ARG_INT = 0x002,
+    MP_ARG_OBJ = 0x003,
+    MP_ARG_KIND_MASK = 0x0ff,
+    MP_ARG_REQUIRED = 0x100,
+    MP_ARG_KW_ONLY = 0x200,
+} mp_arg_flag_t;
+
+typedef union _mp_arg_val_t {
+    
+# 48 "../py/runtime.h" 3 4
+   _Bool 
+# 48 "../py/runtime.h"
+        u_bool;
+    mp_int_t u_int;
+    mp_obj_t u_obj;
+    mp_rom_obj_t u_rom_obj;
+} mp_arg_val_t;
+
+typedef struct _mp_arg_t {
+    uint16_t qst;
+    uint16_t flags;
+    mp_arg_val_t defval;
+} mp_arg_t;
+
+
+extern const qstr mp_unary_op_method_name[];
+extern const qstr mp_binary_op_method_name[];
+
+void mp_init(void);
+void mp_deinit(void);
+
+void mp_handle_pending(void);
+void mp_handle_pending_tail(mp_uint_t atomic_state);
+# 78 "../py/runtime.h"
+int mp_print_mp_int(const mp_print_t *print, mp_obj_t x, int base, int base_char, int flags, char fill, int width, int prec);
+
+void mp_arg_check_num(size_t n_args, size_t n_kw, size_t n_args_min, size_t n_args_max, 
+# 80 "../py/runtime.h" 3 4
+                                                                                       _Bool 
+# 80 "../py/runtime.h"
+                                                                                            takes_kw);
+void mp_arg_parse_all(size_t n_pos, const mp_obj_t *pos, mp_map_t *kws, size_t n_allowed, const mp_arg_t *allowed, mp_arg_val_t *out_vals);
+void mp_arg_parse_all_kw_array(size_t n_pos, size_t n_kw, const mp_obj_t *args, size_t n_allowed, const mp_arg_t *allowed, mp_arg_val_t *out_vals);
+__attribute__((noreturn)) void mp_arg_error_terse_mismatch(void);
+__attribute__((noreturn)) void mp_arg_error_unimpl_kw(void);
+
+static inline mp_obj_dict_t *mp_locals_get(void) { return (mp_state_ctx.thread.dict_locals); }
+static inline void mp_locals_set(mp_obj_dict_t *d) { (mp_state_ctx.thread.dict_locals) = d; }
+static inline mp_obj_dict_t *mp_globals_get(void) { return (mp_state_ctx.thread.dict_globals); }
+static inline void mp_globals_set(mp_obj_dict_t *d) { (mp_state_ctx.thread.dict_globals) = d; }
+
+mp_obj_t mp_load_name(qstr qst);
+mp_obj_t mp_load_global(qstr qst);
+mp_obj_t mp_load_build_class(void);
+void mp_store_name(qstr qst, mp_obj_t obj);
+void mp_store_global(qstr qst, mp_obj_t obj);
+void mp_delete_name(qstr qst);
+void mp_delete_global(qstr qst);
+
+mp_obj_t mp_unary_op(mp_uint_t op, mp_obj_t arg);
+mp_obj_t mp_binary_op(mp_uint_t op, mp_obj_t lhs, mp_obj_t rhs);
+
+mp_obj_t mp_call_function_0(mp_obj_t fun);
+mp_obj_t mp_call_function_1(mp_obj_t fun, mp_obj_t arg);
+mp_obj_t mp_call_function_2(mp_obj_t fun, mp_obj_t arg1, mp_obj_t arg2);
+mp_obj_t mp_call_function_n_kw(mp_obj_t fun, size_t n_args, size_t n_kw, const mp_obj_t *args);
+mp_obj_t mp_call_method_n_kw(size_t n_args, size_t n_kw, const mp_obj_t *args);
+mp_obj_t mp_call_method_n_kw_var(
+# 107 "../py/runtime.h" 3 4
+                                _Bool 
+# 107 "../py/runtime.h"
+                                     have_self, size_t n_args_n_kw, const mp_obj_t *args);
+mp_obj_t mp_call_method_self_n_kw(mp_obj_t meth, mp_obj_t self, size_t n_args, size_t n_kw, const mp_obj_t *args);
+
+void mp_call_function_1_protected(mp_obj_t fun, mp_obj_t arg);
+void mp_call_function_2_protected(mp_obj_t fun, mp_obj_t arg1, mp_obj_t arg2);
+
+typedef struct _mp_call_args_t {
+    mp_obj_t fun;
+    size_t n_args, n_kw, n_alloc;
+    mp_obj_t *args;
+} mp_call_args_t;
+# 127 "../py/runtime.h"
+void mp_unpack_sequence(mp_obj_t seq, size_t num, mp_obj_t *items);
+void mp_unpack_ex(mp_obj_t seq, size_t num, mp_obj_t *items);
+mp_obj_t mp_store_map(mp_obj_t map, mp_obj_t key, mp_obj_t value);
+mp_obj_t mp_load_attr(mp_obj_t base, qstr attr);
+void mp_convert_member_lookup(mp_obj_t obj, const mp_obj_type_t *type, mp_obj_t member, mp_obj_t *dest);
+void mp_load_method(mp_obj_t base, qstr attr, mp_obj_t *dest);
+void mp_load_method_maybe(mp_obj_t base, qstr attr, mp_obj_t *dest);
+void mp_load_super_method(qstr attr, mp_obj_t *dest);
+void mp_store_attr(mp_obj_t base, qstr attr, mp_obj_t val);
+
+mp_obj_t mp_getiter(mp_obj_t o, mp_obj_iter_buf_t *iter_buf);
+mp_obj_t mp_iternext_allow_raise(mp_obj_t o);
+mp_obj_t mp_iternext(mp_obj_t o);
+mp_vm_return_kind_t mp_resume(mp_obj_t self_in, mp_obj_t send_value, mp_obj_t throw_value, mp_obj_t *ret_val);
+
+mp_obj_t mp_make_raise_obj(mp_obj_t o);
+
+mp_obj_t mp_import_name(qstr name, mp_obj_t fromlist, mp_obj_t level);
+mp_obj_t mp_import_from(mp_obj_t module, qstr name);
+void mp_import_all(mp_obj_t module);
+
+__attribute__((noreturn)) void mp_raise_msg(const mp_obj_type_t *exc_type, const char *msg);
+
+__attribute__((noreturn)) void mp_raise_ValueError(const char *msg);
+__attribute__((noreturn)) void mp_raise_TypeError(const char *msg);
+__attribute__((noreturn)) void mp_raise_OSError(int errno_);
+__attribute__((noreturn)) void mp_not_implemented(const char *msg);
+__attribute__((noreturn)) void mp_exc_recursion_depth(void);
+# 167 "../py/runtime.h"
+mp_uint_t mp_convert_obj_to_native(mp_obj_t obj, mp_uint_t type);
+mp_obj_t mp_convert_native_to_obj(mp_uint_t val, mp_uint_t type);
+mp_obj_t mp_native_call_function_n_kw(mp_obj_t fun_in, size_t n_args_kw, const mp_obj_t *args);
+void mp_native_raise(mp_obj_t o);
+
+
+
+
+
+void mp_warning(const char *msg, ...);
+# 32 "../py/argcheck.c" 2
+
+void mp_arg_check_num(size_t n_args, size_t n_kw, size_t n_args_min, size_t n_args_max, 
+# 33 "../py/argcheck.c" 3 4
+                                                                                       _Bool 
+# 33 "../py/argcheck.c"
+                                                                                            takes_kw) {
+
+
+    if (n_kw && !takes_kw) {
+        if (((3)) == (1)) {
+            mp_arg_error_terse_mismatch();
+        } else {
+            mp_raise_TypeError("function does not take keyword arguments");
+        }
+    }
+
+    if (n_args_min == n_args_max) {
+        if (n_args != n_args_min) {
+            if (((3)) == (1)) {
+                mp_arg_error_terse_mismatch();
+            } else {
+                nlr_jump(((void*)mp_obj_new_exception_msg_varg(&mp_type_TypeError, "function takes %d positional arguments but %d were given", n_args_min, n_args)))
+
+                                        ;
+            }
+        }
+    } else {
+        if (n_args < n_args_min) {
+            if (((3)) == (1)) {
+                mp_arg_error_terse_mismatch();
+            } else {
+                nlr_jump(((void*)mp_obj_new_exception_msg_varg(&mp_type_TypeError, "function missing %d required positional arguments", n_args_min - n_args)))
+
+                                         ;
+            }
+        } else if (n_args > n_args_max) {
+            if (((3)) == (1)) {
+                mp_arg_error_terse_mismatch();
+            } else {
+                nlr_jump(((void*)mp_obj_new_exception_msg_varg(&mp_type_TypeError, "function expected at most %d arguments, got %d", n_args_max, n_args)))
+
+                                        ;
+            }
+        }
+    }
+}
+
+void mp_arg_parse_all(size_t n_pos, const mp_obj_t *pos, mp_map_t *kws, size_t n_allowed, const mp_arg_t *allowed, mp_arg_val_t *out_vals) {
+    size_t pos_found = 0, kws_found = 0;
+    for (size_t i = 0; i < n_allowed; i++) {
+        mp_obj_t given_arg;
+        if (i < n_pos) {
+            if (allowed[i].flags & MP_ARG_KW_ONLY) {
+                goto extra_positional;
+            }
+            pos_found++;
+            given_arg = pos[i];
+        } else {
+            mp_map_elem_t *kw = mp_map_lookup(kws, ((mp_obj_t)((((mp_uint_t)(allowed[i].qst)) << 2) | 2)), MP_MAP_LOOKUP);
+            if (kw == 
+# 87 "../py/argcheck.c" 3 4
+                     ((void *)0)
+# 87 "../py/argcheck.c"
+                         ) {
+                if (allowed[i].flags & MP_ARG_REQUIRED) {
+                    if (((3)) == (1)) {
+                        mp_arg_error_terse_mismatch();
+                    } else {
+                        nlr_jump(((void*)mp_obj_new_exception_msg_varg(&mp_type_TypeError, "'%q' argument required", allowed[i].qst)))
+                                                                      ;
+                    }
+                }
+                out_vals[i] = allowed[i].defval;
+                continue;
+            } else {
+                kws_found++;
+                given_arg = kw->value;
+            }
+        }
+        if ((allowed[i].flags & MP_ARG_KIND_MASK) == MP_ARG_BOOL) {
+            out_vals[i].u_bool = mp_obj_is_true(given_arg);
+        } else if ((allowed[i].flags & MP_ARG_KIND_MASK) == MP_ARG_INT) {
+            out_vals[i].u_int = mp_obj_get_int(given_arg);
+        } else {
+            
+# 108 "../py/argcheck.c" 3 4
+           ((
+# 108 "../py/argcheck.c"
+           (allowed[i].flags & MP_ARG_KIND_MASK) == MP_ARG_OBJ
+# 108 "../py/argcheck.c" 3 4
+           ) ? (void) (0) : __assert_fail (
+# 108 "../py/argcheck.c"
+           "(allowed[i].flags & MP_ARG_KIND_MASK) == MP_ARG_OBJ"
+# 108 "../py/argcheck.c" 3 4
+           , "../py/argcheck.c", 108, __PRETTY_FUNCTION__))
+# 108 "../py/argcheck.c"
+                                                                      ;
+            out_vals[i].u_obj = given_arg;
+        }
+    }
+    if (pos_found < n_pos) {
+        extra_positional:
+        if (((3)) == (1)) {
+            mp_arg_error_terse_mismatch();
+        } else {
+
+            mp_raise_TypeError("extra positional arguments given");
+        }
+    }
+    if (kws_found < kws->used) {
+        if (((3)) == (1)) {
+            mp_arg_error_terse_mismatch();
+        } else {
+
+            mp_raise_TypeError("extra keyword arguments given");
+        }
+    }
+}
+
+void mp_arg_parse_all_kw_array(size_t n_pos, size_t n_kw, const mp_obj_t *args, size_t n_allowed, const mp_arg_t *allowed, mp_arg_val_t *out_vals) {
+    mp_map_t kw_args;
+    mp_map_init_fixed_table(&kw_args, n_kw, args + n_pos);
+    mp_arg_parse_all(n_pos, args, &kw_args, n_allowed, allowed, out_vals);
+}
+# 144 "../py/argcheck.c"
+__attribute__((noreturn)) void mp_arg_error_unimpl_kw(void) {
+    mp_not_implemented("keyword argument(s) not yet implemented - use normal args instead");
+}
