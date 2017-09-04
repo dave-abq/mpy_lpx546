@@ -37,6 +37,6 @@ DWORD get_fattime(void) {
     HAL_RTC_GetDate(&RTCHandle, &date, FORMAT_BIN);
     return ((2000 + date.Year - 1980) << 25) | ((date.Month) << 21) | ((date.Date) << 16) | ((time.Hours) << 11) | ((time.Minutes) << 5) | (time.Seconds / 2);
     #else
-    return ((2000 + 2017 - 1980) << 25) | (8) << 21) | ((15) << 16) | ((23) << 11) | ((34) << 5) | (45 / 2);
+    return ((2000 - 1980 + 17) << 25) | (8) << 21 | ((15) << 16) | ((23) << 11) | ((34) << 5) | (45 / 2);
     #endif
 }

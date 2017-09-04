@@ -71,29 +71,8 @@
 STATIC uint32_t reset_cause;
 
 void machine_init(void) {
-    #if defined(MCU_SERIES_F4)
-    if (PWR->CSR & PWR_CSR_SBF) {
-        // came out of standby
-        reset_cause = PYB_RESET_DEEPSLEEP;
-        PWR->CR |= PWR_CR_CSBF;
-    } else
-    #endif
-    {
-        // get reset cause from RCC flags
-        uint32_t state = RCC->CSR;
-        if (state & RCC_CSR_IWDGRSTF || state & RCC_CSR_WWDGRSTF) {
-            reset_cause = PYB_RESET_WDT;
-        } else if (state & RCC_CSR_PORRSTF || state & RCC_CSR_BORRSTF) {
-            reset_cause = PYB_RESET_POWER_ON;
-        } else if (state & RCC_CSR_PINRSTF) {
-            reset_cause = PYB_RESET_HARD;
-        } else {
-            // default is soft reset
-            reset_cause = PYB_RESET_SOFT;
-        }
-    }
+   // get reset cause from RCC flags
     // clear RCC reset flags
-    RCC->CSR |= RCC_CSR_RMVF;
 }
 
 // machine.info([dump_alloc_table])
@@ -101,7 +80,7 @@ void machine_init(void) {
 STATIC mp_obj_t machine_info(mp_uint_t n_args, const mp_obj_t *args) {
     // get and print unique id; 96 bits
     {
-        byte *id = (byte*)MP_HAL_UNIQUE_ID_ADDRESS;
+        byte *id = (byte*)0x1234;;
         printf("ID=%02x%02x%02x%02x:%02x%02x%02x%02x:%02x%02x%02x%02x\n", id[0], id[1], id[2], id[3], id[4], id[5], id[6], id[7], id[8], id[9], id[10], id[11]);
     }
 
@@ -109,10 +88,11 @@ STATIC mp_obj_t machine_info(mp_uint_t n_args, const mp_obj_t *args) {
     // SYSCLK=168MHz, HCLK=168MHz, PCLK1=42MHz, PCLK2=84MHz
     {
         printf("S=%lu\nH=%lu\nP1=%lu\nP2=%lu\n",
-               HAL_RCC_GetSysClockFreq(),
-               HAL_RCC_GetHCLKFreq(),
-               HAL_RCC_GetPCLK1Freq(),
-               HAL_RCC_GetPCLK2Freq());
+               1lu, //HAL_RCC_GetSysClockFreq(),
+               2lu, //HAL_RCC_GetHCLKFreq(),
+               3lu, //HAL_RCC_GetPCLK1Freq(),
+               4lu //HAL_RCC_GetPCLK2Freq()
+               );
     }
 
     // to print info about memory
@@ -179,7 +159,7 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(machine_info_obj, 0, 1, machine_info);
 
 // Returns a string of 12 bytes (96 bits), which is the unique ID for the MCU.
 STATIC mp_obj_t machine_unique_id(void) {
-    byte *id = (byte*)MP_HAL_UNIQUE_ID_ADDRESS;
+    byte *id = (byte*)0x1234; //MP_HAL_UNIQUE_ID_ADDRESS;
     return mp_obj_new_bytes(id, 12);
 }
 MP_DEFINE_CONST_FUN_OBJ_0(machine_unique_id_obj, machine_unique_id);
@@ -199,11 +179,11 @@ MP_DEFINE_CONST_FUN_OBJ_0(machine_soft_reset_obj, machine_soft_reset);
 
 // Activate the bootloader without BOOT* pins.
 STATIC NORETURN mp_obj_t machine_bootloader(void) {
-    pyb_usb_dev_deinit();
+    // rocky ignore: pyb_usb_dev_deinit();
     storage_flush();
 
-    HAL_RCC_DeInit();
-    HAL_DeInit();
+    // rocky ignore: HAL_RCC_DeInit();
+    // rocky ignore: HAL_DeInit();
 
 #if defined(MCU_SERIES_F7)
     // arm-none-eabi-gcc 4.9.0 does not correctly inline this
@@ -213,7 +193,7 @@ STATIC NORETURN mp_obj_t machine_bootloader(void) {
 
     ((void (*)(void)) *((uint32_t*) 0x1FF00004))();
 #else
-    __HAL_REMAPMEMORY_SYSTEMFLASH();
+    // __HAL_REMAPMEMORY_SYSTEMFLASH();
 
     // arm-none-eabi-gcc 4.9.0 does not correctly inline this
     // MSP function, so we write it out explicitly here.
@@ -227,196 +207,44 @@ STATIC NORETURN mp_obj_t machine_bootloader(void) {
 }
 MP_DEFINE_CONST_FUN_OBJ_0(machine_bootloader_obj, machine_bootloader);
 
-// get or set the MCU frequencies
-STATIC mp_uint_t machine_freq_calc_ahb_div(mp_uint_t wanted_div) {
-    if (wanted_div <= 1) { return RCC_SYSCLK_DIV1; }
-    else if (wanted_div <= 2) { return RCC_SYSCLK_DIV2; }
-    else if (wanted_div <= 4) { return RCC_SYSCLK_DIV4; }
-    else if (wanted_div <= 8) { return RCC_SYSCLK_DIV8; }
-    else if (wanted_div <= 16) { return RCC_SYSCLK_DIV16; }
-    else if (wanted_div <= 64) { return RCC_SYSCLK_DIV64; }
-    else if (wanted_div <= 128) { return RCC_SYSCLK_DIV128; }
-    else if (wanted_div <= 256) { return RCC_SYSCLK_DIV256; }
-    else { return RCC_SYSCLK_DIV512; }
-}
-STATIC mp_uint_t machine_freq_calc_apb_div(mp_uint_t wanted_div) {
-    if (wanted_div <= 1) { return RCC_HCLK_DIV1; }
-    else if (wanted_div <= 2) { return RCC_HCLK_DIV2; }
-    else if (wanted_div <= 4) { return RCC_HCLK_DIV4; }
-    else if (wanted_div <= 8) { return RCC_HCLK_DIV8; }
-    else { return RCC_SYSCLK_DIV16; }
-}
 STATIC mp_obj_t machine_freq(mp_uint_t n_args, const mp_obj_t *args) {
     if (n_args == 0) {
         // get
         mp_obj_t tuple[4] = {
-           mp_obj_new_int(HAL_RCC_GetSysClockFreq()),
-           mp_obj_new_int(HAL_RCC_GetHCLKFreq()),
-           mp_obj_new_int(HAL_RCC_GetPCLK1Freq()),
-           mp_obj_new_int(HAL_RCC_GetPCLK2Freq()),
+           mp_obj_new_int(1), // (HAL_RCC_GetSysClockFreq()),
+           mp_obj_new_int(2), // (HAL_RCC_GetHCLKFreq()),
+           mp_obj_new_int(3), // (HAL_RCC_GetPCLK1Freq()),
+           mp_obj_new_int(4), // (HAL_RCC_GetPCLK2Freq()),
         };
         return mp_obj_new_tuple(4, tuple);
     } else {
         // set
         mp_int_t wanted_sysclk = mp_obj_get_int(args[0]) / 1000000;
+		wanted_sysclk = wanted_sysclk;
+    }
 
-        #if defined(MCU_SERIES_L4)
-        nlr_raise(mp_obj_new_exception_msg(&mp_type_NotImplementedError, "machine.freq set not supported yet"));
-        #endif
-
-        // default PLL parameters that give 48MHz on PLL48CK
-        uint32_t m = HSE_VALUE / 1000000, n = 336, p = 2, q = 7;
-        uint32_t sysclk_source;
-
-        // the following logic assumes HSE < HSI
-        if (HSE_VALUE / 1000000 <= wanted_sysclk && wanted_sysclk < HSI_VALUE / 1000000) {
-            // use HSE as SYSCLK
-            sysclk_source = RCC_SYSCLKSOURCE_HSE;
-        } else if (HSI_VALUE / 1000000 <= wanted_sysclk && wanted_sysclk < 24) {
-            // use HSI as SYSCLK
-            sysclk_source = RCC_SYSCLKSOURCE_HSI;
-        } else {
-            // search for a valid PLL configuration that keeps USB at 48MHz
-            for (; wanted_sysclk > 0; wanted_sysclk--) {
-                for (p = 2; p <= 8; p += 2) {
-                    // compute VCO_OUT
-                    mp_uint_t vco_out = wanted_sysclk * p;
-                    // make sure VCO_OUT is between 192MHz and 432MHz
-                    if (vco_out < 192 || vco_out > 432) {
-                        continue;
-                    }
-                    // make sure Q is an integer
-                    if (vco_out % 48 != 0) {
-                        continue;
-                    }
-                    // solve for Q to get PLL48CK at 48MHz
-                    q = vco_out / 48;
-                    // make sure Q is in range
-                    if (q < 2 || q > 15) {
-                        continue;
-                    }
-                    // make sure N/M is an integer
-                    if (vco_out % (HSE_VALUE / 1000000) != 0) {
-                        continue;
-                    }
-                    // solve for N/M
-                    mp_uint_t n_by_m = vco_out / (HSE_VALUE / 1000000);
-                    // solve for M, making sure VCO_IN (=HSE/M) is between 1MHz and 2MHz
-                    m = 192 / n_by_m;
-                    while (m < (HSE_VALUE / 2000000) || n_by_m * m < 192) {
-                        m += 1;
-                    }
-                    if (m > (HSE_VALUE / 1000000)) {
-                        continue;
-                    }
-                    // solve for N
-                    n = n_by_m * m;
-                    // make sure N is in range
-                    if (n < 192 || n > 432) {
-                        continue;
-                    }
-
-                    // found values!
-                    sysclk_source = RCC_SYSCLKSOURCE_PLLCLK;
-                    goto set_clk;
-                }
-            }
-            nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "can't make valid freq"));
-        }
-
-    set_clk:
         //printf("%lu %lu %lu %lu %lu\n", sysclk_source, m, n, p, q);
 
         // let the USB CDC have a chance to process before we change the clock
         mp_hal_delay_ms(5);
 
-        // desired system clock source is in sysclk_source
-        RCC_ClkInitTypeDef RCC_ClkInitStruct;
-        RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-        if (sysclk_source == RCC_SYSCLKSOURCE_PLLCLK) {
-            // set HSE as system clock source to allow modification of the PLL configuration
-            // we then change to PLL after re-configuring PLL
-            RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSE;
-        } else {
-            // directly set the system clock source as desired
-            RCC_ClkInitStruct.SYSCLKSource = sysclk_source;
-        }
-        wanted_sysclk *= 1000000;
-        if (n_args >= 2) {
-            // note: AHB freq required to be >= 14.2MHz for USB operation
-            RCC_ClkInitStruct.AHBCLKDivider = machine_freq_calc_ahb_div(wanted_sysclk / mp_obj_get_int(args[1]));
-        } else {
-            RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-        }
-        if (n_args >= 3) {
-            RCC_ClkInitStruct.APB1CLKDivider = machine_freq_calc_apb_div(wanted_sysclk / mp_obj_get_int(args[2]));
-        } else {
-            RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-        }
-        if (n_args >= 4) {
-            RCC_ClkInitStruct.APB2CLKDivider = machine_freq_calc_apb_div(wanted_sysclk / mp_obj_get_int(args[3]));
-        } else {
-            RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-        }
         #if defined(MICROPY_HW_CLK_LAST_FREQ) && MICROPY_HW_CLK_LAST_FREQ
-        uint32_t h = RCC_ClkInitStruct.AHBCLKDivider >> 4;
-        uint32_t b1 = RCC_ClkInitStruct.APB1CLKDivider >> 10;
-        uint32_t b2 = RCC_ClkInitStruct.APB2CLKDivider >> 10;
+
         #endif
-        if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
-            goto fail;
-        }
 
         // re-configure PLL
         // even if we don't use the PLL for the system clock, we still need it for USB, RNG and SDIO
-        RCC_OscInitTypeDef RCC_OscInitStruct;
-        RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-        RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-        RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-        RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-        RCC_OscInitStruct.PLL.PLLM = m;
-        RCC_OscInitStruct.PLL.PLLN = n;
-        RCC_OscInitStruct.PLL.PLLP = p;
-        RCC_OscInitStruct.PLL.PLLQ = q;
-        if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-            goto fail;
-        }
 
         // set PLL as system clock source if wanted
-        if (sysclk_source == RCC_SYSCLKSOURCE_PLLCLK) {
-            #if !defined(MICROPY_HW_FLASH_LATENCY)
-            #define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_5
-            #endif
-            RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK;
-            RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-            if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, MICROPY_HW_FLASH_LATENCY) != HAL_OK) {
-                goto fail;
-            }
-        }
 
         #if defined(MICROPY_HW_CLK_LAST_FREQ) && MICROPY_HW_CLK_LAST_FREQ
-        #if defined(MCU_SERIES_F7)
-        #define FREQ_BKP BKP31R
-        #else
-        #define FREQ_BKP BKP19R
-        #endif
-        // qqqqqqqq pppppppp nnnnnnnn nnmmmmmm
-        // qqqqQQQQ ppppppPP nNNNNNNN NNMMMMMM
-        // 222111HH HHQQQQPP nNNNNNNN NNMMMMMM
-        p = (p / 2) - 1;
-        RTC->FREQ_BKP = m
-            | (n << 6) | (p << 16) | (q << 18)
-            | (h << 22)
-            | (b1 << 26)
-            | (b2 << 29);
         #endif
 
         return mp_const_none;
 
-    fail:;
-        void NORETURN __fatal_error(const char *msg);
-        __fatal_error("can't change freq");
-    }
+    //fail:
+    //    void NORETURN __fatal_error(const char *msg);
+    //    __fatal_error("can't change freq");
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(machine_freq_obj, 0, 4, machine_freq);
 
@@ -424,54 +252,32 @@ STATIC mp_obj_t machine_sleep(void) {
     #if defined(MCU_SERIES_L4)
 
     // Enter Stop 1 mode
-    __HAL_RCC_WAKEUPSTOP_CLK_CONFIG(RCC_STOP_WAKEUPCLOCK_MSI);
-    HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+
 
     // reconfigure system clock after wakeup
     // Enable Power Control clock
-    __HAL_RCC_PWR_CLK_ENABLE();
+
 
     // Get the Oscillators configuration according to the internal RCC registers
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    HAL_RCC_GetOscConfig(&RCC_OscInitStruct);
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    HAL_RCC_OscConfig(&RCC_OscInitStruct);
+
 
     // Get the Clocks configuration according to the internal RCC registers
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-    uint32_t pFLatency = 0;
-    HAL_RCC_GetClockConfig(&RCC_ClkInitStruct, &pFLatency);
+
 
     // Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 clock dividers
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK;
-    RCC_ClkInitStruct.SYSCLKSource  = RCC_SYSCLKSOURCE_PLLCLK;
-    HAL_RCC_ClockConfig(&RCC_ClkInitStruct, pFLatency);
+
 
     #else
 
     // takes longer to wake but reduces stop current
-    HAL_PWREx_EnableFlashPowerDown();
-
-    HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
 
     // reconfigure the system clock after waking up
 
     // enable HSE
-    __HAL_RCC_HSE_CONFIG(RCC_HSE_ON);
-    while (!__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY)) {
-    }
 
     // enable PLL
-    __HAL_RCC_PLL_ENABLE();
-    while (!__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY)) {
-    }
 
     // select PLL as system clock source
-    MODIFY_REG(RCC->CFGR, RCC_CFGR_SW, RCC_SYSCLKSOURCE_PLLCLK);
-    while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL) {
-    }
-
     #endif
 
     return mp_const_none;
@@ -479,7 +285,7 @@ STATIC mp_obj_t machine_sleep(void) {
 MP_DEFINE_CONST_FUN_OBJ_0(machine_sleep_obj, machine_sleep);
 
 STATIC mp_obj_t machine_deepsleep(void) {
-    rtc_init_finalise();
+    // rtc_init_finalise();
 
 #if defined(MCU_SERIES_F7) || defined(MCU_SERIES_L4)
     printf("machine.deepsleep not supported yet\n");
@@ -492,25 +298,18 @@ STATIC mp_obj_t machine_deepsleep(void) {
 
     // Note: we only support RTC ALRA, ALRB, WUT and TS.
     // TODO support TAMP and WKUP (PA0 external pin).
-    uint32_t irq_bits = RTC_CR_ALRAIE | RTC_CR_ALRBIE | RTC_CR_WUTIE | RTC_CR_TSIE;
 
     // save RTC interrupts
-    uint32_t save_irq_bits = RTC->CR & irq_bits;
 
     // disable RTC interrupts
-    RTC->CR &= ~irq_bits;
 
     // clear RTC wake-up flags
-    RTC->ISR &= ~(RTC_ISR_ALRAF | RTC_ISR_ALRBF | RTC_ISR_WUTF | RTC_ISR_TSF);
 
     // clear global wake-up flag
-    PWR->CR |= PWR_CR_CWUF;
 
     // enable previously-enabled RTC interrupts
-    RTC->CR |= save_irq_bits;
 
     // enter standby mode
-    HAL_PWR_EnterSTANDBYMode();
     // we never return; MCU is reset on exit from standby
 #endif
     return mp_const_none;
@@ -544,7 +343,7 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_disable_irq),         MP_ROM_PTR(&pyb_disable_irq_obj) },
     { MP_ROM_QSTR(MP_QSTR_enable_irq),          MP_ROM_PTR(&pyb_enable_irq_obj) },
 
-    { MP_ROM_QSTR(MP_QSTR_time_pulse_us),       MP_ROM_PTR(&machine_time_pulse_us_obj) },
+    // rocky ignore { MP_ROM_QSTR(MP_QSTR_time_pulse_us),       MP_ROM_PTR(&machine_time_pulse_us_obj) },
 
     { MP_ROM_QSTR(MP_QSTR_mem8),                MP_ROM_PTR(&machine_mem8_obj) },
     { MP_ROM_QSTR(MP_QSTR_mem16),               MP_ROM_PTR(&machine_mem16_obj) },
@@ -553,14 +352,14 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_Pin),                 MP_ROM_PTR(&pin_type) },
     { MP_ROM_QSTR(MP_QSTR_Signal),              MP_ROM_PTR(&machine_signal_type) },
 
-#if 0
+#if 0 
     { MP_ROM_QSTR(MP_QSTR_RTC),                 MP_ROM_PTR(&pyb_rtc_type) },
     { MP_ROM_QSTR(MP_QSTR_ADC),                 MP_ROM_PTR(&pyb_adc_type) },
 #endif
-    { MP_ROM_QSTR(MP_QSTR_I2C),                 MP_ROM_PTR(&machine_i2c_type) },
-    { MP_ROM_QSTR(MP_QSTR_SPI),                 MP_ROM_PTR(&machine_hard_spi_type) },
-    { MP_ROM_QSTR(MP_QSTR_UART),                MP_ROM_PTR(&pyb_uart_type) },
-    { MP_ROM_QSTR(MP_QSTR_WDT),                 MP_ROM_PTR(&pyb_wdt_type) },
+    // rocky ignore { MP_ROM_QSTR(MP_QSTR_I2C),                 MP_ROM_PTR(&machine_i2c_type) },
+    // rocky ignore { MP_ROM_QSTR(MP_QSTR_SPI),                 MP_ROM_PTR(&machine_hard_spi_type) },
+    // rocky ignore { MP_ROM_QSTR(MP_QSTR_UART),                MP_ROM_PTR(&pyb_uart_type) },
+    // rocky ignore { MP_ROM_QSTR(MP_QSTR_WDT),                 MP_ROM_PTR(&pyb_wdt_type) },
 #if 0
     { MP_ROM_QSTR(MP_QSTR_Timer),               MP_ROM_PTR(&pyb_timer_type) },
     { MP_ROM_QSTR(MP_QSTR_HeartBeat),           MP_ROM_PTR(&pyb_heartbeat_type) },

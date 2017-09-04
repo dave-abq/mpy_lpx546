@@ -18,7 +18,7 @@
 #define MICROPY_HW_RTC_USE_LSE      (1)
 #define MICROPY_HW_RTC_USE_US       (0)
 #define MICROPY_HW_RTC_USE_CALOUT   (1)
-
+/*
 // UART config
 #define MICROPY_HW_UART1_NAME   "XB"
 #define MICROPY_HW_UART1_TX     (pin_B6)
@@ -62,11 +62,11 @@
 // CAN busses
 #define MICROPY_HW_CAN1_NAME "YA" // CAN1 on RX,TX = Y3,Y4 = PB8,PB9
 #define MICROPY_HW_CAN2_NAME "YB" // CAN2 on RX,TX = Y5,Y6 = PB12,PB13
-
+*/
 // USRSW has no pullup or pulldown, and pressing the switch makes the input go low
-#define MICROPY_HW_USRSW_PIN        (pin_B3)
-#define MICROPY_HW_USRSW_PULL       (GPIO_PULLUP)
-#define MICROPY_HW_USRSW_EXTI_MODE  (GPIO_MODE_IT_FALLING)
+#define MICROPY_HW_USRSW_PIN        (pin_33)
+#define MICROPY_HW_USRSW_PULL       (1) //(GPIO_PULLUP)
+#define MICROPY_HW_USRSW_EXTI_MODE  (2) //(GPIO_MODE_IT_FALLING)
 #define MICROPY_HW_USRSW_PRESSED    (0)
 
 // The LPX54608 has 3 LEDs
@@ -74,19 +74,19 @@
 #define MICROPY_HW_LED2             (pin_33) // green
 #define MICROPY_HW_LED3             (pin_22) // yellow
 
-#define MICROPY_HW_LED1_PWM         { CTIMER3, MAT1, IOCON_FUNC3}
-#define MICROPY_HW_LED3_PWM         { CTIMER1, MAT1, IOCON_FUNC4}
+#define MICROPY_HW_LED1_PWM         { CTIMER3, 1, IOCON_FUNC3}
+#define MICROPY_HW_LED3_PWM         { CTIMER1, 1, IOCON_FUNC4}
 #define MICROPY_HW_LED_ON(pin)      (mp_hal_pin_high(pin))
 #define MICROPY_HW_LED_OFF(pin)     (mp_hal_pin_low(pin))
 
 // SD card detect switch
-#define MICROPY_HW_SDCARD_DETECT_PIN        (pin_A8)
-#define MICROPY_HW_SDCARD_DETECT_PULL       (GPIO_PULLUP)
-#define MICROPY_HW_SDCARD_DETECT_PRESENT    (GPIO_PIN_RESET)
+#define MICROPY_HW_SDCARD_DETECT_PIN        (pin_33)
+#define MICROPY_HW_SDCARD_DETECT_PULL       (1) // (GPIO_PULLUP)
+#define MICROPY_HW_SDCARD_DETECT_PRESENT    (2) // (GPIO_PIN_RESET)
 
 // USB config
-#define MICROPY_HW_USB_VBUS_DETECT_PIN (pin_A9)
-#define MICROPY_HW_USB_OTG_ID_PIN      (pin_A10)
+// #define MICROPY_HW_USB_VBUS_DETECT_PIN (pin_A9)
+// #define MICROPY_HW_USB_OTG_ID_PIN      (pin_A10)
 
 // MMA accelerometer config
-#define MICROPY_HW_MMA_AVDD_PIN     (pin_B5)
+// #define MICROPY_HW_MMA_AVDD_PIN     (pin_B5)

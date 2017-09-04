@@ -14,16 +14,16 @@
       <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STM32F407VETx</Device>
-          <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.2.9.0</PackID>
-          <PackURL>http://www.keil.com/pack</PackURL>
-          <Cpu>IROM(0x08000000,0x80000) IRAM(0x20000000,0x20000) IRAM2(0x10000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
+          <Device>LPC54608J512ET180:M4</Device>
+          <Vendor>NXP</Vendor>
+          <PackID>Keil.LPC54000_DFP.2.1.0</PackID>
+          <PackURL>http://www.keil.com/pack/</PackURL>
+          <Cpu>IROM(0x00000000,0x00080000) IRAM(0x20000000,0x00028000) IRAM2(0x04000000,0x00008000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
-          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_512 -FS08000000 -FL080000 -FP0($$Device:STM32F407VETx$CMSIS\Flash\STM32F4xx_512.FLM))</FlashDriverDll>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0LPC5460x_512 -FS00 -FL080000 -FP0($$Device:LPC54608J512ET180$Flash\LPC5460x_512.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:STM32F407VETx$Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h</RegisterFile>
+          <RegisterFile>$$Device:LPC54608J512ET180$LPCOpen\lpc5460x\chip_5460x\inc\chip.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -33,7 +33,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:STM32F407VETx$CMSIS\SVD\STM32F40x.svd</SFDFile>
+          <SFDFile>$$Device:LPC54608J512ET180$SVD\LPC54608.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -110,7 +110,7 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments> -REMAP -MPU</SimDllArguments>
+          <SimDllArguments>  -MPU</SimDllArguments>
           <SimDlgDll>DCM.DLL</SimDlgDll>
           <SimDlgDllArguments>-pCM4</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -244,11 +244,11 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x20000</Size>
+                <Size>0x28000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
+                <StartAddress>0x0</StartAddress>
                 <Size>0x80000</Size>
               </IROM>
               <XRAM>
@@ -273,7 +273,7 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
+                <StartAddress>0x0</StartAddress>
                 <Size>0x80000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
@@ -299,12 +299,12 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x20000</Size>
+                <Size>0x28000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
-                <StartAddress>0x10000000</StartAddress>
-                <Size>0x10000</Size>
+                <StartAddress>0x4000000</StartAddress>
+                <Size>0x8000</Size>
               </OCR_RVCT10>
             </OnChipMemories>
             <RvctStartVector></RvctStartVector>
@@ -331,9 +331,9 @@
             <vShortWch>1</vShortWch>
             <VariousControls>
               <MiscControls>--gnu --diag_suppress=61,68,111,546,188,1035,144,1211,1295 --no_inline</MiscControls>
-              <Define>N_THUMB,NDEBUG,STM32F407xx,MCU_SERIES_F4,STM32_HAL_H='&lt;stm32f4xx_hal.h&gt;',__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__,MICROPY_QSTR_EXTRA_POOL=mp_qstr_frozen_const_pool,MICROPY_MODULE_FROZEN_MPY,FFCONF_H='\"oofatfs/ffconf.h\"',HARD_FP</Define>
+              <Define>N_THUMB,NDEBUG,CPU_LPC54608J512BD208,MCU_SERIES_LPC546,STM32_HAL_H='&lt;stm32f4xx_hal.h&gt;',__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__,MICROPY_QSTR_EXTRA_POOL=mp_qstr_frozen_const_pool,MICROPY_MODULE_FROZEN_MPY,FFCONF_H='\"oofatfs/ffconf.h\"',HARD_FP</Define>
               <Undefine></Undefine>
-              <IncludePath>..\;..\py;..\extmod;..\lib;..\lib\cmsis\inc;..\nxp_lpc546;..\nxp_lpc546\boards\lpx54608;..\nxp_lpc546\hal\f4\inc;..\nxp_lpc546\cmsis;..\nxp_lpc546\build-lpx54608;..\nxp_lpc546\usbdev\core\inc;..\nxp_lpc546\usbdev\class\inc</IncludePath>
+              <IncludePath>..\;..\py;..\extmod;..\lib;..\lib\cmsis\inc;..\nxp_lpc546;..\nxp_lpc546\boards\lpx54608;..\nxp_lpc546\sdk22\;..\nxp_lpc546\sdk22\drivers;..\nxp_lpc546\sdk22\utilities;..\nxp_lpc546\cmsis;..\nxp_lpc546\build-lpx54608;..\nxp_lpc546\usbdev\core\inc;..\nxp_lpc546\usbdev\class\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2018,7 +2018,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -2412,7 +2412,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -2618,20 +2618,30 @@
               <FilePath>..\nxp_lpc546\build-lpx54608\pins_lpx54608.c</FilePath>
             </File>
             <File>
-              <FileName>modstm_qstr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\nxp_lpc546\build-lpx54608\modstm_qstr.h</FilePath>
-            </File>
-            <File>
               <FileName>pins_qstr.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\build-lpx54608\pins_qstr.h</FilePath>
+            </File>
+            <File>
+              <FileName>modmcu_const.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\build-lpx54608\genhdr\modmcu_const.h</FilePath>
+            </File>
+            <File>
+              <FileName>modmcu_qstr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\build-lpx54608\modmcu_qstr.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>port</GroupName>
           <Files>
+            <File>
+              <FileName>startup_LPC54608.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\nxp_lpc546\startup_LPC54608.s</FilePath>
+            </File>
             <File>
               <FileName>gchelper_armccv5.S</FileName>
               <FileType>2</FileType>
@@ -2646,6 +2656,53 @@
               <FileName>extint.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\extint.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>fatfs_port.c</FileName>
@@ -2745,9 +2802,64 @@
               <FilePath>..\nxp_lpc546\modpyb.c</FilePath>
             </File>
             <File>
-              <FileName>modstm.c</FileName>
+              <FileName>modmcu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\modstm.c</FilePath>
+              <FilePath>..\nxp_lpc546\modmcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\moduos.c</FilePath>
+            </File>
+            <File>
+              <FileName>modusocket.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\modusocket.c</FilePath>
+            </File>
+            <File>
+              <FileName>modutime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\modutime.c</FilePath>
+            </File>
+            <File>
+              <FileName>mphalport.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\mphalport.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpthreadport.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\mpthreadport.c</FilePath>
+            </File>
+            <File>
+              <FileName>pendsv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pendsv.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pin.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin_named_pins.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pin_named_pins.c</FilePath>
+            </File>
+            <File>
+              <FileName>pybstdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pybstdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>pybthread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pybthread.c</FilePath>
+            </File>
+            <File>
+              <FileName>rng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\rng.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -2797,99 +2909,217 @@
               </FileOption>
             </File>
             <File>
-              <FileName>moduos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\moduos.c</FilePath>
-            </File>
-            <File>
-              <FileName>modusocket.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\modusocket.c</FilePath>
-            </File>
-            <File>
-              <FileName>modutime.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\modutime.c</FilePath>
-            </File>
-            <File>
-              <FileName>mphalport.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\mphalport.c</FilePath>
-            </File>
-            <File>
-              <FileName>mpthreadport.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\mpthreadport.c</FilePath>
-            </File>
-            <File>
-              <FileName>pendsv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pendsv.c</FilePath>
-            </File>
-            <File>
-              <FileName>pin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pin.c</FilePath>
-            </File>
-            <File>
-              <FileName>pin_defs_nxp_lpc546.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pin_defs_nxp_lpc546.c</FilePath>
-            </File>
-            <File>
-              <FileName>pin_named_pins.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pin_named_pins.c</FilePath>
-            </File>
-            <File>
-              <FileName>pybstdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pybstdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>pybthread.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pybthread.c</FilePath>
-            </File>
-            <File>
-              <FileName>rng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\rng.c</FilePath>
-            </File>
-            <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\rtc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>sdcard.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\sdcard.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>servo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\servo.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\stm32_it.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>storage.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\storage.c</FilePath>
-            </File>
-            <File>
-              <FileName>system_stm32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\system_stm32.c</FilePath>
             </File>
             <File>
               <FileName>systick.c</FileName>
@@ -2900,41 +3130,417 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\timer.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\uart.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usb.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usb.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usbd_cdc_interface.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usbd_cdc_interface.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usbd_conf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usbd_conf.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usbd_desc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usbd_desc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usbd_hid_interface.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usbd_hid_interface.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usbd_msc_storage.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usbd_msc_storage.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usrsw.c</FileName>
@@ -2945,6 +3551,53 @@
               <FileName>wdt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\wdt.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>startup_stm32.S</FileName>
@@ -2992,6 +3645,43 @@
               <FileName>startup_stm32f405xx.S</FileName>
               <FileType>2</FileType>
               <FilePath>..\nxp_lpc546\startup_stm32f405xx.S</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>accel.h</FileName>
@@ -3217,6 +3907,385 @@
               <FileName>wdt.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\wdt.h</FilePath>
+            </File>
+            <File>
+              <FileName>hal_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\hal_wrapper.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_wrapper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\hal_wrapper.h</FilePath>
+            </File>
+            <File>
+              <FileName>pin_defs_lpc546.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pin_defs_lpc546.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin_defs_lpc546.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\pin_defs_lpc546.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>SDK22</GroupName>
+          <Files>
+            <File>
+              <FileName>fsl_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_ctimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_ctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dmic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_dmic.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dmic_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_dmic_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_emc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_emc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_enet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_enet.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flashiap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_flashiap.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexcomm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_flexcomm.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_fmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_fmeas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_fmeas.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_gint.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_gint.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2c_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2c_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2s.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2s.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2s_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2s_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_inputmux.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_inputmux.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lcdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_lcdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_mcan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_mcan.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_mrt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_mrt.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_pint.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_pint.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_power.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_reset.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_reset.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_rit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_rit.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_sctimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_sctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_sdif.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_sdif.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spi_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spi_freertos.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>fsl_spifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spifi.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spifi_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spifi_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_usart_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_usart_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_usart_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_usart_freertos.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>2</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>fsl_utick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_utick.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_wwdt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_wwdt.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_debug_console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\utilities\fsl_debug_console.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_LPC54608.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\system_LPC54608.c</FilePath>
+            </File>
+            <File>
+              <FileName>keil_lib_power.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\arm\keil_lib_power.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Board</GroupName>
+          <Files>
+            <File>
+              <FileName>board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\board.c</FilePath>
+            </File>
+            <File>
+              <FileName>clock_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\clock_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin_mux.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\pin_mux.c</FilePath>
+            </File>
+            <File>
+              <FileName>board.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\board.h</FilePath>
+            </File>
+            <File>
+              <FileName>clock_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\clock_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>pin_mux.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\pin_mux.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -5517,20 +6586,30 @@
               <FilePath>..\nxp_lpc546\build-lpx54608\pins_lpx54608.c</FilePath>
             </File>
             <File>
-              <FileName>modstm_qstr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\nxp_lpc546\build-lpx54608\modstm_qstr.h</FilePath>
-            </File>
-            <File>
               <FileName>pins_qstr.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\build-lpx54608\pins_qstr.h</FilePath>
+            </File>
+            <File>
+              <FileName>modmcu_const.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\build-lpx54608\genhdr\modmcu_const.h</FilePath>
+            </File>
+            <File>
+              <FileName>modmcu_qstr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\build-lpx54608\modmcu_qstr.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>port</GroupName>
           <Files>
+            <File>
+              <FileName>startup_LPC54608.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\nxp_lpc546\startup_LPC54608.s</FilePath>
+            </File>
             <File>
               <FileName>gchelper_armccv5.S</FileName>
               <FileType>2</FileType>
@@ -5597,9 +6676,9 @@
               <FilePath>..\nxp_lpc546\modpyb.c</FilePath>
             </File>
             <File>
-              <FileName>modstm.c</FileName>
+              <FileName>modmcu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\modstm.c</FilePath>
+              <FilePath>..\nxp_lpc546\modmcu.c</FilePath>
             </File>
             <File>
               <FileName>moduos.c</FileName>
@@ -5635,11 +6714,6 @@
               <FileName>pin.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\pin.c</FilePath>
-            </File>
-            <File>
-              <FileName>pin_defs_nxp_lpc546.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\pin_defs_nxp_lpc546.c</FilePath>
             </File>
             <File>
               <FileName>pin_named_pins.c</FileName>
@@ -5682,19 +6756,9 @@
               <FilePath>..\nxp_lpc546\spi.c</FilePath>
             </File>
             <File>
-              <FileName>stm32_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\stm32_it.c</FilePath>
-            </File>
-            <File>
               <FileName>storage.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\storage.c</FilePath>
-            </File>
-            <File>
-              <FileName>system_stm32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\nxp_lpc546\system_stm32.c</FilePath>
             </File>
             <File>
               <FileName>systick.c</FileName>
@@ -5985,6 +7049,291 @@
               <FileName>wdt.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\wdt.h</FilePath>
+            </File>
+            <File>
+              <FileName>hal_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\hal_wrapper.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_wrapper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\hal_wrapper.h</FilePath>
+            </File>
+            <File>
+              <FileName>pin_defs_lpc546.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\pin_defs_lpc546.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin_defs_lpc546.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\pin_defs_lpc546.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>SDK22</GroupName>
+          <Files>
+            <File>
+              <FileName>fsl_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_ctimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_ctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dmic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_dmic.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_dmic_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_dmic_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_emc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_emc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_enet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_enet.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flashiap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_flashiap.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_flexcomm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_flexcomm.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_fmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_fmeas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_fmeas.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_gint.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_gint.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2c_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2c_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2s.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2s.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2s_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_i2s_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_inputmux.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_inputmux.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_lcdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_lcdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_mcan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_mcan.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_mrt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_mrt.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_pint.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_pint.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_power.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_reset.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_reset.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_rit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_rit.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_sctimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_sctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_sdif.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_sdif.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spi_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spi_freertos.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spifi.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spifi_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_spifi_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_usart_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_usart_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_usart_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_usart_freertos.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_utick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_utick.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_wwdt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\drivers\fsl_wwdt.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_debug_console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\utilities\fsl_debug_console.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_LPC54608.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\system_LPC54608.c</FilePath>
+            </File>
+            <File>
+              <FileName>keil_lib_power.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\nxp_lpc546\sdk22\arm\keil_lib_power.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Board</GroupName>
+          <Files>
+            <File>
+              <FileName>board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\board.c</FilePath>
+            </File>
+            <File>
+              <FileName>clock_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\clock_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin_mux.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\pin_mux.c</FilePath>
+            </File>
+            <File>
+              <FileName>board.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\board.h</FilePath>
+            </File>
+            <File>
+              <FileName>clock_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\clock_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>pin_mux.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\boards\lpx54608\pin_mux.h</FilePath>
             </File>
           </Files>
         </Group>

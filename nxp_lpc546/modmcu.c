@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include STM32_HAL_H
+#include "fsl_common.h"
 
 #include "py/nlr.h"
 #include "py/obj.h"
@@ -35,21 +35,21 @@
 #include "portmodules.h"
 
 #include "py/objint.h"
-#include "genhdr/modstm_mpz.h"
+#include "genhdr/modmcu_mpz.h"
 
-STATIC const mp_rom_map_elem_t stm_module_globals_table[] = {
+STATIC const mp_rom_map_elem_t mcu_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_stm) },
 
     { MP_ROM_QSTR(MP_QSTR_mem8), MP_ROM_PTR(&machine_mem8_obj) },
     { MP_ROM_QSTR(MP_QSTR_mem16), MP_ROM_PTR(&machine_mem16_obj) },
     { MP_ROM_QSTR(MP_QSTR_mem32), MP_ROM_PTR(&machine_mem32_obj) },
 
-#include "genhdr/modstm_const.h"
+#include "genhdr/modmcu_const.h"
 };
 
-STATIC MP_DEFINE_CONST_DICT(stm_module_globals, stm_module_globals_table);
+STATIC MP_DEFINE_CONST_DICT(mcu_module_globals, mcu_module_globals_table);
 
-const mp_obj_module_t stm_module = {
+const mp_obj_module_t mcu_module = {
     .base = { &mp_type_module },
-    .globals = (mp_obj_dict_t*)&stm_module_globals,
+    .globals = (mp_obj_dict_t*)&mcu_module_globals,
 };

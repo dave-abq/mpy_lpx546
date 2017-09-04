@@ -29,7 +29,7 @@
 #include "py/nlr.h"
 #include "py/runtime.h"
 #include "py/mphal.h"
-#include "timer.h"
+#include "fsl_iocon.h"
 #include "led.h"
 #include "pin.h"
 #include "genhdr/pins.h"
@@ -103,17 +103,14 @@ void led_init(void) {
 
 #define LED_PWM_TIM_PERIOD (10000) // TIM runs at 1MHz and fires every 10ms
 
-// this gives the address of the CCR register for channels 1-4
-#define LED_PWM_CCR(pwm_cfg) ((volatile uint32_t*)&(pwm_cfg)->tim->CCR1 + ((pwm_cfg)->tim_channel >> 2))
-
 typedef struct _led_pwm_config_t {
-    TIM_TypeDef *tim;
+    CTIMER_Type *tim;
     uint8_t tim_id;
     uint8_t tim_channel;
     uint8_t alt_func;
 } led_pwm_config_t;
 
-STATIC const led_pwm_config_t led_pwm_config[] = {
+const led_pwm_config_t led_pwm_config[] = {
     MICROPY_HW_LED1_PWM,
     MICROPY_HW_LED2_PWM,
     MICROPY_HW_LED3_PWM,
@@ -127,42 +124,12 @@ static inline bool led_pwm_is_enabled(int led) {
 }
 
 // this function has a large stack so it should not be inlined
-STATIC void led_pwm_init(int led) __attribute__((noinline));
-STATIC void led_pwm_init(int led) {
-    const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
-    const led_pwm_config_t *pwm_cfg = &led_pwm_config[led - 1];
+void led_pwm_init(int led) __attribute__((noinline));
+void led_pwm_init(int led) {
+    // const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
 
-    // GPIO configuration
-    mp_hal_pin_config(led_pin, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_NONE, pwm_cfg->alt_func);
-
-    // TIM configuration
-    switch (pwm_cfg->tim_id) {
-        case 1: __TIM1_CLK_ENABLE(); break;
-        case 2: __TIM2_CLK_ENABLE(); break;
-        case 3: __TIM3_CLK_ENABLE(); break;
-        default: assert(0);
-    }
-    TIM_HandleTypeDef tim = {0};
-    tim.Instance = pwm_cfg->tim;
-    tim.Init.Period = LED_PWM_TIM_PERIOD - 1;
-    tim.Init.Prescaler = timer_get_source_freq(pwm_cfg->tim_id) / 1000000 - 1; // TIM runs at 1MHz
-    tim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    tim.Init.CounterMode = TIM_COUNTERMODE_UP;
-    tim.Init.RepetitionCounter = 0;
-    HAL_TIM_PWM_Init(&tim);
-
-    // PWM configuration
-    TIM_OC_InitTypeDef oc_init;
-    oc_init.OCMode = TIM_OCMODE_PWM1;
-    oc_init.Pulse = 0; // off
-    oc_init.OCPolarity = MICROPY_HW_LED_INVERTED ? TIM_OCPOLARITY_LOW : TIM_OCPOLARITY_HIGH;
-    oc_init.OCFastMode = TIM_OCFAST_DISABLE;
-    oc_init.OCNPolarity = TIM_OCNPOLARITY_HIGH; // needed for TIM1 and TIM8
-    oc_init.OCIdleState = TIM_OCIDLESTATE_SET; // needed for TIM1 and TIM8
-    oc_init.OCNIdleState = TIM_OCNIDLESTATE_SET; // needed for TIM1 and TIM8
-    HAL_TIM_PWM_ConfigChannel(&tim, &oc_init, pwm_cfg->tim_channel);
-    HAL_TIM_PWM_Start(&tim, pwm_cfg->tim_channel);
-
+    // >>> rocky: todos
+	// <<<
     // indicate that this LED is using PWM
     led_pwm_state |= 1 << led;
 }
@@ -170,13 +137,7 @@ STATIC void led_pwm_init(int led) {
 STATIC void led_pwm_deinit(int led) {
     // make the LED's pin a standard GPIO output pin
     const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
-    GPIO_TypeDef *g = led_pin->gpio;
-    uint32_t pin = led_pin->pin;
-    static const int mode = 1; // output
-    static const int alt = 0; // no alt func
-    g->MODER = (g->MODER & ~(3 << (2 * pin))) | (mode << (2 * pin));
-    g->AFR[pin >> 3] = (g->AFR[pin >> 3] & ~(15 << (4 * (pin & 7)))) | (alt << (4 * (pin & 7)));
-    led_pwm_state &= ~(1 << led);
+    led_pin = led_pin;
 }
 
 #else
@@ -219,8 +180,8 @@ void led_toggle(pyb_led_t led) {
     #endif
 
     // toggle the output data register to toggle the LED state
-    const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
-    led_pin->gpio->ODR ^= led_pin->pin_mask;
+    // const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
+
 }
 
 int led_get_intensity(pyb_led_t led) {
@@ -230,39 +191,17 @@ int led_get_intensity(pyb_led_t led) {
 
     #if LED_PWM_ENABLED
     if (led_pwm_is_enabled(led)) {
-        const led_pwm_config_t *pwm_cfg = &led_pwm_config[led - 1];
-        mp_uint_t i = (*LED_PWM_CCR(pwm_cfg) * 255 + LED_PWM_TIM_PERIOD - 2) / (LED_PWM_TIM_PERIOD - 1);
-        if (i > 255) {
-            i = 255;
-        }
-        return i;
+        // const led_pwm_config_t *pwm_cfg = &led_pwm_config[led - 1];
     }
     #endif
-
-    const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
-    GPIO_TypeDef *gpio = led_pin->gpio;
-
-    if (gpio->ODR & led_pin->pin_mask) {
-        // pin is high
-        return MICROPY_HW_LED_INVERTED ? 0 : 255;
-    } else {
-        // pin is low
-        return MICROPY_HW_LED_INVERTED ? 255 : 0;
-    }
+    // const pin_obj_t *led_pin = pyb_led_obj[led - 1].led_pin;
+	return 0;
 }
 
 void led_set_intensity(pyb_led_t led, mp_int_t intensity) {
     #if LED_PWM_ENABLED
     if (intensity > 0 && intensity < 255) {
-        const led_pwm_config_t *pwm_cfg = &led_pwm_config[led - 1];
-        if (pwm_cfg->tim != NULL) {
-            // set intensity using PWM pulse width
-            if (!led_pwm_is_enabled(led)) {
-                led_pwm_init(led);
-            }
-            *LED_PWM_CCR(pwm_cfg) = intensity * (LED_PWM_TIM_PERIOD - 1) / 255;
-            return;
-        }
+//        const led_pwm_config_t *pwm_cfg = &led_pwm_config[led - 1];
     }
     #endif
 

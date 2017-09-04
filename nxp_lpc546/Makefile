@@ -23,7 +23,7 @@ include ../py/py.mk
 
 LD_DIR=boards
 CMSIS_DIR=cmsis
-HAL_DIR=hal/$(MCU_SERIES)
+HAL_DIR=sdk22
 USBDEV_DIR=usbdev
 #USBHOST_DIR=usbhost
 FATFS_DIR=lib/oofatfs
@@ -44,18 +44,18 @@ INC += -I..
 INC += -I$(BUILD)
 INC += -I../lib/cmsis/inc
 INC += -I$(CMSIS_DIR)/
-INC += -I$(HAL_DIR)/inc
+INC += -I$(HAL_DIR)
+INC += -I$(HAL_DIR)/drivers
 INC += -I$(USBDEV_DIR)/core/inc -I$(USBDEV_DIR)/class/inc
 #INC += -I$(USBHOST_DIR)
 
-CFLAGS_CORTEX_M = -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -Wdouble-promotion
-CFLAGS_MCU_f4 = $(CFLAGS_CORTEX_M) -mtune=cortex-m4 -mcpu=cortex-m4 -DMCU_SERIES_F4
-CFLAGS_MCU_f7 = $(CFLAGS_CORTEX_M) -mtune=cortex-m7 -mcpu=cortex-m7 -DMCU_SERIES_F7
-CFLAGS_MCU_l4 = $(CFLAGS_CORTEX_M) -mtune=cortex-m4 -mcpu=cortex-m4 -DMCU_SERIES_L4
+CFLAGS_CORTEX_M4 = -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -Wdouble-promotion -mtune=cortex-m4 -mcpu=cortex-m4
+CFLAGS_CORTEX_M7 = -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -Wdouble-promotion -mtune=cortex-m4 -mcpu=cortex-m7
+
 
 CFLAGS = $(INC) -Wall -Wpointer-arith -Werror -std=gnu99 -nostdlib $(CFLAGS_MOD)
-CFLAGS += -D$(CMSIS_MCU)
-CFLAGS += $(CFLAGS_MCU_$(MCU_SERIES))
+CFLAGS += -D$(SDK_MCU)
+CFLAGS += $(CFLAGS_CORTEX_M4)
 CFLAGS += $(COPT)
 CFLAGS += -Iboards/$(BOARD)
 CFLAGS += -DMCU32_HAL_H='<mcu32$(MCU_SERIES)xx_hal.h>'
@@ -119,6 +119,32 @@ DRIVERS_SRC_C = $(addprefix drivers/,\
 SRC_C = \
 	main.c \
 	./sdk22/system_LPC54608.c \
+	irq.c \
+	pendsv.c \
+	systick.c  \
+	pybthread.c \
+	led.c \
+	pin_named_pins.c \
+	bufhelper.c \
+	gccollect.c \
+	pybstdio.c \
+	help.c \
+	modmachine.c \
+	modpyb.c \
+	modmcu.c \
+	moduos.c \
+	modutime.c \
+	modusocket.c \
+	modnetwork.c \
+	usrsw.c \
+	flash.c \
+	storage.c \
+	fatfs_port.c \
+	$(wildcard boards/$(BOARD)/*.c)
+
+SRC_C_BKUP = \
+	main.c \
+	./sdk22/system_LPC54608.c \
 	usbd_conf.c \
 	usbd_desc.c \
 	usbd_cdc_interface.c \
@@ -166,8 +192,8 @@ SRC_C = \
 	servo.c \
 	dac.c \
 	adc.c \
-	$(wildcard boards/$(BOARD)/*.c)
-
+	$(wildcard boards/$(BOARD)/*.c)    
+    
 SRC_O = \
 	startup_LPC54608.o \
 	gchelper.o \

@@ -37,6 +37,24 @@
 ; *
 ; *****************************************************************************/
 
+; must be aligned with "mp_stack_set_limit(<size>)" in main()
+STACK_SIZE      EQU     0x00001800
+
+                ;AREA    STACK, NOINIT, READWRITE, ALIGN=3
+;Stack_Mem       SPACE   STACK_SIZE
+;;__initial_sp
+
+
+; <h> Heap Configuration
+;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+; </h>
+
+Heap_Size       EQU     0x00000200
+
+                AREA    HEAP, NOINIT, READWRITE, ALIGN=3
+__heap_base
+Heap_Mem        SPACE   Heap_Size
+__heap_limit
 
                 PRESERVE8
                 THUMB
@@ -44,9 +62,8 @@
 ; Vector Table Mapped to Address 0 at Reset
                 AREA    RESET, DATA, READONLY
                 EXPORT  __Vectors
-                IMPORT  |Image$$ARM_LIB_STACK$$ZI$$Limit|
 
-__Vectors       DCD     |Image$$ARM_LIB_STACK$$ZI$$Limit| ; Top of Stack
+__Vectors       DCD     0x04008000 ; Top of Stack, use SRAMX
                 DCD     Reset_Handler             ; Reset Handler
 
                 DCD     NMI_Handler
@@ -123,6 +140,10 @@ __vector_table_0x1c
                 DCD     SHA_IRQHandler  ; SHA interrupt
                 DCD     SMARTCARD0_IRQHandler  ; Smart card 0 interrupt
                 DCD     SMARTCARD1_IRQHandler  ; Smart card 1 interrupt
+
+__Vectors_End
+
+__Vectors_Size  EQU  __Vectors_End - __Vectors
 
                 AREA    |.text|, CODE, READONLY
 
@@ -707,6 +728,33 @@ SMARTCARD1_DriverIRQHandler
 
 
                 ALIGN
+
+;*******************************************************************************
+; User Stack and Heap initialization
+;*******************************************************************************
+                 IF      :DEF:__MICROLIB
+                
+                 EXPORT  __initial_sp
+                 EXPORT  __heap_base
+                 EXPORT  __heap_limit
+                
+                 ELSE
+                
+                 IMPORT  __use_two_region_memory
+                 EXPORT  __user_initial_stackheap
+                 
+__user_initial_stackheap
+
+                 LDR     R0, =  Heap_Mem
+                 LDR     R1, = 0x04008000
+                 LDR     R2, = (Heap_Mem +  Heap_Size)
+                 LDR     R3, = 0x04008000 - STACK_SIZE
+                 BX      LR
+
+                 ALIGN
+
+                 ENDIF
+
 
 
                 END

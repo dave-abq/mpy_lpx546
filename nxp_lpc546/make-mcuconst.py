@@ -39,20 +39,20 @@ class LexerError(Exception):
         self.line = line
 
 class Lexer:
-    re_io_reg = r'__IO uint(?P<bits>8|16|32)_t +(?P<reg>[A-Z0-9]+)'
+    re_io_reg = r'__[IOM]+\s+uint(?P<bits>8|16|32)_t\s+(?P<reg>[A-Z0-9_]+)'
     re_comment = r'(?P<comment>[A-Za-z0-9 \-/_()&]+)'
     re_addr_offset = r'Address offset: (?P<offset>0x[0-9A-Z]{2,3})'
     regexs = (
-        ('#define hex', re.compile(r'#define +(?P<id>[A-Z0-9_]+) +(?:\(\(uint32_t\))?(?P<hex>0x[0-9A-F]+)U?(?:\))?($| +/\*)')),
-        ('#define X', re.compile(r'#define +(?P<id>[A-Z0-9_]+) +(?P<id2>[A-Z0-9_]+)($| +/\*)')),
+        ('#define hex', re.compile(r'#define\s+(?P<id>[A-Z0-9_]+)\s+\(*(?P<hex>0x[0-9A-F]+)\)*')),
+        ('#define X', re.compile(r'#define\s+(?P<id>[A-Z0-9_]+)\s+(?P<id2>[A-Z0-9_]+)($| +/\*)')),
         ('#define X+hex', re.compile(r'#define +(?P<id>[A-Za-z0-9_]+) +\((?P<id2>[A-Z0-9_]+) \+ (?P<hex>0x[0-9A-F]+)U?\)($| +/\*)')),
-        ('#define typedef', re.compile(r'#define +(?P<id>[A-Z0-9_]+(ext)?) +\(\([A-Za-z0-9_]+_TypeDef \*\) (?P<id2>[A-Za-z0-9_]+)\)($| +/\*)')),
-        ('typedef struct', re.compile(r'typedef struct$')),
+        ('#define typedef', re.compile(r'#define\s+(?P<id>[A-Z0-9_]+)\s+\(\([A-Za-z0-9_]+_Type\s*\*\)\s*(?P<id2>[A-Za-z0-9_]+)\)')),
+        ('typedef struct {', re.compile(r'typedef struct {$')),
         ('{', re.compile(r'{$')),
         ('}', re.compile(r'}$')),
-        ('} TypeDef', re.compile(r'} *(?P<id>[A-Z][A-Za-z0-9_]+)_(?P<global>([A-Za-z0-9_]+)?)TypeDef;$')),
-        ('IO reg', re.compile(re_io_reg + r'; +/\*!< ' + re_comment + r', +' + re_addr_offset + r' *\*/')),
-        ('IO reg array', re.compile(re_io_reg + r'\[(?P<array>[2-8])\]; +/\*!< ' + re_comment + r', +' + re_addr_offset + r'-(0x[0-9A-Z]{2,3}) *\*/')),
+        ('} Type', re.compile(r'} *(?P<id>[A-Z][A-Za-z0-9_]+)_(?P<global>([A-Za-z0-9_]+)?)Type;$')),
+        ('IO reg', re.compile(re_io_reg + r';\s+' + re_comment)), # + r'/\*\*<' + re_comment + r'\*/')),
+        ('IO reg array', re.compile(re_io_reg + r'\[(?P<array>[2-8])\]; +/\*\*<' + re_comment)),
     )
 
     def __init__(self, filename):
@@ -101,16 +101,31 @@ def parse_file(filename):
             d = m[1].groupdict()
             if d['id2'] in consts:
                 periphs.append((d['id'], consts[d['id2']]))
-        elif m[0] == 'typedef struct':
-            lexer.must_match('{')
+        elif m[0] == 'typedef struct {':
             m = lexer.next_match()
             regs = []
             while m[0] in ('IO reg', 'IO reg array'):
                 d = m[1].groupdict()
                 reg = d['reg']
-                offset = int(d['offset'], base=16)
+                if reg.find('RESERVED_') == 0:
+                    m = lexer.next_match()
+                    continue
                 bits = int(d['bits'])
-                comment = d['comment']
+                sTmp = m[1].string
+                ndxCmntStart = sTmp.find('/**< ') + 5
+                ndxCmntEnd = sTmp.rfind('array offset: ')
+                if ndxCmntEnd > 0:
+                    isAry = True
+                    ndxOfsStart = ndxCmntEnd + len('array offset: ')
+                    ndxOfsEnd = ndxOfsStart + sTmp[ndxOfsStart:].find(',')
+                else:
+                    isAry = False
+                    ndxCmntEnd = sTmp.rfind('offset: ')
+                    ndxOfsStart = ndxCmntEnd + len('offset: ')
+                    ndxOfsEnd = ndxOfsStart + sTmp[ndxOfsStart:].rfind(' ')
+                comment = sTmp[ndxCmntStart:ndxCmntEnd - 3]
+                sOfs = sTmp[ndxOfsStart:ndxOfsEnd]
+                offset = int(sOfs, base=16)
                 if m[0] == 'IO reg':
                     regs.append((reg, offset, bits, comment))
                 else:
@@ -119,7 +134,7 @@ def parse_file(filename):
                 m = lexer.next_match()
             if m[0] == '}':
                 pass
-            elif m[0] == '} TypeDef':
+            elif m[0] == '} Type':
                 reg_defs[m[1].groupdict()['id']] = regs
             else:
                 raise LexerError(lexer.line_number)

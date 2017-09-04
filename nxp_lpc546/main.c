@@ -27,6 +27,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "board.h"
+#include "pin_mux.h"
+
 #include "py/runtime.h"
 #include "py/stackctrl.h"
 #include "py/gc.h"
@@ -42,23 +45,23 @@
 #include "pybthread.h"
 #include "gccollect.h"
 #include "modmachine.h"
-#include "i2c.h"
-#include "spi.h"
+// #include "i2c.h"
+// #include "spi.h"
 #include "uart.h"
-#include "timer.h"
+// #include "timer.h"
 #include "led.h"
 #include "pin.h"
 #include "extint.h"
 #include "usrsw.h"
-#include "usb.h"
-#include "rtc.h"
+// #include "usb.h"
+// #include "rtc.h"
 #include "storage.h"
 #include "sdcard.h"
 #include "rng.h"
-#include "accel.h"
-#include "servo.h"
-#include "dac.h"
-#include "can.h"
+// #include "accel.h"
+// #include "servo.h"
+// #include "dac.h"
+// #include "can.h"
 #include "modnetwork.h"
 
 void SystemClock_Config(void);
@@ -413,10 +416,36 @@ STATIC uint update_reset_mode(uint reset_mode) {
     return reset_mode;
 }
 
+HAL_StatusTypeDef HAL_Init(void)
+{
+	/* Board pin, clock, debug console init */
+	/* attach 12 MHz clock to FLEXCOMM0 (debug console) */
+	CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+
+	/* Route Main clock to LCD. */
+	CLOCK_AttachClk(kMCLK_to_LCD_CLK);
+
+	/* attach 12 MHz clock to FLEXCOMM2 (I2C master for touch controller) */
+	CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
+
+	CLOCK_EnableClock(kCLOCK_Gpio2);
+
+	CLOCK_SetClkDiv(kCLOCK_DivLcdClk, 1, true);
+
+	BOARD_InitPins();
+	// BOARD_BootClockHSRUN();
+	BOARD_BootClock180M();	
+	
+	BOARD_InitDebugConsole();
+	BOARD_InitSDRAM();
+	
+	return HAL_OK;
+}
+
 #ifdef __CC_ARM
-uint32_t  _ram_start = 0x20000000, _ram_end = 0x20020000, _estack = 0x20020000, _heap_end = 0x2001c000;
-extern unsigned int Image$$ER_IRAM1$$Limit;
-uint32_t _heap_start = (uint32_t) &Image$$ER_IRAM1$$Limit;
+uint32_t  _ram_start = 0x20000000, _ram_end = 0x20028000, _estack = 0x04008000, _heap_end = 0x20026000;
+extern unsigned int Image$$RW_m_data$$Limit;
+uint32_t _heap_start = (uint32_t) &Image$$RW_m_data$$Limit;
 #endif
 
 int main(void) {
@@ -429,26 +458,7 @@ int main(void) {
          - Global MSP (MCU Support Package) initialization
        */
     HAL_Init();
-
-    // set the system clock to be HSE
-    SystemClock_Config();
-
-    // enable GPIO clocks
-    __GPIOA_CLK_ENABLE();
-    __GPIOB_CLK_ENABLE();
-    __GPIOC_CLK_ENABLE();
-    __GPIOD_CLK_ENABLE();
-
-    #if defined(MCU_SERIES_F4) ||  defined(MCU_SERIES_F7)
-        #if defined(__HAL_RCC_DTCMRAMEN_CLK_ENABLE)
-        // The STM32F746 doesn't really have CCM memory, but it does have DTCM,
-        // which behaves more or less like normal SRAM.
-        __HAL_RCC_DTCMRAMEN_CLK_ENABLE();
-        #elif defined(CCMDATARAM_BASE)
-        // enable the CCM RAM
-        __HAL_RCC_CCMDATARAMEN_CLK_ENABLE();
-        #endif
-    #endif
+	
 
     #if defined(MICROPY_BOARD_EARLY_INIT)
     MICROPY_BOARD_EARLY_INIT();
@@ -529,10 +539,10 @@ soft_reset:
     // by boot.py must be set after boot.py is run.
 
     readline_init0();
-    pin_init0();
-    extint_init0();
-    timer_init0();
-    uart_init0();
+    // rocky ignore: pin_init0();
+    // rocky ignore: extint_init0();
+    // rocky ignore: timer_init0();
+    // rocky ignore: uart_init0();
 
     // Define MICROPY_HW_UART_REPL to be PYB_UART_6 and define
     // MICROPY_HW_UART_REPL_BAUD in your mpconfigboard.h file if you want a
@@ -557,9 +567,9 @@ soft_reset:
     rng_init0();
 #endif
 
-    i2c_init0();
-    spi_init0();
-    pyb_usb_init0();
+//    i2c_init0();
+//    spi_init0();
+//    pyb_usb_init0();
 
     // Initialise the local flash filesystem.
     // Create it if needed, mount in on /flash, and set it as current dir.
@@ -690,10 +700,11 @@ soft_reset_exit:
     storage_flush();
 
     printf("PYB: soft reboot\n");
-    timer_deinit();
-    uart_deinit();
+    // rocky ignore: timer_deinit();
+    
+	// rocky ignore: uart_deinit();
 #if MICROPY_HW_ENABLE_CAN
-    can_deinit();
+    // rocky ignore: can_deinit();
 #endif
 
     #if MICROPY_PY_THREAD

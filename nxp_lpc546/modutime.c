@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include STM32_HAL_H
+#include "fsl_common.h"
 
 #include "py/nlr.h"
 #include "py/smallint.h"
@@ -54,15 +54,31 @@
 /// second  is 0-59
 /// weekday is 0-6 for Mon-Sun.
 /// yearday is 1-366
+
+#define FORMAT_BIN 1
+void HAL_RTC_GetTime(int *handle, RTC_TimeTypeDef *pt, uint32_t fmt)
+{
+	handle = handle;
+	pt = pt;
+	fmt = fmt;
+}
+void HAL_RTC_GetDate(int *handle, RTC_DateTypeDef *pt, uint32_t fmt)
+{
+	handle = handle;
+	pt = pt;
+	fmt = fmt;
+}
+
+
 STATIC mp_obj_t time_localtime(mp_uint_t n_args, const mp_obj_t *args) {
     if (n_args == 0 || args[0] == mp_const_none) {
         // get current date and time
         // note: need to call get time then get date to correctly access the registers
-        rtc_init_finalise();
-        RTC_DateTypeDef date;
-        RTC_TimeTypeDef time;
-        HAL_RTC_GetTime(&RTCHandle, &time, FORMAT_BIN);
-        HAL_RTC_GetDate(&RTCHandle, &date, FORMAT_BIN);
+        // rocky ignore rtc_init_finalise();
+        RTC_DateTypeDef date = {0};
+        RTC_TimeTypeDef time = {0};
+        HAL_RTC_GetTime(0/*&RTCHandle*/, &time, FORMAT_BIN);
+        HAL_RTC_GetDate(0/*&RTCHandle*/, &date, FORMAT_BIN);
         mp_obj_t tuple[8] = {
             mp_obj_new_int(2000 + date.Year),
             mp_obj_new_int(date.Month),
@@ -121,11 +137,11 @@ MP_DEFINE_CONST_FUN_OBJ_1(time_mktime_obj, time_mktime);
 STATIC mp_obj_t time_time(void) {
     // get date and time
     // note: need to call get time then get date to correctly access the registers
-    rtc_init_finalise();
+    // rocky ignore rtc_init_finalise();
     RTC_DateTypeDef date;
     RTC_TimeTypeDef time;
-    HAL_RTC_GetTime(&RTCHandle, &time, FORMAT_BIN);
-    HAL_RTC_GetDate(&RTCHandle, &date, FORMAT_BIN);
+    HAL_RTC_GetTime(0/*&RTCHandle*/, &time, FORMAT_BIN);
+    HAL_RTC_GetDate(0/*&RTCHandle*/, &date, FORMAT_BIN);
     return mp_obj_new_int(timeutils_seconds_since_2000(2000 + date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds));
 }
 MP_DEFINE_CONST_FUN_OBJ_0(time_time_obj, time_time);

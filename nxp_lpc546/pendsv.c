@@ -25,8 +25,8 @@
  */
 
 #include <stdlib.h>
-#include STM32_HAL_H
-
+#include "fsl_common.h"
+#include "hal_wrapper.h"
 #include "py/mpstate.h"
 #include "py/runtime.h"
 #include "lib/utils/interrupt_char.h"

@@ -33,7 +33,7 @@
 
 // board specific definitions
 #include "mpconfigboard.h"
-
+#include "fsl_common.h"
 // memory allocation policies
 #define MICROPY_ALLOC_PATH_MAX      (128)
 
@@ -124,22 +124,22 @@
 #define MICROPY_PY_UTIMEQ           (1)
 #define MICROPY_PY_UTIME_MP_HAL     (1)
 #define MICROPY_PY_MACHINE          (1)
-#define MICROPY_PY_MACHINE_PULSE    (1)
+#define MICROPY_PY_MACHINE_PULSE    (0)
 #define MICROPY_PY_MACHINE_PIN_MAKE_NEW mp_pin_make_new
-#define MICROPY_PY_MACHINE_I2C      (1)
+#define MICROPY_PY_MACHINE_I2C      (0)
 #define MICROPY_PY_MACHINE_I2C_MAKE_NEW machine_hard_i2c_make_new
-#define MICROPY_PY_MACHINE_SPI      (1)
-#define MICROPY_PY_MACHINE_SPI_MSB  (SPI_FIRSTBIT_MSB)
-#define MICROPY_PY_MACHINE_SPI_LSB  (SPI_FIRSTBIT_LSB)
+#define MICROPY_PY_MACHINE_SPI      (0)
+#define MICROPY_PY_MACHINE_SPI_MSB  3 // (SPI_FIRSTBIT_MSB)
+#define MICROPY_PY_MACHINE_SPI_LSB  4 // (SPI_FIRSTBIT_LSB)
 #define MICROPY_PY_MACHINE_SPI_MAKE_NEW machine_hard_spi_make_new
 #define MICROPY_PY_MACHINE_SPI_MIN_DELAY (0)
-#define MICROPY_PY_MACHINE_SPI_MAX_BAUDRATE (HAL_RCC_GetSysClockFreq() / 48)
-#define MICROPY_PY_FRAMEBUF         (1)
+#define MICROPY_PY_MACHINE_SPI_MAX_BAUDRATE (SystemCoreClock / 48)
+#define MICROPY_PY_FRAMEBUF         (0)
 #ifndef MICROPY_PY_USOCKET
-#define MICROPY_PY_USOCKET          (1)
+#define MICROPY_PY_USOCKET          (0)
 #endif
 #ifndef MICROPY_PY_NETWORK
-#define MICROPY_PY_NETWORK          (1)
+#define MICROPY_PY_NETWORK          (0)
 #endif
 
 // fatfs configuration used in ffconf.h
@@ -287,7 +287,6 @@ typedef long mp_off_t;
 // value from disable_irq back to enable_irq.  If you really need
 // to know the machine-specific values, see irq.h.
 
-#include SDK_MCU_H
 
 static inline void enable_irq(mp_uint_t state) {
     __set_PRIMASK(state);
@@ -334,7 +333,7 @@ static inline mp_uint_t disable_irq(void) {
 
 // see stm32f4XX_hal_conf.h USE_USB_FS & USE_USB_HS
 // at the moment only USB_FS is supported
-#define USE_DEVICE_MODE
+// #define USE_DEVICE_MODE
 //#define USE_HOST_MODE
 
 // We need to provide a declaration/definition of alloca()

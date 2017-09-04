@@ -680,7 +680,7 @@ typedef enum _clock_attach_id
     kFRO12M_to_ASYNC_APB = MUX_A(CM_ASYNCAPB, 1),
     kAUDIO_PLL_to_ASYNC_APB = MUX_A(CM_ASYNCAPB, 2),
     kI2C_CLK_FC6_to_ASYNC_APB = MUX_A(CM_ASYNCAPB, 3),
-    kNONE_to_NONE = 0x80000000U,
+    kNONE_to_NONE = 0x7FFFFFFF, //0x80000000U,
 } clock_attach_id_t;
 
 /*  Clock dividers */
