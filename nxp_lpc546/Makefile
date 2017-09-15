@@ -41,12 +41,15 @@ CROSS_COMPILE = arm-none-eabi-
 
 INC += -I.
 INC += -I..
+INC += -I../py
 INC += -I$(BUILD)
 INC += -I../lib/cmsis/inc
 INC += -I$(CMSIS_DIR)/
 INC += -I$(HAL_DIR)
 INC += -I$(HAL_DIR)/drivers
+INC += -I$(HAL_DIR)/utilities
 INC += -I$(USBDEV_DIR)/core/inc -I$(USBDEV_DIR)/class/inc
+
 #INC += -I$(USBHOST_DIR)
 
 CFLAGS_CORTEX_M4 = -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -Wdouble-promotion -mtune=cortex-m4 -mcpu=cortex-m4
@@ -362,7 +365,7 @@ GEN_PINS_AF_PY = $(BUILD)/pins_af.py
 INSERT_USB_IDS = ../tools/insert-usb-ids.py
 FILE2H = ../tools/file2h.py
 
-USB_IDS_FILE = usb.h
+USB_IDS_FILE = usb_app.h
 CDCINF_TEMPLATE = pybcdc.inf_template
 GEN_CDCINF_FILE = $(HEADER_BUILD)/pybcdc.inf
 GEN_CDCINF_HEADER = $(HEADER_BUILD)/pybcdc_inf.h

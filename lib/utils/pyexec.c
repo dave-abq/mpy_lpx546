@@ -38,12 +38,12 @@
 #include "py/mphal.h"
 #if defined(USE_DEVICE_MODE)
 #include "irq.h"
-#include "usb.h"
+#include "usb_app.h"
 #endif
 #include "lib/mp-readline/readline.h"
 #include "lib/utils/pyexec.h"
 #include "genhdr/mpversion.h"
-
+#include "mpconfigboard.h"
 pyexec_mode_kind_t pyexec_mode_kind = PYEXEC_MODE_FRIENDLY_REPL;
 int pyexec_system_exit = 0;
 STATIC bool repl_display_debugging_info = 0;

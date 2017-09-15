@@ -369,7 +369,7 @@ STATIC mp_obj_t pin_obj_init_helper(const pin_obj_t *self, mp_uint_t n_args, con
     */
 
     // enable the peripheral clock for the port of this pin
-    mp_hal_gpio_clock_enable(self->gpio);
+    mp_hal_gpio_clock_enable(self->port);
 
     // if given, set the pin value before initialising to prevent glitches
     if (args[3].u_obj != MP_OBJ_NULL) {

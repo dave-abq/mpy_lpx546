@@ -32,7 +32,7 @@
 #define __INCLUDED_MPCONFIGPORT_H
 
 // board specific definitions
-#include "mpconfigboard.h"
+// #include "mpconfigboard.h"
 #include "fsl_common.h"
 // memory allocation policies
 #define MICROPY_ALLOC_PATH_MAX      (128)
@@ -333,7 +333,7 @@ static inline mp_uint_t disable_irq(void) {
 
 // see stm32f4XX_hal_conf.h USE_USB_FS & USE_USB_HS
 // at the moment only USB_FS is supported
-// #define USE_DEVICE_MODE
+#define USE_DEVICE_MODE
 //#define USE_HOST_MODE
 
 // We need to provide a declaration/definition of alloca()

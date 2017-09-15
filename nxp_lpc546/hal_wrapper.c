@@ -1,7 +1,7 @@
 #include "fsl_common.h"
 #include "hal_wrapper.h"
 
-__IO uint32_t s_tickCnt;
+extern __IO uint32_t uwTick;
 
 
 __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
@@ -18,11 +18,11 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 
 __weak void HAL_IncTick(void)
 {
-  s_tickCnt++;
+  uwTick++;
 }
 
 __weak uint32_t HAL_GetTick(void) {
-  return s_tickCnt;
+  return uwTick;
 }
 
 __weak void HAL_Delay(__IO uint32_t Delay)

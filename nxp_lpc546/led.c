@@ -67,12 +67,16 @@ STATIC const pyb_led_obj_t pyb_led_obj[] = {
 #define NUM_LEDS MP_ARRAY_SIZE(pyb_led_obj)
 
 void led_init(void) {
+	gpio_pin_config_t t;
+	t.pinDirection = kGPIO_DigitalOutput , t.outputLogic = 1;
     /* Turn off LEDs and initialize */
     for (int led = 0; led < NUM_LEDS; led++) {
         const pin_obj_t *led_pin = pyb_led_obj[led].led_pin;
-        mp_hal_gpio_clock_enable(led_pin->gpio);
+        mp_hal_gpio_clock_enable(led_pin->port);
+		mp_hal_pin_config(led_pin, 1<<7/*Digital*/ | 1<<8/*10ns Filter off*/, 0 /*no pull*/, 0 /*alt 0*/);
+		GPIO_PinInit(led_pin->gpio, led_pin->port, led_pin->pin, &t);
+		// led_pin->gpio->DIRSET[led_pin->port] = 1<<led_pin->pin;
         MICROPY_HW_LED_OFF(led_pin);
-        mp_hal_pin_output(led_pin);
     }
 }
 

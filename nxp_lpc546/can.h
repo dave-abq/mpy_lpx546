@@ -24,6 +24,10 @@
  * THE SOFTWARE.
  */
 
+// CAN busses
+#define MICROPY_HW_CAN1_NAME "YA" // CAN1 on RX,TX = Y3,Y4 = PB8,PB9
+#define MICROPY_HW_CAN2_NAME "YB" // CAN2 on RX,TX = Y5,Y6 = PB12,PB13
+
 #define PYB_CAN_1 (1)
 #define PYB_CAN_2 (2)
 

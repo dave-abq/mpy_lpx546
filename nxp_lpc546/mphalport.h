@@ -28,13 +28,15 @@ static inline mp_uint_t mp_hal_ticks_cpu(void) {
 #define MP_HAL_PIN_FMT                  "%q"
 #define MP_HAL_PIN_MODE_INPUT           (0)
 #define MP_HAL_PIN_MODE_OUTPUT          (1)
-#define MP_HAL_PIN_MODE_ALT             (2)
+#define MP_HAL_PIN_MODE_INV             (2)
 #define MP_HAL_PIN_MODE_ANALOG          (3)
 #define MP_HAL_PIN_MODE_OPEN_DRAIN      (5)
 #define MP_HAL_PIN_MODE_ALT_OPEN_DRAIN  (6)
 #define MP_HAL_PIN_PULL_NONE             7 // (GPIO_NOPULL)
 #define MP_HAL_PIN_PULL_UP               8 // (GPIO_PULLUP)
 #define MP_HAL_PIN_PULL_DOWN             9 // (GPIO_PULLDOWN)
+#define MP_HAL_PIN_PULL_REPEATER         10 // (GPIO_PULLDOWN)
+
 
 #define mp_hal_pin_obj_t const pin_obj_t*
 #define mp_hal_get_pin_obj(o)   pin_find(o)
@@ -49,6 +51,6 @@ static inline mp_uint_t mp_hal_ticks_cpu(void) {
 #define mp_hal_pin_read(p)      (((p)->gpio->B[p->port][p->pin]))
 #define mp_hal_pin_write(p, v)  do { if (v) { mp_hal_pin_high(p); } else { mp_hal_pin_low(p); } } while (0)
 
-void mp_hal_gpio_clock_enable(GPIO_Type *gpio);
+void mp_hal_gpio_clock_enable(uint32_t portNum);
 void mp_hal_pin_config(mp_hal_pin_obj_t pin, uint32_t mode, uint32_t pull, uint32_t alt);
 bool mp_hal_pin_config_alt(mp_hal_pin_obj_t pin, uint32_t mode, uint32_t pull, uint8_t fn, uint8_t unit);

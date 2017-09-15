@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include "modmachine.h"
+#include "portmodules.h"
 #include "py/gc.h"
 #include "py/runtime.h"
 #include "py/mphal.h"
@@ -46,7 +47,7 @@
 #include "storage.h"
 #include "pin.h"
 #include "timer.h"
-#include "usb.h"
+#include "usb_app.h"
 #include "rtc.h"
 #include "i2c.h"
 #include "spi.h"

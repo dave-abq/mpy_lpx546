@@ -44,7 +44,7 @@ typedef struct {
 #if defined(LPC54608_SERIES)
 
 static const flash_layout_t flash_layout[] = {
-    { (uint32_t)0, (uint32_t)512, 128},
+    { (uint32_t)0, (uint32_t)512, 1024},
 };
 
 #else

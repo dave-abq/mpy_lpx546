@@ -24,6 +24,11 @@
  * THE SOFTWARE.
  */
 
+// SD card detect switch
+#define MICROPY_HW_SDCARD_DETECT_PIN        (pin_33)
+#define MICROPY_HW_SDCARD_DETECT_PULL       (1) // (GPIO_PULLUP)
+#define MICROPY_HW_SDCARD_DETECT_PRESENT    (2) // (GPIO_PIN_RESET)
+
 // this is a fixed size and should not be changed
 #define SDCARD_BLOCK_SIZE (512)
 

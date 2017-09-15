@@ -4,10 +4,11 @@
 #include "py/runtime.h"
 #include "py/mperrno.h"
 #include "py/mphal.h"
-#include "usb.h"
+#include "usb_app.h"
 #include "uart.h"
 #include "fsl_gpio.h"
 #include "fsl_iocon.h"
+#include "fsl_debug_console.h"
 bool mp_hal_ticks_cpu_enabled = false;
 
 // this table converts from HAL_StatusTypeDef to POSIX errno
@@ -23,8 +24,11 @@ NORETURN void mp_hal_raise(HAL_StatusTypeDef status) {
 }
 
 int mp_hal_stdin_rx_chr(void) {
-    for (;;) {
-
+	int c;
+	for (;;) {
+		c = DbgConsole_Getchar();
+		if (c != -1)
+			return c;
 #ifdef USE_HOST_MODE
         pyb_usb_host_process();
         int c = pyb_usb_host_get_keyboard();
@@ -50,6 +54,10 @@ void mp_hal_stdout_tx_str(const char *str) {
 }
 
 void mp_hal_stdout_tx_strn(const char *str, size_t len) {
+	uint32_t i;
+	for(i=0; i<len; i++) {
+		DbgConsole_Putchar(str[i]);
+	}
 	/* rocky ignore
     if (MP_STATE_PORT(pyb_stdio_uart) != NULL) {
         uart_tx_strn(MP_STATE_PORT(pyb_stdio_uart), str, len);
@@ -64,6 +72,14 @@ void mp_hal_stdout_tx_strn(const char *str, size_t len) {
 }
 
 void mp_hal_stdout_tx_strn_cooked(const char *str, size_t len) {
+	for (const char *top = str + len; str < top; str++) {
+		if (*str == '\n') {
+			DbgConsole_Putchar('\r');
+		}
+		DbgConsole_Putchar(*str);
+	}
+
+
 	/* rocky ignore
     // send stdout to UART and USB CDC VCP
     if (MP_STATE_PORT(pyb_stdio_uart) != NULL) {
@@ -88,17 +104,20 @@ void mp_hal_ticks_cpu_enable(void) {
     }
 }
 
-void mp_hal_gpio_clock_enable(GPIO_Type *gpio) {
+void mp_hal_gpio_clock_enable(uint32_t portNum) {
 	SYSCON_Type *pSysCon = SYSCON;
-	pSysCon->AHBCLKCTRLSET[0] = 0x0F << 14;  // GPIO 0,1,2,3
-	pSysCon->AHBCLKCTRLSET[2] = 0x3 << 7;   // GPIO 4,5
+	if (portNum < 4) {
+		pSysCon->AHBCLKCTRLSET[0] = portNum + 14;  // GPIO 0,1,2,3
+	} else {
+		pSysCon->AHBCLKCTRLSET[2] = portNum + 7;  // GPIO 4,5
+	}
 }
 
 void mp_hal_pin_config(const pin_obj_t *pin_obj, uint32_t mode, uint32_t pull, uint32_t alt) {
-    GPIO_Type *gpio = pin_obj->gpio;
-    mp_hal_gpio_clock_enable(gpio);
+    mp_hal_gpio_clock_enable(pin_obj->port);
 	CLOCK_EnableClock(kCLOCK_Iocon);
-	IOCON_PinMuxSet(IOCON, pin_obj->port, pin_obj->pin, alt | pull<<4 | mode<<6);
+	
+	IOCON_PinMuxSet(IOCON, pin_obj->port, pin_obj->pin, alt | pull | mode);
 }
 
 bool mp_hal_pin_config_alt(mp_hal_pin_obj_t pin, uint32_t mode, uint32_t pull, uint8_t fn, uint8_t unit) {

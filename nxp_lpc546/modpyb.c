@@ -26,7 +26,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
-
+#include "mpconfigboard.h"
 #include "fsl_common.h"
 
 #include "py/mpstate.h"
@@ -60,12 +60,12 @@
 #include "servo.h"
 #include "dac.h"
 #include "lcd.h"
-#include "usb.h"
+#include "usb_app.h"
 #include "portmodules.h"
 #include "modmachine.h"
 #include "extmod/vfs.h"
 #include "extmod/utime_mphal.h"
-int pyb_hard_fault_debug = 0;
+extern int pyb_hard_fault_debug;
 
 STATIC mp_obj_t pyb_fault_debug(mp_obj_t val) {
     pyb_hard_fault_debug = mp_obj_is_true(val);

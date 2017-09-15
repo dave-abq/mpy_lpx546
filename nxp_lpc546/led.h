@@ -24,6 +24,16 @@
  * THE SOFTWARE.
  */
 
+// The LPX54608 has 3 LEDs
+#define MICROPY_HW_LED1             (pin_314) // red
+#define MICROPY_HW_LED2             (pin_33) // green
+#define MICROPY_HW_LED3             (pin_22) // yellow
+
+#define MICROPY_HW_LED1_PWM         { CTIMER3, 1, IOCON_FUNC3}
+#define MICROPY_HW_LED3_PWM         { CTIMER1, 1, IOCON_FUNC4}
+#define MICROPY_HW_LED_ON(pin)      (mp_hal_pin_low(pin))
+#define MICROPY_HW_LED_OFF(pin)     (mp_hal_pin_high(pin))
+
 typedef enum {
     // PYBv3
     PYB_LED_R1 = 1,

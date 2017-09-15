@@ -23,7 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+#include "obj.h"
+#include "mpconfigboard.h"
 extern const mp_obj_module_t pyb_module;
 extern const mp_obj_module_t stm_module;
 extern const mp_obj_module_t mp_module_uos;

@@ -31,6 +31,7 @@
 #include "extint.h"
 #include "pin.h"
 #include "genhdr/pins.h"
+#include "portmodules.h"
 #include "usrsw.h"
 
 #if MICROPY_HW_HAS_SWITCH
@@ -54,12 +55,13 @@
 
 // this function inits the switch GPIO so that it can be used
 void switch_init0(void) {
-    mp_hal_pin_config(&MICROPY_HW_USRSW_PIN, MP_HAL_PIN_MODE_INPUT, MICROPY_HW_USRSW_PULL, 0);
+    mp_hal_pin_config(&MICROPY_HW_USRSW_PIN, 1<<7/*digital*/|1<<8/*10ns filter disabled*/, 0, 0);
 }
 
 int switch_get(void) {
     volatile int val = 0;
-    return val == MICROPY_HW_USRSW_PRESSED;
+	val = GPIO_ReadPinInput(GPIO, MICROPY_HW_USRSW_PIN.port, MICROPY_HW_USRSW_PIN.pin);
+    return (val == MICROPY_HW_USRSW_PRESSED);
 }
 
 /******************************************************************************/

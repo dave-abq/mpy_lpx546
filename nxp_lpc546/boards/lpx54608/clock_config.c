@@ -69,7 +69,7 @@ void BOARD_BootClockRUN(void)
     SystemCoreClock = 48000000;                  /*!< Update information about frequency */
 }
 
-void BOARD_BootClockHSRUN(void)
+void BOARD_BootClockFROHF96M(void)
 {
     POWER_DisablePD(kPDRUNCFG_PD_FRO_EN); /*!< Ensure FRO is on so that we can switch to its 12MHz mode temporarily*/
     CLOCK_AttachClk(

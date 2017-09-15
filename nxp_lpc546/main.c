@@ -29,7 +29,7 @@
 
 #include "board.h"
 #include "pin_mux.h"
-
+#include "portmodules.h"
 #include "py/runtime.h"
 #include "py/stackctrl.h"
 #include "py/gc.h"
@@ -53,7 +53,7 @@
 #include "pin.h"
 #include "extint.h"
 #include "usrsw.h"
-// #include "usb.h"
+// #include "usb_app.h"
 // #include "rtc.h"
 #include "storage.h"
 #include "sdcard.h"
@@ -433,19 +433,27 @@ HAL_StatusTypeDef HAL_Init(void)
 	CLOCK_SetClkDiv(kCLOCK_DivLcdClk, 1, true);
 
 	BOARD_InitPins();
-	// BOARD_BootClockHSRUN();
+	BOARD_BootClockHSRUN();
 	BOARD_BootClock180M();	
 	
 	BOARD_InitDebugConsole();
 	BOARD_InitSDRAM();
+
+	/* Set Interrupt Group Priority */
+	NVIC_SetPriorityGrouping(3);
+	
+	/* Use systick as time base source and configure 1ms tick (default clock after Reset is HSI) */
+	HAL_InitTick(2);
+
 	
 	return HAL_OK;
 }
 
 #ifdef __CC_ARM
-uint32_t  _ram_start = 0x20000000, _ram_end = 0x20028000, _estack = 0x04008000, _heap_end = 0x20026000;
-extern unsigned int Image$$RW_m_data$$Limit;
-uint32_t _heap_start = (uint32_t) &Image$$RW_m_data$$Limit;
+#define STACK_SIZE	(0x1800)
+uint32_t  _ram_start = 0x20000000, _ram_end = 0x20028000, _estack = 0x04008000, _heap_end = 0x20028000;
+extern unsigned int Image$$MPY_HEAP_START$$Base;
+uint32_t _heap_start = (uint32_t) &Image$$MPY_HEAP_START$$Base;
 #endif
 
 int main(void) {
@@ -525,8 +533,23 @@ soft_reset:
     mp_stack_set_limit((char*)&_estack - (char*)&_heap_end - 1024);
 
     // GC init
-    gc_init(&_heap_start, &_heap_end);
-
+#ifdef __CC_ARM
+    // Stack limit should be less than real stack size, so we have a chance
+    // to recover from limit hit.  (Limit is measured in bytes.)
+    // Note: stack control relies on main thread being initialised above
+    mp_stack_set_top((void*) _estack);
+    mp_stack_set_limit(STACK_SIZE);
+	
+    gc_init((void*) _heap_start, (void*) _heap_end);
+#else
+    // Stack limit should be less than real stack size, so we have a chance
+    // to recover from limit hit.  (Limit is measured in bytes.)
+    // Note: stack control relies on main thread being initialised above
+    mp_stack_set_top(&_estack);
+    mp_stack_set_limit((char*)&_estack - (char*)&_heap_end - 1024);
+	
+    gc_init(&_heap_start, &_heap_end);	
+#endif
     // Micro Python init
     mp_init();
     mp_obj_list_init(mp_sys_path, 0);
@@ -549,11 +572,13 @@ soft_reset:
     // REPL on a hardware UART as well as on USB VCP
 #if defined(MICROPY_HW_UART_REPL)
     {
+		/*rocky ignore, in SDK, reuse debug console
         mp_obj_t args[2] = {
             MP_OBJ_NEW_SMALL_INT(MICROPY_HW_UART_REPL),
             MP_OBJ_NEW_SMALL_INT(MICROPY_HW_UART_REPL_BAUD),
         };
         MP_STATE_PORT(pyb_stdio_uart) = pyb_uart_type.make_new((mp_obj_t)&pyb_uart_type, MP_ARRAY_SIZE(args), 0, args);
+		*/
     }
 #else
     MP_STATE_PORT(pyb_stdio_uart) = NULL;

@@ -25,6 +25,13 @@
  */
 
 #include "dma.h"
+// I2C busses
+#define MICROPY_HW_I2C1_NAME "X"
+#define MICROPY_HW_I2C1_SCL (pin_B6)
+#define MICROPY_HW_I2C1_SDA (pin_B7)
+#define MICROPY_HW_I2C2_NAME "Y"
+#define MICROPY_HW_I2C2_SCL (pin_B10)
+#define MICROPY_HW_I2C2_SDA (pin_B11)
 
 // use this for OwnAddress1 to configure I2C in master mode
 #define PYB_I2C_MASTER_ADDRESS (0xfe)

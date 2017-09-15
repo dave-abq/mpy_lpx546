@@ -40,7 +40,6 @@
 #include "rng.h"
 #include "uart.h"
 #include "portmodules.h"
-
 /// \module os - basic "operating system" services
 ///
 /// The `os` module contains functions for filesystem access and `urandom`.
