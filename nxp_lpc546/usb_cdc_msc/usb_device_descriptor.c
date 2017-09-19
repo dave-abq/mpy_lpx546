@@ -27,7 +27,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+#define _USB_DEVICE_DESCRIPTOR_C_
+#include <string.h>
 #include "usb_device_config.h"
 #include "usb.h"
 #include "usb_device.h"
@@ -48,6 +49,7 @@
 /*******************************************************************************
 * Variables
 ******************************************************************************/
+USBDCfgFix_t g_cfgFix;
 /* msc disk information */
 /* Define endpoint for MSC class */
 usb_device_endpoint_struct_t g_mscDiskEndpoints[USB_MSC_DISK_ENDPOINT_COUNT] = {
@@ -83,7 +85,7 @@ usb_device_interface_list_t g_mscDiskInterfaceList[USB_DEVICE_CONFIGURATION_COUN
 };
 
 /* Define class information for MSC disk */
-usb_device_class_struct_t g_mscDiskClass = {
+usb_device_class_struct_t g_usbdMscConfig = {
     g_mscDiskInterfaceList, kUSB_DeviceClassTypeMsc, USB_DEVICE_CONFIGURATION_COUNT,
 };
 
@@ -128,7 +130,8 @@ usb_device_interfaces_struct_t g_cdcVcomInterfaces[USB_CDC_VCOM_INTERFACE_COUNT]
     {USB_CDC_VCOM_CIC_CLASS, USB_CDC_VCOM_CIC_SUBCLASS, USB_CDC_VCOM_CIC_PROTOCOL, 
     USB_CDC_VCOM_CIC_INTERFACE_INDEX, // fixed during desc linkage
      g_cdcVcomCicInterface, sizeof(g_cdcVcomCicInterface) / sizeof(usb_device_interfaces_struct_t)},
-    {USB_CDC_VCOM_DIC_CLASS, USB_CDC_VCOM_DIC_SUBCLASS, USB_CDC_VCOM_DIC_PROTOCOL, 
+
+	{USB_CDC_VCOM_DIC_CLASS, USB_CDC_VCOM_DIC_SUBCLASS, USB_CDC_VCOM_DIC_PROTOCOL, 
     USB_CDC_VCOM_DIC_INTERFACE_INDEX, // fixed during desc linkage
      g_cdcVcomDicInterface, sizeof(g_cdcVcomDicInterface) / sizeof(usb_device_interfaces_struct_t)},
 };
@@ -138,6 +141,11 @@ usb_device_interface_list_t g_UsbDeviceCdcVcomInterfaceList[USB_DEVICE_CONFIGURA
     {
         USB_CDC_VCOM_INTERFACE_COUNT, g_cdcVcomInterfaces,
     },
+};
+
+/* Define class information for virtual com */
+usb_device_class_struct_t g_usbdCdcVcomConfig = {
+    g_UsbDeviceCdcVcomInterfaceList, kUSB_DeviceClassTypeCdc, USB_DEVICE_CONFIGURATION_COUNT,
 };
 
 /* hid keyboard endpoint information */
@@ -177,7 +185,7 @@ usb_device_interface_list_t g_hidKeyboardInterfaceList[USB_DEVICE_CONFIGURATION_
     },
 };
 
-usb_device_class_struct_t g_hidKeyboardConfig = {
+usb_device_class_struct_t g_usbdHidKeyboardConfig = {
     g_hidKeyboardInterfaceList, /* The interface list of the HID keyboard */
     kUSB_DeviceClassTypeHid,             /* The HID class type */
     USB_DEVICE_CONFIGURATION_COUNT,      /* The configuration count */
@@ -221,27 +229,33 @@ usb_device_interface_list_t g_hidMouseInterfaceList[USB_DEVICE_CONFIGURATION_COU
     },
 };
 
-usb_device_class_struct_t g_hidMouseConfig = {
+usb_device_class_struct_t g_usbdHidMouseConfig = {
     g_hidMouseInterfaceList, /* The interface list of the HID mouse */
     kUSB_DeviceClassTypeHid,          /* The HID class type */
     USB_DEVICE_CONFIGURATION_COUNT,   /* The configuration count */
 };
 
 /* hid Generic endpoint information */
-usb_device_endpoint_struct_t g_hidGenericEndpoints[1] = {
+usb_device_endpoint_struct_t g_hidGenericEndpoints[2] = {
     /* HID Generic interrupt IN pipe */
     {
         0 | (USB_IN << 7), // endpoint number, fixed during desc linkage
 		USB_ENDPOINT_INTERRUPT,
-        0, // FS_HID_Generic_INTERRUPT_IN_PACKET_SIZE,
+        8, // generic in ep packet size, fixed during desc linkage
     },
+    /* HID Generic interrupt OUT pipe */
+    {
+        0 | (USB_OUT << 7), // endpoint number, fixed during desc linkage
+		USB_ENDPOINT_INTERRUPT,
+        8, // generic out ep packet size, fixed during desc linkage
+    },    
 };
 
 /* HID Generic interface information */
 usb_device_interface_struct_t g_hidGenericInterface[] = {{
     0U, /* The alternate setting of the interface */
     {
-        1, /* Endpoint count */
+        1, /* Endpoint count, fixed during desc linkage*/
         g_hidGenericEndpoints, /* Endpoints handle */
     },
     NULL,
@@ -249,9 +263,9 @@ usb_device_interface_struct_t g_hidGenericInterface[] = {{
 
 usb_device_interfaces_struct_t g_hidGenericInterfaces[1] = {
     {
-        0,        /* HID Generic class code */
-        0,        /* HID Generic subclass code */
-        0,        /* HID Generic protocol code */
+        0,        /* HID Generic class code, fixed during desc linkage */
+        0,        /* HID Generic subclass code, fixed during desc linkage */
+        0,        /* HID Generic protocol code, fixed during desc linkage */
         0, // USB_HID_Generic_INTERFACE_INDEX, // fixed during desc linkage
         g_hidGenericInterface,  /* Interfaces handle */
         sizeof(g_hidGenericInterface) / sizeof(usb_device_interfaces_struct_t),
@@ -265,16 +279,10 @@ usb_device_interface_list_t g_hidGenericInterfaceList[USB_DEVICE_CONFIGURATION_C
     },
 };
 
-usb_device_class_struct_t g_hidGenericConfig = {
+usb_device_class_struct_t g_usbdHidGenericConfig = {
     g_hidGenericInterfaceList, /* The interface list of the HID Generic */
     kUSB_DeviceClassTypeHid,          /* The HID class type */
     USB_DEVICE_CONFIGURATION_COUNT,   /* The configuration count */
-};
-
-
-/* Define class information for virtual com */
-usb_device_class_struct_t g_UsbDeviceCdcVcomConfig = {
-    g_UsbDeviceCdcVcomInterfaceList, kUSB_DeviceClassTypeCdc, USB_DEVICE_CONFIGURATION_COUNT,
 };
 
 /* Define device descriptor */
@@ -304,7 +312,7 @@ uint8_t g_UsbDeviceDescriptor[USB_DESCRIPTOR_LENGTH_DEVICE] = {
 
 uint8_t g_UsbDevCfgDesc[256]; // generated cfg desc according to user selected itf
 // common header for a composite device
-const uint8_t s_UsbDevCfgDescHdr[9] = 
+uint8_t s_UsbDevCfgDescHdr[9] = 
 {
     0x09U, // USB_DESCRIPTOR_LENGTH_CONFIGURE,
     0x02U, // USB_DESCRIPTOR_TYPE_CONFIGURE,
@@ -323,7 +331,7 @@ const uint8_t s_UsbDevCfgDescHdr[9] =
        fully * operational. Expressed in 2 mA units *  (i.e., 50 = 100 mA).  */
     USB_DEVICE_MAX_POWER,
 };
-const uint8_t s_UsbDevCfgDescMscPart[] = 
+uint8_t s_UsbDevCfgDescMscPart[] = 
 {
     /* MSC Interface Descriptor */
     0x09, // 0 USB_DESCRIPTOR_LENGTH_INTERFACE, 
@@ -337,17 +345,19 @@ const uint8_t s_UsbDevCfgDescMscPart[] =
     USB_DESCRIPTOR_LENGTH_ENDPOINT, USB_DESCRIPTOR_TYPE_ENDPOINT, 
     0 | (USB_IN << 7U), // ofs = 11, fixed during desc linkage
     USB_ENDPOINT_BULK, USB_SHORT_GET_LOW(FS_MSC_DISK_BULK_IN_PACKET_SIZE),
-    USB_SHORT_GET_HIGH(FS_MSC_DISK_BULK_IN_PACKET_SIZE), 0x00, /* The polling interval value is every 0 Frames */
+    USB_SHORT_GET_HIGH(FS_MSC_DISK_BULK_IN_PACKET_SIZE), 
+    0x00, /* The polling interval value is every 0 Frames */
 
     /*Bulk OUT Endpoint descriptor ofs = 16 */
     USB_DESCRIPTOR_LENGTH_ENDPOINT, USB_DESCRIPTOR_TYPE_ENDPOINT, 
     0 | (USB_OUT << 7U),  // ofs = 18 fixed during desc linkage
     USB_ENDPOINT_BULK, USB_SHORT_GET_LOW(FS_MSC_DISK_BULK_OUT_PACKET_SIZE),
-    USB_SHORT_GET_HIGH(FS_MSC_DISK_BULK_OUT_PACKET_SIZE), 0x00 /* The polling interval value is every 0 Frames */
+    USB_SHORT_GET_HIGH(FS_MSC_DISK_BULK_OUT_PACKET_SIZE), 
+    0x00 /* The polling interval value is every 0 Frames */
 };
 
 
-const uint8_t s_UsbDevCfgDescCdcPart[] = 
+uint8_t s_UsbDevCfgDescCdcPart[] = 
 {
     /* Interface Association Descriptor */
     8, // USB_IAD_DESC_SIZE,
@@ -420,13 +430,15 @@ const uint8_t s_UsbDevCfgDescCdcPart[] =
     USB_DESCRIPTOR_LENGTH_ENDPOINT, USB_DESCRIPTOR_TYPE_ENDPOINT, 
     0 | (USB_IN << 7U), // ofs = 54 fixed during desc linkage 
     USB_ENDPOINT_BULK, USB_SHORT_GET_LOW(FS_CDC_VCOM_BULK_IN_PACKET_SIZE),
-    USB_SHORT_GET_HIGH(FS_CDC_VCOM_BULK_IN_PACKET_SIZE), 0x00, /* The polling interval value is every 0 Frames */
+    USB_SHORT_GET_HIGH(FS_CDC_VCOM_BULK_IN_PACKET_SIZE), 
+    0x00, /* The polling interval value is every 0 Frames */
 
     /* ofs = 59 Bulk OUT Endpoint descriptor */
     USB_DESCRIPTOR_LENGTH_ENDPOINT, USB_DESCRIPTOR_TYPE_ENDPOINT, 
     0 | (USB_OUT << 7U), // ofs = 61 fixed during desc linkage 
     USB_ENDPOINT_BULK, USB_SHORT_GET_LOW(FS_CDC_VCOM_BULK_OUT_PACKET_SIZE),
-    USB_SHORT_GET_HIGH(FS_CDC_VCOM_BULK_OUT_PACKET_SIZE), 0x00, /* The polling interval value is every 0 Frames */
+    USB_SHORT_GET_HIGH(FS_CDC_VCOM_BULK_OUT_PACKET_SIZE), 
+    0x00, /* The polling interval value is every 0 Frames */
 
 };
 
@@ -512,14 +524,14 @@ uint8_t s_hidGenericIOReportDesc[] = {
 
 	    HID_Usage(0x84), /* Usage (Vendor defined) */
 	    HID_LogicalMin(0x80U), /* logical Minimum (-128) */
-	    HID_LogicalMax(0x7FU, /* logical Maximum (127) */
+	    HID_LogicalMax(0x7FU), /* logical Maximum (127) */
 	    HID_ReportSize(8), /* Report Size (8U) */
 	    HID_ReportCount(8), /* Report Count (8U) */
 	    HID_Input(0x02U), /* Input(Data, Variable, Absolute) */
 
 	    HID_Usage(0x84), /* Usage (Vendor defined) */
 	    HID_LogicalMin(0x80U), /* logical Minimum (-128) */
-	    HID_LogicalMax(0x7FU, /* logical Maximum (127) */
+	    HID_LogicalMax(0x7FU), /* logical Maximum (127) */
 	    HID_ReportSize(8), /* Report Size (8U) */
 	    HID_ReportCount(8), /* Report Count (8U) */
 	    HID_Output(0x02U), /* Output(Data, Variable, Absolute) */
@@ -535,7 +547,7 @@ uint8_t s_hidGenericInReportDesc[] = {
 
 	    HID_Usage(0x84), /* Usage (Vendor defined) */
 	    HID_LogicalMin(0x80U), /* logical Minimum (-128) */
-	    HID_LogicalMax(0x7FU, /* logical Maximum (127) */
+	    HID_LogicalMax(0x7FU), /* logical Maximum (127) */
 	    HID_ReportSize(8), /* Report Size (8U) */
 	    HID_ReportCount(8), /* Report Count (8U) */
 	    HID_Input(0x02U), /* Input(Data, Variable, Absolute) */
@@ -551,7 +563,7 @@ uint8_t s_hidGenericOutReportDesc[] = {
 
 	    HID_Usage(0x84), /* Usage (Vendor defined) */
 	    HID_LogicalMin(0x80U), /* logical Minimum (-128) */
-	    HID_LogicalMax(0x7FU, /* logical Maximum (127) */
+	    HID_LogicalMax(0x7FU), /* logical Maximum (127) */
 	    HID_ReportSize(8), /* Report Size (8U) */
 	    HID_ReportCount(8), /* Report Count (8U) */
 	    HID_Output(0x02U), /* Output(Data, Variable, Absolute) */
@@ -560,7 +572,7 @@ uint8_t s_hidGenericOutReportDesc[] = {
 };
 
 
-const uint8_t s_UsbDevCfgDescHidMousePart[] = 
+uint8_t s_UsbDevCfgDescHidMousePart[] = 
 {
     0x09, // 0 USB_DESCRIPTOR_LENGTH_INTERFACE, 
     0x04, // 1 USB_DESCRIPTOR_TYPE_INTERFACE, 
@@ -597,7 +609,7 @@ const uint8_t s_UsbDevCfgDescHidMousePart[] =
 
 };
 
-const uint8_t s_UsbDevCfgDescHidKeyboardPart[] = 
+uint8_t s_UsbDevCfgDescHidKeyboardPart[] = 
 {
     0x09, // 0 USB_DESCRIPTOR_LENGTH_INTERFACE, 
     0x04, // 1 USB_DESCRIPTOR_TYPE_INTERFACE, 
@@ -634,7 +646,7 @@ const uint8_t s_UsbDevCfgDescHidKeyboardPart[] =
 
 };
 
-const uint8_t s_UsbDevCfgDescHidGenericInEp[USB_DESCRIPTOR_LENGTH_ENDPOINT] = 
+uint8_t s_UsbDevCfgDescHidGenericInEp[USB_DESCRIPTOR_LENGTH_ENDPOINT] = 
 {
 	// ofs = 18 or 25
     USB_DESCRIPTOR_LENGTH_ENDPOINT, /* Size of this descriptor in bytes */
@@ -646,7 +658,7 @@ const uint8_t s_UsbDevCfgDescHidGenericInEp[USB_DESCRIPTOR_LENGTH_ENDPOINT] =
 	FS_HID_GENERIC_INTERRUPT_IN_INTERVAL, /* Interval for polling endpoint for data transfers. */
 };
 
-const uint8_t s_UsbDevCfgDescHidGenericOutEp[USB_DESCRIPTOR_LENGTH_ENDPOINT] = 
+uint8_t s_UsbDevCfgDescHidGenericOutEp[USB_DESCRIPTOR_LENGTH_ENDPOINT] = 
 {
 	// ofs = 18 or 25
     USB_DESCRIPTOR_LENGTH_ENDPOINT, /* Size of this descriptor in bytes */
@@ -658,7 +670,7 @@ const uint8_t s_UsbDevCfgDescHidGenericOutEp[USB_DESCRIPTOR_LENGTH_ENDPOINT] =
     FS_HID_GENERIC_INTERRUPT_OUT_INTERVAL, /* Interval for polling endpoint for data transfers. */
 };
 
-const uint8_t s_UsbDevCfgDescHidGenericPartHdr[] = 
+uint8_t s_UsbDevCfgDescHidGenericPartHdr[] = 
 {
     0x09, /* Size of this descriptor in bytes */
     0x04,   /* INTERFACE Descriptor Type */
@@ -686,11 +698,11 @@ const uint8_t s_UsbDevCfgDescHidGenericPartHdr[] =
 
 
 /* Define string descriptor */
-uint8_t g_UsbDeviceString0[] = {sizeof(g_UsbDeviceString0), USB_DESCRIPTOR_TYPE_STRING,
+uint8_t g_UsbDeviceString0[4] = {0, USB_DESCRIPTOR_TYPE_STRING,
     0x09, 0x04};
 
 uint8_t g_UsbDeviceString1[] = {
-    sizeof(g_UsbDeviceString1),
+    0,
     USB_DESCRIPTOR_TYPE_STRING,
     'N',0,'X',0,'P',0,' ',0, 
     'S',0,'E',0,' ',0,
@@ -699,7 +711,7 @@ uint8_t g_UsbDeviceString1[] = {
 };
 
 uint8_t g_UsbDeviceString2[] = {
-	sizeof(g_UsbDeviceString2),
+	0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'U',0,'S',0,'B',0,' ',0,
@@ -707,7 +719,7 @@ uint8_t g_UsbDeviceString2[] = {
 };
 
 uint8_t g_UsbDeviceString3[] = {
-	sizeof(g_UsbDeviceString3),
+	0,
     USB_DESCRIPTOR_TYPE_STRING,
     'f',0,'e',0,'e',0,'d',0, 
     'f',0,'a',0,'c',0,'e',0,' ',0,
@@ -716,7 +728,7 @@ uint8_t g_UsbDeviceString3[] = {
 };
 
 uint8_t g_UsbDeviceString4[] = {
-	sizeof(g_UsbDeviceString4),
+	0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'V',0,'C',0,'O',0,'M',0,' ',0,
@@ -725,7 +737,7 @@ uint8_t g_UsbDeviceString4[] = {
 };
 
 uint8_t g_UsbDeviceString5[] = {
-	sizeof(g_UsbDeviceString5),
+	0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'M',0,'C',0,'U',0,' ',0,
@@ -733,7 +745,7 @@ uint8_t g_UsbDeviceString5[] = {
 };
 
 uint8_t g_UsbDeviceString6[] = {
-	sizeof(g_UsbDeviceString6),
+	0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'S',0,'P',0,'I',0,' ',0,
@@ -741,7 +753,7 @@ uint8_t g_UsbDeviceString6[] = {
 };
 
 uint8_t g_UsbDeviceString7[] = {
-	sizeof(g_UsbDeviceString7),
+	0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'S',0,'D',0,' ',0,
@@ -750,7 +762,7 @@ uint8_t g_UsbDeviceString7[] = {
 
 
 uint8_t g_UsbDeviceString8[] = {
-    sizeof(g_UsbDeviceString8),
+    0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'H',0,'I',0,'D',0,' ',0,
@@ -758,7 +770,7 @@ uint8_t g_UsbDeviceString8[] = {
 };
 
 uint8_t g_UsbDeviceString9[] = {
-    sizeof(g_UsbDeviceString9),
+    0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'H',0,'I',0,'D',0,' ',0,
@@ -766,7 +778,7 @@ uint8_t g_UsbDeviceString9[] = {
 };
 
 uint8_t g_UsbDeviceString10[] = {
-    sizeof(g_UsbDeviceString10),
+    0,
     USB_DESCRIPTOR_TYPE_STRING,
     'm',0,'p',0,'y',0,' ',0, 
     'H',0,'I',0,'D',0,' ',0,
@@ -822,69 +834,70 @@ void USBD_SetVIDPIDRelease(uint16_t vid, uint16_t pid, uint16_t device_release_n
     g_UsbDeviceDescriptor[13] = USB_SHORT_GET_HIGH(device_release_num);
 }
 
-typedef union _USBDCfgFix_t
+uint32_t USBD_GetDescLen(usbd_desc_enum_t ndx)
 {
-	struct {
-	uint8_t itfNdx;
-	uint8_t epInNdx;
-	uint8_t epOutNdx;
-	uint16_t cfgDescSize;
+	switch(ndx)
+	{
+	case USBDESC_HID_REPORT_KEYBOARD:
+		return sizeof(cs_hidKeyboardReportDesc);
+	case USBDESC_HID_REPORT_MOUSE:
+		return sizeof(cs_hidMouseReportDesc);
+	case USBDESC_HID_GENERIC:
+		return (g_cfgFix.hidGRptDescLen);
+	default:
+		break;
+	}
+	return 0;
+}
 
-	uint8_t roMscEpInNdx;
-	uint8_t roMscEpOutNdx;
-	uint8_t roMscItfNdx;
-	uint8_t roCdcCicEpNdx;
-	uint8_t roCdcDicEpInNdx;
-	uint8_t roCdcDicEpOutNdx;
-	uint8_t roCdcCicItfNdx;
-	uint8_t roCdcDicItfNdx;
-	uint8_t roHidMEpInNdx;
-	uint8_t roHidMItfNdx;
-	uint8_t roHidKEpInNdx;
-	uint8_t roHidKItfNdx;
-	uint8_t roHidGEpInNdx;
-	uint8_t roHidGItfNdx;
-	const uint8_t *pcHidGRptDesc;
-	uint8_t hidGRptDescLen;
-	};
-	uint32_t d32;
-}USBDCfgFix_t;
+USBDCfgFix_t g_cfgFix;
 
-USBDCfgFix_t s_cfgFix;
-
+#define FIX_STR_DESC_SIZE(ndx) g_UsbDeviceString##ndx[0] = sizeof(g_UsbDeviceString##ndx)
 void USBD_BeginFixCfgData(void)
 {
-	s_cfgFix.d32 = 0;
+	g_cfgFix.d32 = 0;
+	FIX_STR_DESC_SIZE(0);
+	FIX_STR_DESC_SIZE(1);
+	FIX_STR_DESC_SIZE(2);
+	FIX_STR_DESC_SIZE(3);
+	FIX_STR_DESC_SIZE(4);
+	FIX_STR_DESC_SIZE(5);
+	FIX_STR_DESC_SIZE(6);
+	FIX_STR_DESC_SIZE(7);
+	FIX_STR_DESC_SIZE(8);
+	FIX_STR_DESC_SIZE(9);
+	FIX_STR_DESC_SIZE(10);
+	
 	memcpy(g_UsbDevCfgDesc, s_UsbDevCfgDescHdr, sizeof(s_UsbDevCfgDescHdr));
-	s_cfgFix.cfgDescSize = sizeof(s_UsbDevCfgDescHdr);
+	g_cfgFix.cfgDescSize = sizeof(s_UsbDevCfgDescHdr);
 }
 
 void USBD_EndFixCfgData(void)
 {
-	g_UsbDevCfgDesc[2] = USB_SHORT_GET_LOW(s_cfgFix.cfgDescSize);
-	g_UsbDevCfgDesc[3] = USB_SHORT_GET_HIGH(s_cfgFix.cfgDescSize);
+	g_UsbDevCfgDesc[2] = USB_SHORT_GET_LOW(g_cfgFix.cfgDescSize);
+	g_UsbDevCfgDesc[3] = USB_SHORT_GET_HIGH(g_cfgFix.cfgDescSize);
 }
 
 #define MAX_IN_EP_CNT     4
 #define MAX_OUT_EP_CNT    4
 #define APPEND_ITF_DESC(a) do{ \
-	memcpy(g_UsbDevCfgDesc + s_cfgFix.cfgDescSize, a, sizeof(a));\
-	s_cfgFix.cfgDescSize += sizeof(a);	\
+	memcpy(g_UsbDevCfgDesc + g_cfgFix.cfgDescSize, a, sizeof(a));\
+	g_cfgFix.cfgDescSize += sizeof(a);	\
 	}while(0)
 
 int USBD_AddItf_MSC(void)
 {
-	if (s_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT || s_cfgFix.epOutNdx + 1 > MAX_OUT_EP_CNT)
+	if (g_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT || g_cfgFix.epOutNdx + 1 > MAX_OUT_EP_CNT)
 		return -1L;  // not enough free endpoints!
-	g_mscDiskEndpoints[0].endpointAddress = s_cfgFix.epInNdx | (USB_IN << 7U);
-	g_mscDiskEndpoints[1].endpointAddress = s_cfgFix.epOutNdx | (USB_OUT << 7U);
-	g_mscDiskInterfaces[0].interfaceNumber = s_cfgFix.itfNdx;	
-	s_UsbDevCfgDescMscPart[2] = s_cfgFix.itfNdx; 
-	s_UsbDevCfgDescMscPart[11] = s_cfgFix.epInNdx
-	s_UsbDevCfgDescMscPart[18] = s_cfgFix.epOutNdx;
-	s_cfgFix.roMscEpInNdx = s_cfgFix.epInNdx++;
-	s_cfgFix.roMscEpOutNdx = s_cfgFix.epOutNdx++;
-	s_cfgFix.roMscItfNdx = s_cfgFix.itfNdx++;
+	g_mscDiskEndpoints[0].endpointAddress = g_cfgFix.epInNdx | (USB_IN << 7U);
+	g_mscDiskEndpoints[1].endpointAddress = g_cfgFix.epOutNdx | (USB_OUT << 7U);
+	g_mscDiskInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;	
+	s_UsbDevCfgDescMscPart[2] = g_cfgFix.itfNdx; 
+	s_UsbDevCfgDescMscPart[11] = g_cfgFix.epInNdx;
+	s_UsbDevCfgDescMscPart[18] = g_cfgFix.epOutNdx;
+	g_cfgFix.roMscEpInNdx = g_cfgFix.epInNdx++;
+	g_cfgFix.roMscEpOutNdx = g_cfgFix.epOutNdx++;
+	g_cfgFix.roMscItfNdx = g_cfgFix.itfNdx++;
 
 	APPEND_ITF_DESC(s_UsbDevCfgDescMscPart);
 	return 0;
@@ -892,13 +905,13 @@ int USBD_AddItf_MSC(void)
 
 int USBD_AddItf_VCP(void)
 {
-	if (s_cfgFix.epInNdx + 2 > MAX_IN_EP_CNT || s_cfgFix.epOutNdx + 1 > MAX_OUT_EP_CNT)
+	if (g_cfgFix.epInNdx + 2 > MAX_IN_EP_CNT || g_cfgFix.epOutNdx + 1 > MAX_OUT_EP_CNT)
 		return -1L;  // not enough free endpoints!
-	g_cdcVcomCicEndpoints[0].endpointAddress = s_cfgFix.epInNdx       | (USB_IN << 7U);  // cic.epin
-	g_cdcVcomDicEndpoints[0].endpointAddress = (s_cfgFix.epInNdx + 1) | (USB_IN << 7U);  // dic.epin
-	g_cdcVcomDicEndpoints[1].endpointAddress = s_cfgFix.epOutNdx      | (USB_OUT << 7U); // dic.epout
-	g_cdcVcomInterfaces[0].interfaceNumber = s_cfgFix.itfNdx;   // CIC itf
-	g_cdcVcomInterfaces[1].interfaceNumber = s_cfgFix.itfNdx + 1;	// DIC itf
+	g_cdcVcomCicEndpoints[0].endpointAddress = g_cfgFix.epInNdx       | (USB_IN << 7U);  // cic.epin
+	g_cdcVcomDicEndpoints[0].endpointAddress = (g_cfgFix.epInNdx + 1) | (USB_IN << 7U);  // dic.epin
+	g_cdcVcomDicEndpoints[1].endpointAddress = g_cfgFix.epOutNdx      | (USB_OUT << 7U); // dic.epout
+	g_cdcVcomInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;   // CIC itf
+	g_cdcVcomInterfaces[1].interfaceNumber = g_cfgFix.itfNdx + 1;	// DIC itf
 
 	/* offset to fix in cdc itf desc
 	2, 1stItfNdx
@@ -908,33 +921,33 @@ int USBD_AddItf_VCP(void)
 	54, dicEpInNdx
 	61, dicEpOutNdx	
 	*/
-	s_UsbDevCfgDescCdcPart[ 2] = s_cfgFix.itfNdx; 
-	s_UsbDevCfgDescCdcPart[10] = s_cfgFix.itfNdx;
-	s_UsbDevCfgDescCdcPart[38] = s_cfgFix.epInNdx;
-	s_UsbDevCfgDescCdcPart[45] = s_cfgFix.itfNdx + 1
-	s_UsbDevCfgDescCdcPart[54] = s_cfgFix.epInNdx + 1;
-	s_UsbDevCfgDescCdcPart[61] = s_cfgFix.epOutNdx;
+	s_UsbDevCfgDescCdcPart[ 2] = g_cfgFix.itfNdx; 
+	s_UsbDevCfgDescCdcPart[10] = g_cfgFix.itfNdx;
+	s_UsbDevCfgDescCdcPart[38] = g_cfgFix.epInNdx;
+	s_UsbDevCfgDescCdcPart[45] = g_cfgFix.itfNdx + 1;
+	s_UsbDevCfgDescCdcPart[54] = g_cfgFix.epInNdx + 1;
+	s_UsbDevCfgDescCdcPart[61] = g_cfgFix.epOutNdx;
 
-	s_cfgFix.roCdcCicItfNdx = s_cfgFix.itfNdx++;
-	s_cfgFix.roCdcCicEpNdx = s_cfgFix.epInNdx++;
-	s_cfgFix.roCdcDicItfNdx = s_cfgFix.itfNdx++;
-	s_cfgFix.roCdcDicEpInNdx = s_cfgFix.epInNdx++;
-	s_cfgFix.roCdcDicEpOutNdx = s_cfgFix.epOutNdx++;
+	g_cfgFix.roCdcCicItfNdx = g_cfgFix.itfNdx++;
+	g_cfgFix.roCdcCicEpNdx = g_cfgFix.epInNdx++;
+	g_cfgFix.roCdcDicItfNdx = g_cfgFix.itfNdx++;
+	g_cfgFix.roCdcDicEpInNdx = g_cfgFix.epInNdx++;
+	g_cfgFix.roCdcDicEpOutNdx = g_cfgFix.epOutNdx++;
 
 	APPEND_ITF_DESC(s_UsbDevCfgDescCdcPart);
 	return 0;
 }
 
 int USBD_AddItf_HIDKeyboard(void) {
-	if (s_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT)
+	if (g_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT)
 		return -1L;  // not enough free endpoints!
-	g_hidKeyboardEndpoints[0].endpointAddress = s_cfgFix.epInNdx | (USB_IN << 7U);
-	g_hidKeyboardInterfaces[0].interfaceNumber = s_cfgFix.itfNdx;	
-	s_UsbDevCfgDescHidKeyboardPart[2] = s_cfgFix.itfNdx; 
-	s_UsbDevCfgDescHidKeyboardPart[20] = s_cfgFix.epInNdx
+	g_hidKeyboardEndpoints[0].endpointAddress = g_cfgFix.epInNdx | (USB_IN << 7U);
+	g_hidKeyboardInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;	
+	s_UsbDevCfgDescHidKeyboardPart[2] = g_cfgFix.itfNdx; 
+	s_UsbDevCfgDescHidKeyboardPart[20] = g_cfgFix.epInNdx;
 
-	s_cfgFix.roMscEpInNdx = s_cfgFix.epInNdx++;
-	s_cfgFix.roMscItfNdx = s_cfgFix.itfNdx++;
+	g_cfgFix.roMscEpInNdx = g_cfgFix.epInNdx++;
+	g_cfgFix.roMscItfNdx = g_cfgFix.itfNdx++;
 
 	APPEND_ITF_DESC(s_UsbDevCfgDescHidKeyboardPart);
 
@@ -942,15 +955,15 @@ int USBD_AddItf_HIDKeyboard(void) {
 }
 
 int USBD_AddItf_HIDMouse(void) {
-	if (s_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT)
+	if (g_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT)
 		return -1L;  // not enough free endpoints!
-	g_hidMouseEndpoints[0].endpointAddress = s_cfgFix.epInNdx | (USB_IN << 7U);
-	g_hidMouseInterfaces[0].interfaceNumber = s_cfgFix.itfNdx;	
-	s_UsbDevCfgDescHidMousePart[2] = s_cfgFix.itfNdx; 
-	s_UsbDevCfgDescHidMousePart[20] = s_cfgFix.epInNdx
+	g_hidMouseEndpoints[0].endpointAddress = g_cfgFix.epInNdx | (USB_IN << 7U);
+	g_hidMouseInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;	
+	s_UsbDevCfgDescHidMousePart[2] = g_cfgFix.itfNdx; 
+	s_UsbDevCfgDescHidMousePart[20] = g_cfgFix.epInNdx;
 
-	s_cfgFix.roMscEpInNdx = s_cfgFix.epInNdx++;
-	s_cfgFix.roMscItfNdx = s_cfgFix.itfNdx++;
+	g_cfgFix.roMscEpInNdx = g_cfgFix.epInNdx++;
+	g_cfgFix.roMscItfNdx = g_cfgFix.itfNdx++;
 
 	APPEND_ITF_DESC(s_UsbDevCfgDescHidMousePart);
 
@@ -990,29 +1003,29 @@ int USBD_AddItf_HIDGeneric(USBD_HID_ModeInfoTypeDef *hid_info)
 
 	
 	if (hid_info->report_desc) {
-		s_cfgFix.pcHidGRptDesc = hid_info->report_desc;
-		s_cfgFix.hidGRptDescLen = hid_info->report_desc_len;
+		g_cfgFix.pcHidGRptDesc = hid_info->report_desc;
+		g_cfgFix.hidGRptDescLen = hid_info->report_desc_len;
 	} else {
 		// use preset
-		s_cfgFix.pcHidGRptDesc = pPresetRptDesc;
+		g_cfgFix.pcHidGRptDesc = pPresetRptDesc;
 		if (bmIO == 3)
-			s_cfgFix.hidGRptDescLen = sizeof(s_hidGenericIOReportDesc);
+			g_cfgFix.hidGRptDescLen = sizeof(s_hidGenericIOReportDesc);
 		else if (bmIO == 2)
-			s_cfgFix.hidGRptDescLen = sizeof(s_hidGenericOutReportDesc);
+			g_cfgFix.hidGRptDescLen = sizeof(s_hidGenericOutReportDesc);
 		else
-			s_cfgFix.hidGRptDescLen = sizeof(s_hidGenericInReportDesc);
+			g_cfgFix.hidGRptDescLen = sizeof(s_hidGenericInReportDesc);
 	}
 
 	s_UsbDevCfgDescHidGenericPartHdr[HID_DESC_OFFSET_REPORT_DESC_LEN] = 
-		USB_SHORT_GET_LOW(s_cfgFix.hidGRptDescLen);
+		USB_SHORT_GET_LOW(g_cfgFix.hidGRptDescLen);
 	s_UsbDevCfgDescHidGenericPartHdr[HID_DESC_OFFSET_REPORT_DESC_LEN + 1] = 
-		USB_SHORT_GET_HIGH(s_cfgFix.hidGRptDescLen);
+		USB_SHORT_GET_HIGH(g_cfgFix.hidGRptDescLen);
 
 	APPEND_ITF_DESC(s_UsbDevCfgDescHidGenericPartHdr);
 
 	// fix endpoint descs
 	if (hid_info->is_has_in_ep) {
-		if (s_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT)
+		if (g_cfgFix.epInNdx + 1 > MAX_IN_EP_CNT)
 			return -1L;  // not enough free endpoints!
 		memcpy(epDesc, s_UsbDevCfgDescHidGenericInEp, USB_DESCRIPTOR_LENGTH_ENDPOINT);
 		n = (hid_info->in_ep_max_packet_len == 0 ? 
@@ -1025,7 +1038,7 @@ int USBD_AddItf_HIDGeneric(USBD_HID_ModeInfoTypeDef *hid_info)
 	}
 
 	if (hid_info->is_has_out_ep) {
-		if (s_cfgFix.epOutNdx + 1 > MAX_OUT_EP_CNT)
+		if (g_cfgFix.epOutNdx + 1 > MAX_OUT_EP_CNT)
 			return -1L;  // not enough free endpoints!
 		memcpy(epDesc, s_UsbDevCfgDescHidGenericOutEp, USB_DESCRIPTOR_LENGTH_ENDPOINT);
 		n = (hid_info->out_ep_max_packet_len == 0 ? 
@@ -1039,17 +1052,9 @@ int USBD_AddItf_HIDGeneric(USBD_HID_ModeInfoTypeDef *hid_info)
 	return 0;
 }
 
-const uint8_t* USBD_CopyHidGenericDefaultDesc(uint8_t *pDesc, uint16_t maxLen)
-{
-	uint16_t curLen = maxLen < sizeof(s_hidGenericReportDesc) ? maxLen : sizeof(s_hidGenericReportDesc);
-	if (pDesc)
-		memcpy(pDesc, s_hidGenericReportDesc, curLen);
-	return s_hidGenericReportDesc;
-}
-
 const uint8_t* USBD_GetHidGenericReportDesc(void) 
 {
-	return s_cfgFix.pcHidRptDesc;
+	return g_cfgFix.pcHidGRptDesc;
 }
 
 int USBD_AddItf_AudPlayback(void) {
@@ -1062,6 +1067,9 @@ int USBD_AddItf_AudRecord(void) {
 
 uint8_t usbd_mode;
 
+uint8_t USBD_GetMode(void) {
+    return usbd_mode;
+}
 
 
 int USBD_SelectMode(uint32_t mode, USBD_HID_ModeInfoTypeDef *hid_info) {
@@ -1079,10 +1087,12 @@ int USBD_SelectMode(uint32_t mode, USBD_HID_ModeInfoTypeDef *hid_info) {
     if (mode & USBD_MODE_HIDM)
 		ret |= USBD_AddItf_HIDMouse();
 
-	hid_info->is_has_in_ep = (0 != (mode & USBD_MODE_HIDI));
-	hid_info->is_has_out_ep = (0 != (mode & USBD_MODE_HIDO));
-	if (hid_info->is_has_in_ep || hid_info->is_has_out_ep)
-		ret |= USBD_AddItf_HIDGeneric(hid_info);
+	if (hid_info) {
+		hid_info->is_has_in_ep = (0 != (mode & USBD_MODE_HIDI));
+		hid_info->is_has_out_ep = (0 != (mode & USBD_MODE_HIDO));
+		if (hid_info->is_has_in_ep || hid_info->is_has_out_ep)
+			ret |= USBD_AddItf_HIDGeneric(hid_info);
+	}
 	
 	if (mode & USBD_MODE_AUDP)
 		ret |= USBD_AddItf_AudPlayback();
@@ -1126,7 +1136,7 @@ usb_status_t USB_DeviceGetConfigurationDescriptor(
 {
     if (USB_COMPOSITE_CONFIGURE_INDEX > configurationDescriptor->configuration)
     {
-        configurationDescriptor->buffer = g_UsbDeviceConfigurationDescriptor;
+        configurationDescriptor->buffer = g_UsbDevCfgDesc;
         configurationDescriptor->length = USB_DESCRIPTOR_LENGTH_CONFIGURATION_ALL;
         return kStatus_USB_Success;
     }
@@ -1200,8 +1210,8 @@ usb_status_t USB_DeviceSetSpeed(usb_device_handle handle, uint8_t speed)
     usb_descriptor_union_t *ptr1;
     usb_descriptor_union_t *ptr2;
 
-    ptr1 = (usb_descriptor_union_t *)(&g_UsbDeviceConfigurationDescriptor[0]);
-    ptr2 = (usb_descriptor_union_t *)(&g_UsbDeviceConfigurationDescriptor[USB_DESCRIPTOR_LENGTH_CONFIGURATION_ALL - 1]);
+    ptr1 = (usb_descriptor_union_t *)(&g_UsbDevCfgDesc[0]);
+    ptr2 = (usb_descriptor_union_t *)(&g_UsbDevCfgDesc[g_cfgFix.cfgDescSize - 1]);
 
     while (ptr1 < ptr2)
     {
@@ -1311,3 +1321,4 @@ usb_status_t USB_DeviceSetSpeed(usb_device_handle handle, uint8_t speed)
 
     return kStatus_USB_Success;
 }
+

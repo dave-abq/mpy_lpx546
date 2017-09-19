@@ -53,7 +53,7 @@
 #include "pin.h"
 #include "extint.h"
 #include "usrsw.h"
-// #include "usb_app.h"
+#include "usb_app.h"
 // #include "rtc.h"
 #include "storage.h"
 #include "sdcard.h"

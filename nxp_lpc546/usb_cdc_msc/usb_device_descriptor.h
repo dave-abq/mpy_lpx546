@@ -116,7 +116,7 @@
 #define USB_DESCRIPTOR_LENGTH_CDC_UNION_FUNC (5)
 
 #define USB_DEVICE_CONFIGURATION_COUNT (1)
-#define USB_DEVICE_STRING_COUNT (5)
+#define USB_DEVICE_STRING_COUNT (11)
 #define USB_DEVICE_LANGUAGE_COUNT (1)
 #define USB_INTERFACE_COUNT (3)
 
@@ -263,7 +263,8 @@
 
 
 /* HID Descriptor */
-typedef __packed struct _HID_DESCRIPTOR {
+#pragma pack(1)
+typedef  struct _HID_DESCRIPTOR {
   uint8_t  bLength;
   uint8_t  bDescriptorType;
   uint16_t bcdHID;
@@ -275,7 +276,7 @@ typedef __packed struct _HID_DESCRIPTOR {
     uint16_t wDescriptorLength;
   } DescriptorList[1];
 } HID_DESCRIPTOR;
-
+#pragma pack()
 
 /* HID Request Codes */
 #define HID_REQUEST_GET_REPORT          0x01
@@ -579,6 +580,100 @@ typedef __packed struct _HID_DESCRIPTOR {
 #define HID_UsageMin(x)        0x19,x
 #define HID_UsageMax(x)        0x29,x
 
+#include "usb.h"
+#include "usb_device.h"
+#include "usb_device_class.h"
+
+
+typedef union _USBDCfgFix_t
+{
+	struct {
+	uint8_t itfNdx;
+	uint8_t epInNdx;
+	uint8_t epOutNdx;
+	uint16_t cfgDescSize;
+
+	uint8_t roMscEpInNdx;
+	uint8_t roMscEpOutNdx;
+	uint8_t roMscItfNdx;
+	uint8_t roCdcCicEpNdx;
+	uint8_t roCdcDicEpInNdx;
+	uint8_t roCdcDicEpOutNdx;
+	uint8_t roCdcCicItfNdx;
+	uint8_t roCdcDicItfNdx;
+	uint8_t roHidMEpInNdx;
+	uint8_t roHidMItfNdx;
+	uint8_t roHidKEpInNdx;
+	uint8_t roHidKItfNdx;
+	uint8_t roHidGEpInNdx;
+	uint8_t roHidGItfNdx;
+	const uint8_t *pcHidGRptDesc;
+	uint8_t hidGRptDescLen;
+	};
+	uint32_t d32;
+}USBDCfgFix_t;
+
+#ifndef _USB_DEVICE_DESCRIPTOR_C_
+	extern const USBDCfgFix_t g_cfgFix;
+#endif
+
+typedef enum {
+	USBDESC_HID_REPORT_MOUSE,
+	USBDESC_HID_REPORT_KEYBOARD,
+	USBDESC_HID_GENERIC,
+}usbd_desc_enum_t;
+
+typedef enum {
+	USBEP_VCP_CIC_EP_IN,
+	USBEP_VCP_DIC_EP_IN,
+	USBEP_VCP_DIC_EP_OUT,
+	USBEP_MSC_EP_IN,
+	USBEP_MSC_EP_UT,
+	USBEP_HID_KEYBOARD_EP_IN,
+	USBEP_HID_MOUSE_EP_IN,
+	USBEP_HID_GENERIC_EP_IN,
+	USBEP_HID_GENERIC_EP_OUT,
+	USBEP_AUD_PLAYBACK_STREAM_EP_OUT,
+	USBEP_AUD_RECORD_STREAM_EP_IN,
+}usbd_ep_ndx_enum_t;
+
+typedef enum {
+    USBD_MODE_CDC = 0x01,   // virtual com
+    USBD_MODE_MSC = 0x02,   // mass storage
+    USBD_MODE_HIDK = 0x04,  // HID keyboard
+    USBD_MODE_HIDM = 0x08,  // HID mouse
+    USBD_MODE_HIDI = 0x10,  // HID generic input
+    USBD_MODE_HIDO = 0x20,  // HID generic output
+    USBD_MODE_HIDG = USBD_MODE_HIDI | USBD_MODE_HIDO, // implemented in single class, single itf
+    USBD_MODE_HID = USBD_MODE_HIDK | USBD_MODE_HIDM,   // HID = K + M, implemented in 2 classes, each has 1 itf
+    USBD_MODE_AUDP = 0x40,  // audio playback
+    USBD_MODE_AUDR = 0x80,  // audio record
+    USBD_MODE_AUD  = USBD_MODE_AUDP | USBD_MODE_AUDR,
+    USBD_MODE_CDC_MSC = USBD_MODE_CDC | USBD_MODE_MSC,
+    USBD_MODE_CDC_HID = USBD_MODE_CDC | USBD_MODE_HID,
+    USBD_MODE_MSC_HID = USBD_MODE_MSC | USBD_MODE_HID,
+    USBD_MODE_MSC_HID_HIDG = USBD_MODE_MSC | USBD_MODE_HID | USBD_MODE_HIDG,
+    USBD_MODE_CDC_MSC_AUD = USBD_MODE_CDC | USBD_MODE_MSC | USBD_MODE_AUD, // epIn: 2+1+(1rec+1fdbk), epOut: 1+1+(1plbk + 1ctrl)
+    USBD_MODE_CDC_MSC_HIDM = USBD_MODE_CDC_MSC | USBD_MODE_HIDM,
+    USBD_MODE_CDC_MSC_HIDG = USBD_MODE_CDC_MSC | USBD_MODE_HIDG,
+} usb_device_mode_t;
+
+typedef struct _USBD_HID_ModeInfoTypeDef {
+    uint8_t subclass; // 0=no sub class, 1=boot
+    uint8_t protocol; // 0=none, 1=keyboard, 2=mouse
+    uint8_t max_packet_len; // only support up to 255
+    uint8_t polling_interval; // in units of 1ms
+    uint8_t report_desc_len;
+	// >>> rocky added
+	uint8_t is_has_in_ep;
+	uint8_t is_has_out_ep;
+	uint16_t in_ep_max_packet_len; // 0 = use 'max_packet_len' field
+	uint16_t out_ep_max_packet_len; // 0 = use 'max_packet_len' field
+	uint8_t in_polling_interval; // in units of 1ms, 0 = use 'polling interval'
+	uint8_t out_polling_interval; // in units of 1ms, 0 = use 'polling interval'
+	// <<<
+    const uint8_t *report_desc;
+} USBD_HID_ModeInfoTypeDef;
 
 /*******************************************************************************
 * API
@@ -645,8 +740,10 @@ usb_status_t USB_DeviceGetConfigurationDescriptor(
 usb_status_t USB_DeviceGetStringDescriptor(usb_device_handle handle,
                                            usb_device_get_string_descriptor_struct_t *stringDescriptor);
 
-const uint8_t* USBD_CopyHidGenericDefaultDesc(uint8_t *pDesc, uint16_t maxLen);
 const uint8_t* USBD_GetHidGenericReportDesc(void);
+int USBD_SelectMode(uint32_t mode, USBD_HID_ModeInfoTypeDef *hid_info);
+uint8_t USBD_GetMode(void);
 
+uint32_t USBD_GetEpNdx(usbd_ep_ndx_enum_t ep);
 
 #endif /* _USB_DEVICE_DESCRIPTOR_H_ */

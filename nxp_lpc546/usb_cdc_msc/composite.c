@@ -84,18 +84,18 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
 * Variables
 ******************************************************************************/
 /* Composite device structure. */
-static usb_device_composite_struct_t g_composite;
-extern usb_device_class_struct_t g_UsbDeviceCdcVcomConfig;
-extern usb_device_class_struct_t g_mscDiskClass;
+usb_device_composite_struct_t g_composite;
+extern usb_device_class_struct_t g_usbdCdcVcomConfig;
+extern usb_device_class_struct_t g_usbdMscConfig;
+extern usb_device_class_struct_t g_usbdHidKeyboardConfig;
+extern usb_device_class_struct_t g_usbdHidMouseConfig;
+extern usb_device_class_struct_t g_usbdHidGenericConfig;
 
-/* USB device class information */
-usb_device_class_config_struct_t g_compositeDevice[2] = {
-    {
-        USB_DeviceCdcVcomCallback, (class_handle_t)NULL, &g_UsbDeviceCdcVcomConfig,
-    },
-    {
-        USB_DeviceMscCallback, (class_handle_t)NULL, &g_mscDiskClass,
-    }};
+/* USB device class information, support at most 5 classes */
+usb_device_class_config_struct_t g_compositeDevice[5] = {
+    {USB_DeviceMscCallback, (class_handle_t)NULL, &g_usbdMscConfig},
+    {USB_DeviceCdcVcomCallback, (class_handle_t)NULL, &g_usbdCdcVcomConfig},
+};
 
 /* USB device class configuration information */
 usb_device_class_config_list_struct_t g_compositeDeviceConfigList = {
@@ -262,7 +262,8 @@ void USBAPP_Init(void)
 
 	POWER_DisablePD(kPDRUNCFG_PD_FRO_EN); /*!< Ensure FRO is on so that we can switch to its 12MHz mode temporarily*/
 	CLOCK_SetupFROClocking(96000000);			 /*!< Setup CPU to run off FRO 96MHz output*/
-#if (defined USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS)
+
+#if 0 // (defined USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS)
 	POWER_DisablePD(kPDRUNCFG_PD_USB1_PHY);
 	/* enable usb1 host clock */
 	CLOCK_EnableClock(kCLOCK_Usbh1);
@@ -282,29 +283,31 @@ void USBAPP_Init(void)
 #endif
 
 
-#if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0)
-    uint8_t ehciIrq[] = USBHS_IRQS;
-    irqNumber = ehciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
+#if 0 //defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0)
+	    uint8_t ehciIrq[] = USBHS_IRQS;
+	    irqNumber = ehciIrq[CONTROLLER_ID - kUSB_ControllerEhci0];
 
-#if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 1U)
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(USB_HS_PHY_CLK_SRC, USB_HS_PHY_CLK_FREQ);
-        CLOCK_EnableUsbhs0Clock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(USB_HS_PHY_CLK_SRC, USB_HS_PHY_CLK_FREQ);
-        CLOCK_EnableUsbhs1Clock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
-    }
-#else
-    CLOCK_EnableUsbhs0PhyPllClock(USB_HS_PHY_CLK_SRC, USB_HS_PHY_CLK_FREQ);
-    CLOCK_EnableUsbhs0Clock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
-#endif
+	#if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 1U)
+	    if (CONTROLLER_ID == kUSB_ControllerEhci0)
+	    {
+	        CLOCK_EnableUsbhs0PhyPllClock(USB_HS_PHY_CLK_SRC, USB_HS_PHY_CLK_FREQ);
+	        CLOCK_EnableUsbhs0Clock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
+	    }
+	    else
+	    {
+	        CLOCK_EnableUsbhs1PhyPllClock(USB_HS_PHY_CLK_SRC, USB_HS_PHY_CLK_FREQ);
+	        CLOCK_EnableUsbhs1Clock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
+	    }
+	#else
+	    CLOCK_EnableUsbhs0PhyPllClock(USB_HS_PHY_CLK_SRC, USB_HS_PHY_CLK_FREQ);
+	    CLOCK_EnableUsbhs0Clock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
+	#endif
 
-    USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ);
-#endif
-#if defined(USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI > 0)
+	    USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ);
+#endif 
+
+
+#if 0 // defined(USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI > 0)
     uint8_t khciIrq[] = USB_IRQS;
     irqNumber = khciIrq[CONTROLLER_ID - kUSB_ControllerKhci0];
 
@@ -317,14 +320,14 @@ void USBAPP_Init(void)
     uint8_t usbDeviceIP3511Irq[] = USB_IRQS;
     irqNumber = usbDeviceIP3511Irq[CONTROLLER_ID - kUSB_ControllerLpcIp3511Fs0];
 
-    /* enable USB IP clock */
+    // enable USB IP clock
     CLOCK_EnableUsbfs0DeviceClock(USB_FS_CLK_SRC, USB_FS_CLK_FREQ);
 #endif
 
-#if defined(USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS > 0U)
+#if 0 // defined(USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS > 0U)
     uint8_t usbDeviceIP3511Irq[] = USBHSD_IRQS;
     irqNumber = usbDeviceIP3511Irq[CONTROLLER_ID - kUSB_ControllerLpcIp3511Hs0];
-    /* enable USB IP clock */
+    // enable USB IP clock
     CLOCK_EnableUsbhs0DeviceClock(USB_HS_CLK_SRC, USB_HS_CLK_FREQ);
 #endif
 
@@ -338,7 +341,7 @@ void USBAPP_Init(void)
 #endif
 #endif
 
-#if (defined(FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT > 0U))
+#if 0 // (defined(FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT > 0U))
     SYSMPU_Enable(SYSMPU, 0);
 #endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
 
@@ -347,7 +350,7 @@ void USBAPP_Init(void)
  * the KHCI clock is enabled. When the demo uses USB EHCI IP, the USB KHCI dedicated
  * RAM can not be used and the memory can't be accessed.
  */
-#if (defined(FSL_FEATURE_USB_KHCI_USB_RAM) && (FSL_FEATURE_USB_KHCI_USB_RAM > 0U))
+#if 0 //(defined(FSL_FEATURE_USB_KHCI_USB_RAM) && (FSL_FEATURE_USB_KHCI_USB_RAM > 0U))
 #if (defined(FSL_FEATURE_USB_KHCI_USB_RAM_BASE_ADDRESS) && (FSL_FEATURE_USB_KHCI_USB_RAM_BASE_ADDRESS > 0U))
     for (int i = 0; i < FSL_FEATURE_USB_KHCI_USB_RAM; i++)
     {
@@ -377,7 +380,6 @@ void USBAPP_Init(void)
         USB_DeviceCdcVcomInit(&g_composite);
         USB_DeviceMscDiskInit(&g_composite);
     }
-
 #if defined(__GIC_PRIO_BITS)
     GIC_SetPriority((IRQn_Type)irqNumber, USB_DEVICE_INTERRUPT_PRIORITY);
 #else
@@ -385,7 +387,23 @@ void USBAPP_Init(void)
 #endif
     EnableIRQ((IRQn_Type)irqNumber);
 
-    USB_DeviceRun(g_composite.deviceHandle);
+    USB_DeviceRun(g_composite.deviceHandle);	
+}
+
+int32_t USBAPP_Deinit(void)
+{
+	usb_status_t st = st;
+	if (g_composite.deviceHandle) {
+		if (USB_DeviceStop(g_composite.deviceHandle)== kStatus_USB_Success)
+		{
+			st = USB_DeviceDeinit(g_composite.deviceHandle);
+			assert(st == kStatus_USB_Success);
+			return 0;
+		} else {
+			return -1;
+		}
+	}
+	return -1;
 }
 
 /*!

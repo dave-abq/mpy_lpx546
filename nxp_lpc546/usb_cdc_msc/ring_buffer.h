@@ -35,6 +35,7 @@
 #include <string.h>
 
 #define RINGBUF_IRQ_SAFE
+#define RINGBLK_IRQ_SAFE
 
 typedef struct
 {
@@ -138,6 +139,59 @@ int32_t RingBuf_GetFreeBytes(ring_buffer_t* pRB);
  * @return	>=0:Used bytes ; <0:Failed
  */
 int32_t RingBuf_GetUsedBytes(ring_buffer_t* pRB);
+
+#define RING_BLOCK_MAX_CNT 8
+#define RING_BLOCK_MAX_SIZE	64
+
+typedef struct
+{
+	uint8_t *pBlks;
+	uint16_t blkSize;  // size of one block
+	uint16_t blkRNdx;	// read index within OLDest block. We allow app to consue partial of one block each time
+	// writ index within NEWest block. We allow app to write partial o one block each time
+	// this is USB HW friendly and memory saving: app can keep writing data until USB IP wants a new ep buffer and it
+	// is the only available. When this happens, driver need to RingBlk_Finalize() to finalize this block
+	uint16_t blkWNdx;	
+	uint16_t cbBlkFills[RING_BLOCK_MAX_CNT];	// filled size for each block
+	uint32_t cbTotUsed;	// total fill size
+	uint8_t blkCnt;   // count of blocks
+	uint8_t usedCnt;   // count of used blocks. even if a block is not fully filled, it is treated as used
+	uint8_t rNdx;     // read index of next block
+	uint8_t wNdx;     // write index of next block
+  	uint8_t takenBlkNdx;
+} ring_block_t, RINGBLK_T;
+
+int32_t RingBlk_Init(ring_block_t *pRB, uint8_t *pBlkAry, uint32_t blkSize, uint32_t blkCnt);
+int32_t RingBlk_Write(ring_block_t* pRB, const uint8_t *pcData, uint32_t dataBytes);
+int32_t RingBlk_Write1Blk(ring_block_t* pRB, uint8_t *pBuf, uint32_t bufSize);
+// int32_t RingBlk_Write1Blk(ring_block_t* pRB, const uint8_t *pcData, uint32_t dataBytes);
+int32_t RingBlk_Read(ring_block_t* pRB, uint8_t *pData, uint32_t dataBytes);
+int32_t RingBlk_Read1Blk(ring_block_t* pRB, uint8_t *pData, uint32_t bufSize);
+int32_t RingBlk_Copy(ring_block_t* pRB, uint8_t *pData, uint32_t dataBytes);
+#define RingBlk_Peek RingBlk_Copy
+
+int32_t RingBlk_GetFreeBlks(ring_block_t* pRB);
+int32_t RingBlk_GetUsedBlks(ring_block_t* pRB);
+int32_t RingBlk_GetUsedBytes(ring_block_t* pRB);
+int32_t RingBlk_GetFreeBytes(ring_block_t* pRB);
+
+// take one block for read/write, usually used for providing DMA/USB/Eth for auto buffer fill
+// this API is usually called in ISR when peripheral has recv'ed the taken buffer
+// ISR to fix the filled byte count
+uint8_t* RingBlk_TakeNextFreeBlk(ring_block_t *pRB);
+// fix the buffer filled count, called in ISR when peripheral has filled the taken buffer
+// if ppNextFreeBlk is not NULL, then automatically take next free block as if RingBlk_TakeNextFreeBlk is called
+// otherwise, MUST first call RingBlk_Take1Blk, then after the taken block is filled call this API to fix the filled count
+int32_t RingBlk_FixBlkFillCnt(ring_block_t *pRB, uint32_t cbFill, uint8_t **ppNextFreeBlk);
+// Get the block that is taken with RingBlk_TakeNextFreeBlk or RingBlk_FixBlkFillCnt
+uint8_t* RingBlk_GetTakenBlk(ring_block_t *pRB);
+
+
+// this API is usually called in ISR when peripheral has xmit'ed the oldest buffer and feed it the next block to xmit
+// if ppBlk is not NULL, then assign the next oldest block after current olest block is freed.
+int32_t RingBlk_FreeOldestBlk(ring_block_t *pRB, uint8_t **ppNewOldestBlk);
+int32_t RingBlk_GetOldestBlk(ring_block_t *pRB, uint8_t **ppOldestBlk);
+
 
 /**
  * @}

@@ -29,28 +29,32 @@
  */
 #ifndef _USB_CDC_VCOM_H_
 #define _USB_CDC_VCOM_H_ 1
+#include "usb.h"
+#include "usb_device.h"
+#include "usb_device_class.h"
+#include "usb_device_descriptor.h"
 
 /*******************************************************************************
 * Definitions
 ******************************************************************************/
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0)
 #define CONTROLLER_ID kUSB_ControllerEhci0
-#define DATA_BUFF_SIZE (2*HS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
+#define DATA_BUFF_SIZE (HS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
 
 #endif
 #if defined(USB_DEVICE_CONFIG_KHCI) && (USB_DEVICE_CONFIG_KHCI > 0)
 #define CONTROLLER_ID kUSB_ControllerKhci0
-#define DATA_BUFF_SIZE (2*FS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
+#define DATA_BUFF_SIZE (FS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
 
 #endif
 #if defined(USB_DEVICE_CONFIG_LPCIP3511FS) && (USB_DEVICE_CONFIG_LPCIP3511FS > 0U)
 #define CONTROLLER_ID kUSB_ControllerLpcIp3511Fs0
-#define DATA_BUFF_SIZE (2*FS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
+#define DATA_BUFF_SIZE (FS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
 #endif
 
 #if defined(USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS > 0U)
 #define CONTROLLER_ID kUSB_ControllerLpcIp3511Hs0
-#define DATA_BUFF_SIZE (2*HS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
+#define DATA_BUFF_SIZE (HS_CDC_VCOM_BULK_OUT_PACKET_SIZE)
 #endif
 
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
@@ -96,5 +100,12 @@ typedef struct _usb_cdc_acm_info
     uint8_t currentInterface; /* Current interface index.                           */
     uint16_t uartState;       /* UART state of the CDC device.                      */
 } usb_cdc_acm_info_t;
+
+int VCOM_Read(uint8_t *buf, uint32_t len, uint32_t timeout);
+void VCOM_WriteAlways(const uint8_t *buf, uint32_t len);
+uint32_t VCOM_RxBufGetFilledBytes(void);
+int USBD_CDC_TxHalfEmpty(void);
+
+
 
 #endif /* _USB_CDC_VCOM_H_ */

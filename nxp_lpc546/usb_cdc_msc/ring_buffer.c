@@ -185,4 +185,318 @@ int32_t RingBuf_Free(ring_buffer_t* pRB, uint32_t bytesToFree)
 	return bytesToFree;
 }
 
+#ifdef RINGBLK_IRQ_SAFE
+#include <cmsis.h>
+#define INIT_CRITICAL_RBK() uint32_t priMask = __get_PRIMASK()
+#define ENTER_CRITICAL_RBK() __set_PRIMASK(1)
+#define LEAVE_CRITICAL_RBK() __set_PRIMASK(priMask)
+#else
+#define INIT_CRITICAL_RBK()
+#define ENTER_CRITICAL_RBK()
+#define LEAVE_CRITICAL_RBK()
+#endif
+
+
+int32_t RingBlk_Init(ring_block_t *pRB, uint8_t *pBlksAry, uint32_t blkSize, uint32_t blkCnt)
+
+{
+	uint32_t i;
+	pRB->pBlks	 	= (uint8_t*)pBlksAry;
+	pRB->blkSize	= blkSize;
+	pRB->blkCnt 	= blkCnt;
+	pRB->rNdx		= 0;
+	pRB->wNdx		= 0;
+	pRB->blkWNdx	= 0;
+	pRB->blkRNdx	= 0;
+	pRB->usedCnt	= 0;
+	pRB->cbTotUsed  = 0;
+	for (i=0; i<blkCnt; i++) {
+		pRB->cbBlkFills[i] = 0;
+	}
+	return 0;
+}
+
+int32_t RingBlk_Deinit(ring_block_t* pRB )
+{
+	pRB = pRB;
+	return 0;
+}
+
+int32_t RingBlk_GetFreeBlks(ring_block_t* pRB )
+{
+	return pRB->blkCnt - pRB->usedCnt;
+}
+
+int32_t RingBlk_GetUsedBlks(ring_block_t* pRB)
+{
+	return pRB->usedCnt;
+}
+
+int32_t RingBlk_GetUsedBytes(ring_block_t* pRB) {
+	return pRB->cbTotUsed;
+}
+
+int32_t RingBlk_GetFreeBytes(ring_block_t* pRB) {
+	return pRB->blkCnt * pRB->blkSize - pRB->cbTotUsed;
+}
+
+
+int32_t RingBlk_ReadLimitedBlks(ring_block_t* pRB, uint8_t* pBuf, uint32_t dataBytes, uint32_t maxBlks, uint8_t isUpdt)
+{
+	uint32_t cb, dataBytes0;
+	uint32_t blkNdx, usedCnt, useBytes, byteNdx, cbBlkFill0;
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();
+
+	if (0 == (usedCnt = pRB->usedCnt))
+		goto Cleanup;
+	
+	blkNdx = pRB->rNdx , byteNdx = pRB->blkRNdx;
+	cbBlkFill0 = pRB->cbBlkFills[blkNdx];
+	// if dataBytes is 0, then we read exactly one block
+	if (dataBytes == 0)
+		dataBytes = pRB->blkSize - cbBlkFill0;
+	dataBytes0 = dataBytes;
+	/* Calculate the maximum amount we can copy */
+	while (dataBytes && usedCnt) {
+		
+		cb = cbBlkFill0 - byteNdx;
+		if (cb > dataBytes)
+			cb = dataBytes;
+		if (pBuf) {	// if pBuf is NULL, we simply free blocks
+			if (cb == 1) {
+				*pBuf = pRB->pBlks[pRB->blkSize * blkNdx + byteNdx];
+			} else {
+				memcpy(pBuf, pRB->pBlks + pRB->blkSize * blkNdx + byteNdx, cb);
+			}
+			pBuf += cb;
+		}
+		dataBytes -= cb , byteNdx += cb;
+		if (isUpdt) {
+			pRB->cbTotUsed -= cb;
+			pRB->cbBlkFills[blkNdx] -= cb;	// clear current block
+		}		
+		if (byteNdx == cbBlkFill0) {
+			// a block is totally read, switch to next block
+			byteNdx = 0 , usedCnt--;
+			if (++blkNdx >= pRB->blkCnt)
+				blkNdx = 0;
+			cbBlkFill0 = pRB->cbBlkFills[blkNdx];	// reload block fill bytes of next block
+			if (--maxBlks)
+				break;	// if we've read max allowed blocks then break. if maxBlks = 0 then treat as no limit			
+		}
+	}
+	if (isUpdt)
+		pRB->rNdx = blkNdx , pRB->usedCnt = usedCnt , pRB->blkRNdx = byteNdx;
+Cleanup:
+	LEAVE_CRITICAL_RBK();
+	return dataBytes0 - dataBytes;	// returns read bytes
+}
+
+int32_t RingBlk_Read(ring_block_t* pRB, uint8_t* pBuf, uint32_t dataBytes)
+{
+	return RingBlk_ReadLimitedBlks(pRB, pBuf, dataBytes, 0, 1);
+}
+
+int32_t RingBlk_Read1Blk(ring_block_t* pRB, uint8_t *pBuf, uint32_t bufSize)
+{
+	if (bufSize < pRB->blkSize)
+		return -1;
+	return RingBlk_ReadLimitedBlks(pRB, pBuf, 0, 1, 1);
+}
+
+
+int32_t RingBlk_Copy(ring_block_t* pRB, uint8_t* pBuf, uint32_t dataBytes)
+{
+	return RingBlk_ReadLimitedBlks(pRB, pBuf, dataBytes, 0, 0);
+}
+
+/* reading 1 block does not make sense currently, and is troublesome to implement
+int32_t RingBlk_Read1Blk(ring_block_t* pRB, uint8_t *pBuf, uint32_t dataBytes)
+{
+	return RingBlk_ReadLimitedBlks(pRB, pBuf, dataBytes, 1, 1);
+}
+*/
+
+int32_t RingBlk_Free(ring_block_t* pRB, uint32_t bytesToFree)
+{
+	return RingBlk_ReadLimitedBlks(pRB, NULL, bytesToFree, 0, 1);
+}
+
+
+int32_t RingBlk_WriteLimitedBlks(ring_block_t* pRB, const uint8_t* pBuf, uint32_t dataBytes, uint32_t maxBlks)
+{
+	uint32_t cb, cbFree, usedCnt, isToUpdtUsedCnt = 1;
+	uint32_t blkNdx, byteNdx, cbBlkFill0, dataBytes0;
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();
+
+	if (0 == (cbFree == RingBlk_GetFreeBlks(pRB))
+		goto Cleanup;	// block ring is full
+	
+	blkNdx = pRB->wNdx , byteNdx = pRB->blkWNdx;
+	cbBlkFill0 = pRB->cbBlkFills[blkNdx];
+
+	// if dataBytes is 0 then we write exactly 1 block to full
+	if (dataBytes == 0)
+		dataBytes = pRB->blkSize - byteNdx;
+	dataBytes0 = dataBytes;
+	/* Calculate the maximum amount we can copy */
+	while (dataBytes && cbFree) {
+		if (isToUpdtUsedCnt)
+			isToUpdtUsedCnt = 0 , pRB->usedCnt++;
+		cb = pRB->blkSize - cbBlkFill0;
+		if (dataBytes < cb)
+			cb = dataBytes;
+		if (cb == 1) {
+			pRB->pBlks[pRB->blkSize * blkNdx + byteNdx] = *pBuf;
+		}else{
+			memcpy(pRB->pBlks + pRB->blkSize * blkNdx + byteNdx, pBuf, cb);
+		}
+		dataBytes -= cb , byteNdx += cb;
+		pRB->cbTotUsed += cb;
+		pRB->cbBlkFills[blkNdx] += cb;
+		if (byteNdx == pRB->blkSize) {
+			// a block is totally written, switch to next block
+			byteNdx = 0 , isToUpdtUsedCnt = 1;
+			if (++blkNdx >= pRB->blkCnt)
+				blkNdx = 0;
+			cbBlkFill0 = 0;
+			if (--maxBlks)
+				break;	// if we've read max allowed blocks then break. if maxBlks = 0 then treat as no limit			
+		}
+	}
+	pRB->wNdx = blkNdx , pRB->blkWNdx = byteNdx;
+Cleanup:
+	LEAVE_CRITICAL_RBK();
+	return dataBytes0 - dataBytes;	// returns written bytes
+
+}
+
+int32_t RingBlk_Write1Blk(ring_block_t* pRB, uint8_t *pBuf, uint32_t bufSize)
+{
+	if (bufSize < pRB->blkSize)
+		return -1;
+	return RingBlk_WriteLimitedBlks(pRB, pBuf, 0, 1);
+}
+
+
+// >>> APIs intended to work with peripherals that can automatically send/recv buffers
+// such as USBD
+// these APIs shall be called in ISR
+uint8_t* RingBlk_TakeNextFreeBlk(ring_block_t *pRB)
+{
+	int32_t wNdx = -1;
+	uint8_t *pBlk = 0;
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();	
+	
+	if (pRB->usedCnt < pRB->blkCnt) {
+		wNdx = pRB->wNdx;
+		pBlk = pRB->pBlks + pRB->blkSize * wNdx;
+		pRB->blkWNdx = 0;
+		pRB->usedCnt++;
+		pRB->takenBlkNdx = pRB->wNdx;
+		if (++pRB->wNdx >= pRB->blkCnt)
+			pRB->wNdx = 0;
+	}
+	LEAVE_CRITICAL_RBK();
+	return pBlk;
+}
+
+int32_t RingBlk_FixBlkFillCnt(ring_block_t *pRB, uint32_t cbFill, uint8_t **ppNextFreeBlk)
+{
+	if (pRB->takenBlkNdx == 0xFF)
+		return -1L;	// must first take one block, then fix its filled count
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();
+	pRB->cbBlkFills[pRB->takenBlkNdx] += cbFill;
+	pRB->cbTotUsed += cbFill;
+	pRB->takenBlkNdx = 0xFF;
+	if (ppNextFreeBlk)
+	{
+		if (pRB->usedCnt < pRB->blkCnt) {
+			ppNextFreeBlk[0] = pRB->pBlks + pRB->blkSize * pRB->wNdx;
+			pRB->blkWNdx = 0;
+			pRB->usedCnt++;
+			pRB->takenBlkNdx = pRB->wNdx;
+			if (++pRB->wNdx >= pRB->blkCnt)
+				pRB->wNdx = 0;
+		}
+	}
+	LEAVE_CRITICAL_RBK();
+	return 0;
+}
+
+
+// Get the previous taken block by 
+uint8_t* RingBlk_GetTakenBlk(ring_block_t *pRB)
+{
+	uint8_t *pBlk = 0;
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();	
+	if (pRB->takenBlkNdx == 0xFF)
+		goto Cleanup;
+	pBlk = pRB->pBlks + pRB->blkSize * pRB->takenBlkNdx;
+Cleanup:
+	LEAVE_CRITICAL_RBK();
+	return pBlk;
+}
+
+int32_t RingBlk_FreeOldestBlk(ring_block_t *pRB, uint8_t **ppNewOldestBlk)
+{
+	int32_t rNdx = -1, cbFill = -1;
+	uint8_t *pBlk = 0;
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();	
+	
+	if (pRB->usedCnt != 0) {
+		rNdx = pRB->rNdx;
+		pRB->blkRNdx = 0;
+		pBlk = pRB->pBlks + pRB->rNdx * pRB->blkSize;
+		pRB->usedCnt--;
+		pRB->cbTotUsed -= pRB->cbBlkFills[rNdx];
+		if (++pRB->rNdx >= pRB->blkCnt)
+			pRB->rNdx = 0;
+		if (pRB->usedCnt) {
+			cbFill = pRB->cbBlkFills[pRB->rNdx];
+			if (ppNewOldestBlk)
+				ppNewOldestBlk[0] = pRB->pBlks + pRB->rNdx * pRB->blkSize;
+		}
+	}
+	LEAVE_CRITICAL_RBK();
+	return cbFill;
+}
+
+int32_t RingBlk_GetOldestBlk(ring_block_t *pRB, uint8_t **ppBlk)
+{
+	int32_t cbFill = -1;
+	uint8_t *pBlk = 0;
+	INIT_CRITICAL_RBK();
+	ENTER_CRITICAL_RBK();	
+	
+	if (pRB->usedCnt != 0) {
+		pRB->blkRNdx = 0;
+		pBlk = pRB->pBlks + pRB->rNdx * pRB->blkSize;
+		if (ppBlk) 
+			ppBlk[0] = pBlk;
+	}
+	LEAVE_CRITICAL_RBK();
+	return cbFill;
+}
+
+
+// <<<
+
+
+int32_t RingBlk_Write(ring_block_t* pRB, const uint8_t* pBuf, uint32_t dataBytes)
+{
+	return RingBlk_WriteLimitedBlks(pRB, pBuf, dataBytes, 0);
+}
+
+
+int32_t RingBlk_Write1Blk(ring_block_t* pRB, uint8_t *pBuf, uint32_t dataBytes)
+{
+	return RingBlk_WriteLimitedBlks(pRB, pBuf, dataBytes, 1);
+}
 

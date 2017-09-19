@@ -52,44 +52,6 @@
 
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 
-typedef enum {
-    USBD_MODE_CDC = 0x01,   // virtual com
-    USBD_MODE_MSC = 0x02,   // mass storage
-    USBD_MODE_HIDK = 0x04,  // HID keyboard
-    USBD_MODE_HIDM = 0x08,  // HID mouse
-    USBD_MODE_HIDI = 0x10,  // HID generic input
-    USBD_MODE_HIDO = 0x20,  // HID generic output
-    USBD_MODE_HIDG = USBD_MODE_HIDI | USBD_MODE_HIDO,
-    USBD_MODE_AUDP = 0x40,  // audio playback
-    USBD_MODE_AUDR = 0x80,  // audio record
-    USBD_MODE_AUD  = USBD_MODE_AUDP | USBD_MODE_AUDR,
-    USBD_MODE_HID = USBD_MODE_HIDK | USBD_MODE_HIDM,   // HID = K + M
-    USBD_MODE_CDC_MSC = USBD_MODE_CDC | USBD_MODE_MSC,
-    USBD_MODE_CDC_HID = USBD_MODE_CDC | USBD_MODE_HID,
-    USBD_MODE_MSC_HID = USBD_MODE_MSC | USBD_MODE_HID,
-    USBD_MODE_CDC_MSC_AUD = USBD_MODE_CDC | USBD_MODE_MSC | USBD_MODE_AUD, // epIn: 2+1+(1rec+1fdbk), epOut: 1+1+(1plbk + 1ctrl)
-    USBD_MODE_CDC_MSC_HIDM = USBD_MODE_CDC_MSC | USBD_MODE_HIDM,
-    USBD_MODE_CDC_MSC_HIDG = USBD_MODE_CDC_MSC | USBD_MODE_HIDG,
-} usb_device_mode_t;
-
-typedef struct _USBD_HID_ModeInfoTypeDef {
-    uint8_t subclass; // 0=no sub class, 1=boot
-    uint8_t protocol; // 0=none, 1=keyboard, 2=mouse
-    uint8_t max_packet_len; // only support up to 255
-    uint8_t polling_interval; // in units of 1ms
-    uint8_t report_desc_len;
-	// >>> rocky added
-	uint8_t is_has_in_ep;
-	uint8_t is_has_out_ep;
-	uint16_t in_ep_max_packet_len; // 0 = use 'max_packet_len' field
-	uint16_t out_ep_max_packet_len; // 0 = use 'max_packet_len' field
-	uint8_t in_polling_interval; // in units of 1ms, 0 = use 'polling interval'
-	uint8_t out_polling_interval; // in units of 1ms, 0 = use 'polling interval'
-	// <<<
-    const uint8_t *report_desc;
-} USBD_HID_ModeInfoTypeDef;
-
-
 typedef struct _usb_device_composite_struct
 {
     usb_device_handle deviceHandle; /* USB device handle. */
@@ -182,5 +144,6 @@ extern usb_status_t USB_DeviceMscDiskSetConfigure(class_handle_t handle, uint8_t
 extern usb_status_t USB_DeviceMscDiskInit(usb_device_composite_struct_t *deviceComposite);
 
 extern void USBAPP_Init(void);
+extern int32_t USBAPP_Deinit(void);
 
 #endif /* _USB_DEVICE_COMPOSITE_H_ */

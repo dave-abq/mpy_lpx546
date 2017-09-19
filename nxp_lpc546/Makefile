@@ -24,7 +24,7 @@ include ../py/py.mk
 LD_DIR=boards
 CMSIS_DIR=cmsis
 HAL_DIR=sdk22
-USBDEV_DIR=usbdev
+USBDEV_DIR=$(HAL_DIR)/middleware/usb_1.7.0
 #USBHOST_DIR=usbhost
 FATFS_DIR=lib/oofatfs
 DFU=../tools/dfu.py
@@ -48,8 +48,10 @@ INC += -I$(CMSIS_DIR)/
 INC += -I$(HAL_DIR)
 INC += -I$(HAL_DIR)/drivers
 INC += -I$(HAL_DIR)/utilities
-INC += -I$(USBDEV_DIR)/core/inc -I$(USBDEV_DIR)/class/inc
-
+INC += -Iusb_cdc_msc
+INC += -I$(USBDEV_DIR)/include
+INC += -I$(USBDEV_DIR)/device
+INC += -I$(USBDEV_DIR)/osa
 #INC += -I$(USBHOST_DIR)
 
 CFLAGS_CORTEX_M4 = -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -Wdouble-promotion -mtune=cortex-m4 -mcpu=cortex-m4
@@ -62,6 +64,7 @@ CFLAGS += $(CFLAGS_CORTEX_M4)
 CFLAGS += $(COPT)
 CFLAGS += -Iboards/$(BOARD)
 CFLAGS += -DMCU32_HAL_H='<mcu32$(MCU_SERIES)xx_hal.h>'
+CFLAGS += -DUSB_STACK_BM
 
 LDFLAGS = -nostdlib -L $(LD_DIR) -T $(LD_FILE) -Map=$(@:.elf=.map) --cref
 LIBS = $(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
@@ -139,6 +142,8 @@ SRC_C = \
 	modutime.c \
 	modusocket.c \
 	modnetwork.c \
+	pin.c \
+	usb_app.c \
 	usrsw.c \
 	flash.c \
 	storage.c \
