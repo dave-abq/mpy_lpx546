@@ -25,8 +25,12 @@
  */
 
 #define FLASH_BLOCK_SIZE (512)
-#define STORAGE_SYSTICK_MASK    (0x1ff) // 512ms
+#define STORAGE_SYSTICK_MASK    (0x1ff) // 512 ticks
 #define STORAGE_IDLE_TICK(tick) (((tick) & STORAGE_SYSTICK_MASK) == 2)
+
+// mpy automatically flush flash cache in a timely manner, to avoid doing it in high priority SysTick IRQ handler,
+// it manually fires another low priority IRQ just like Pend SV's style, we borrow the reserved 46 IRQ in LPC546xx
+#define TRIGGER_FLASH_IRQ()	NVIC->STIR = Reserved46_IRQn	// borrow this reserved IRQ number to simulate flash IRQ
 
 void storage_init(void);
 uint32_t storage_get_block_size(void);

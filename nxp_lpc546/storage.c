@@ -73,31 +73,13 @@
 	static uint32_t flash_tick_counter_last_write;
 
 	static void flash_cache_flush(void) {
-	    if (flash_flags & FLASH_FLAG_DIRTY) 
-		{
-			#if USE_INTERNAL
-			
-			// This code erases the flash directly, waiting for it to finish
-			if (!(flash_flags & FLASH_FLAG_ERASED)) {
-				flash_erase(flash_cache_sector_start, (const uint32_t*)CACHE_MEM_START_ADDR, flash_cache_sector_size / 4);
-				flash_flags |= FLASH_FLAG_ERASED;
-				return;
+		if (flash_flags & FLASH_FLAG_DIRTY) {
+			flash_flags |= FLASH_FLAG_FORCE_WRITE;
+			while (flash_flags & FLASH_FLAG_DIRTY) {
+			   TRIGGER_FLASH_IRQ();
 			}
-			
-			// If not a forced write, wait at least 5 seconds after last write to flush
-			// On file close and flash unmount we get a forced write, so we can afford to wait a while
-			if ((flash_flags & FLASH_FLAG_FORCE_WRITE) || sys_tick_has_passed(flash_tick_counter_last_write, 5000)) {
-				// sync the cache RAM buffer by writing it to the flash page
-				flash_write(flash_cache_sector_start, (const uint32_t*)CACHE_MEM_START_ADDR, flash_cache_sector_size / 4);
-				// clear the flash flags now that we have a clean cache
-				flash_flags = 0;
-				// indicate a clean cache with LED off
-				led_state(PYB_LED_RED, 0);
-			}
-			
-			#endif
+		}
 
-	    }
 	}
 
 	static uint8_t *flash_cache_get_addr_for_write(uint32_t flash_addr) {
@@ -396,7 +378,6 @@ void storage_irq_handler(void) {
     if (!(flash_flags & FLASH_FLAG_ERASED)) {
         flash_erase(flash_cache_sector_start, (const uint32_t*)CACHE_MEM_START_ADDR, flash_cache_sector_size / 4);
         flash_flags |= FLASH_FLAG_ERASED;
-        return;
     }
 
     // If not a forced write, wait at least 5 seconds after last write to flush

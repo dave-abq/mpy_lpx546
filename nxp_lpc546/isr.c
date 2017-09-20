@@ -310,7 +310,7 @@ void DebugMon_Handler(void) {
 void PendSV_Handler(void) {
     pendsv_isr_handler();
 }
-
+#include "storage.h"
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
@@ -337,7 +337,7 @@ void SysTick_Handler(void) {
     // follows: ((void(*)(void))(systick_dispatch[uwTick & 0xf]))();
 
     if (STORAGE_IDLE_TICK(uwTick)) {
-        NVIC->STIR = Reserved46_IRQn;   // borrow UTICK IRQ to handle flash cache flush
+        TRIGGER_FLASH_IRQ();   // borrow UTICK IRQ to handle flash cache flush
     }
 
 	/* rocky ignore

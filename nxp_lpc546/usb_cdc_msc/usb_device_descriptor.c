@@ -95,7 +95,7 @@ usb_device_endpoint_struct_t g_cdcVcomCicEndpoints[USB_CDC_VCOM_CIC_ENDPOINT_COU
     {
         USB_CDC_VCOM_CIC_INTERRUPT_IN_ENDPOINT | (USB_IN << 7U), // fixed during desc linkage
 		USB_ENDPOINT_INTERRUPT,
-        HS_CDC_VCOM_BULK_IN_PACKET_SIZE,
+        FS_CDC_VCOM_BULK_IN_PACKET_SIZE,
     },
 };
 
@@ -867,7 +867,8 @@ void USBD_BeginFixCfgData(void)
 	FIX_STR_DESC_SIZE(8);
 	FIX_STR_DESC_SIZE(9);
 	FIX_STR_DESC_SIZE(10);
-	
+
+	g_cfgFix.epInNdx = g_cfgFix.epOutNdx = 1;
 	memcpy(g_UsbDevCfgDesc, s_UsbDevCfgDescHdr, sizeof(s_UsbDevCfgDescHdr));
 	g_cfgFix.cfgDescSize = sizeof(s_UsbDevCfgDescHdr);
 }
@@ -876,10 +877,12 @@ void USBD_EndFixCfgData(void)
 {
 	g_UsbDevCfgDesc[2] = USB_SHORT_GET_LOW(g_cfgFix.cfgDescSize);
 	g_UsbDevCfgDesc[3] = USB_SHORT_GET_HIGH(g_cfgFix.cfgDescSize);
+	g_UsbDevCfgDesc[4] = g_cfgFix.itfNdx;
 }
 
-#define MAX_IN_EP_CNT     4
-#define MAX_OUT_EP_CNT    4
+// note that EP0 is control, can't be dedicated for user classes
+#define MAX_IN_EP_CNT     5
+#define MAX_OUT_EP_CNT    5
 #define APPEND_ITF_DESC(a) do{ \
 	memcpy(g_UsbDevCfgDesc + g_cfgFix.cfgDescSize, a, sizeof(a));\
 	g_cfgFix.cfgDescSize += sizeof(a);	\
@@ -893,8 +896,8 @@ int USBD_AddItf_MSC(void)
 	g_mscDiskEndpoints[1].endpointAddress = g_cfgFix.epOutNdx | (USB_OUT << 7U);
 	g_mscDiskInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;	
 	s_UsbDevCfgDescMscPart[2] = g_cfgFix.itfNdx; 
-	s_UsbDevCfgDescMscPart[11] = g_cfgFix.epInNdx;
-	s_UsbDevCfgDescMscPart[18] = g_cfgFix.epOutNdx;
+	s_UsbDevCfgDescMscPart[11] = g_cfgFix.epInNdx | (USB_IN << 7U);
+	s_UsbDevCfgDescMscPart[18] = g_cfgFix.epOutNdx| (USB_OUT << 7U);
 	g_cfgFix.roMscEpInNdx = g_cfgFix.epInNdx++;
 	g_cfgFix.roMscEpOutNdx = g_cfgFix.epOutNdx++;
 	g_cfgFix.roMscItfNdx = g_cfgFix.itfNdx++;
@@ -923,10 +926,10 @@ int USBD_AddItf_VCP(void)
 	*/
 	s_UsbDevCfgDescCdcPart[ 2] = g_cfgFix.itfNdx; 
 	s_UsbDevCfgDescCdcPart[10] = g_cfgFix.itfNdx;
-	s_UsbDevCfgDescCdcPart[38] = g_cfgFix.epInNdx;
+	s_UsbDevCfgDescCdcPart[38] = g_cfgFix.epInNdx | (USB_IN << 7U);
 	s_UsbDevCfgDescCdcPart[45] = g_cfgFix.itfNdx + 1;
-	s_UsbDevCfgDescCdcPart[54] = g_cfgFix.epInNdx + 1;
-	s_UsbDevCfgDescCdcPart[61] = g_cfgFix.epOutNdx;
+	s_UsbDevCfgDescCdcPart[54] = (g_cfgFix.epInNdx + 1) | (USB_IN << 7U);
+	s_UsbDevCfgDescCdcPart[61] = g_cfgFix.epOutNdx | (USB_OUT << 7U);
 
 	g_cfgFix.roCdcCicItfNdx = g_cfgFix.itfNdx++;
 	g_cfgFix.roCdcCicEpNdx = g_cfgFix.epInNdx++;
@@ -944,7 +947,7 @@ int USBD_AddItf_HIDKeyboard(void) {
 	g_hidKeyboardEndpoints[0].endpointAddress = g_cfgFix.epInNdx | (USB_IN << 7U);
 	g_hidKeyboardInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;	
 	s_UsbDevCfgDescHidKeyboardPart[2] = g_cfgFix.itfNdx; 
-	s_UsbDevCfgDescHidKeyboardPart[20] = g_cfgFix.epInNdx;
+	s_UsbDevCfgDescHidKeyboardPart[20] = g_cfgFix.epInNdx | (USB_IN << 7U);
 
 	g_cfgFix.roMscEpInNdx = g_cfgFix.epInNdx++;
 	g_cfgFix.roMscItfNdx = g_cfgFix.itfNdx++;
@@ -960,7 +963,7 @@ int USBD_AddItf_HIDMouse(void) {
 	g_hidMouseEndpoints[0].endpointAddress = g_cfgFix.epInNdx | (USB_IN << 7U);
 	g_hidMouseInterfaces[0].interfaceNumber = g_cfgFix.itfNdx;	
 	s_UsbDevCfgDescHidMousePart[2] = g_cfgFix.itfNdx; 
-	s_UsbDevCfgDescHidMousePart[20] = g_cfgFix.epInNdx;
+	s_UsbDevCfgDescHidMousePart[20] = g_cfgFix.epInNdx | (USB_IN << 7U);
 
 	g_cfgFix.roMscEpInNdx = g_cfgFix.epInNdx++;
 	g_cfgFix.roMscItfNdx = g_cfgFix.itfNdx++;
@@ -1137,7 +1140,7 @@ usb_status_t USB_DeviceGetConfigurationDescriptor(
     if (USB_COMPOSITE_CONFIGURE_INDEX > configurationDescriptor->configuration)
     {
         configurationDescriptor->buffer = g_UsbDevCfgDesc;
-        configurationDescriptor->length = USB_DESCRIPTOR_LENGTH_CONFIGURATION_ALL;
+        configurationDescriptor->length = g_cfgFix.cfgDescSize;
         return kStatus_USB_Success;
     }
     return kStatus_USB_InvalidRequest;

@@ -2586,6 +2586,11 @@
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usb_cdc_msc\virtual_com.c</FilePath>
             </File>
+            <File>
+              <FileName>ring_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\usb_cdc_msc\ring_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2680,6 +2685,11 @@
               <FileName>virtual_com.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\usb_cdc_msc\virtual_com.h</FilePath>
+            </File>
+            <File>
+              <FileName>ring_buffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\usb_cdc_msc\ring_buffer.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -6397,6 +6407,11 @@
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usb_cdc_msc\virtual_com.c</FilePath>
             </File>
+            <File>
+              <FileName>ring_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\usb_cdc_msc\ring_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -6491,6 +6506,11 @@
               <FileName>virtual_com.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\usb_cdc_msc\virtual_com.h</FilePath>
+            </File>
+            <File>
+              <FileName>ring_buffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\usb_cdc_msc\ring_buffer.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -10255,6 +10275,11 @@
               <FileType>1</FileType>
               <FilePath>..\nxp_lpc546\usb_cdc_msc\virtual_com.c</FilePath>
             </File>
+            <File>
+              <FileName>ring_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\nxp_lpc546\usb_cdc_msc\ring_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -10349,6 +10374,11 @@
               <FileName>virtual_com.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\nxp_lpc546\usb_cdc_msc\virtual_com.h</FilePath>
+            </File>
+            <File>
+              <FileName>ring_buffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\nxp_lpc546\usb_cdc_msc\ring_buffer.h</FilePath>
             </File>
           </Files>
         </Group>

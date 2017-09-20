@@ -443,7 +443,7 @@ HAL_StatusTypeDef HAL_Init(void)
 	NVIC_SetPriorityGrouping(3);
 	
 	/* Use systick as time base source and configure 1ms tick (default clock after Reset is HSI) */
-	HAL_InitTick(2);
+	HAL_InitTick(1);
 
 	
 	return HAL_OK;
@@ -592,9 +592,9 @@ soft_reset:
     rng_init0();
 #endif
 
-//    i2c_init0();
-//    spi_init0();
-//    pyb_usb_init0();
+	// rocky ignore: i2c_init0();
+	// rocky ignore:   spi_init0();
+	pyb_usb_init0();
 
     // Initialise the local flash filesystem.
     // Create it if needed, mount in on /flash, and set it as current dir.

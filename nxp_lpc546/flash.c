@@ -120,9 +120,8 @@ void flash_erase(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) 
 	if (pageCnt > 0) {
 		FLASHIAP_ErasePage(page0, page0 + pageCnt - 1, SystemCoreClock);
 	}
-
 	__set_PRIMASK(primask);
-
+	
 }
 
 void flash_write(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) {
@@ -151,7 +150,6 @@ void flash_write(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) 
 			flash_dest += c1Unit , src += c1Unit / 4 , c1Size -= c1Unit;
 		}
 	}
-	
 	__set_PRIMASK(primask);
 
 }
