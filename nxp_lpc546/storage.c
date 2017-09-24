@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+#define _STORAGE_C_	// shows that we are in "storage.c" file
 #include <stdint.h>
 #include <string.h>
 
@@ -168,7 +168,24 @@ uint32_t storage_get_block_size(void) {
 }
 
 uint32_t storage_get_block_count(void) {
-    return FLASH_PART1_START_BLOCK + FLASH_PART1_NUM_BLOCKS;
+	switch (s_curMedia) {
+	case cur_media_iflash:
+		return FLASH_PART1_NUM_BLOCKS;
+	case cur_media_sdcard:
+		break;
+	default: break;
+	}
+	return 0;
+#ifdef MICROPY_HW_HAS_SDCARD
+#else
+	#ifdef MICROPY_HW_SPIFLASH_SIZE_BITS
+		#error "to be implemented"
+	#else
+		// on chip flash
+		return FLASH_PART1_NUM_BLOCKS;
+	#endif
+#endif
+
 }
 
 

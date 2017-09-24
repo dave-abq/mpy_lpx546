@@ -24,13 +24,32 @@
  * THE SOFTWARE.
  */
 
-#define FLASH_BLOCK_SIZE (512)
+#define FLASH_BLOCK_SIZE (512)	// this is not physical block sie, and must set to 512 for easy FatFS and USB MSC porting
 #define STORAGE_SYSTICK_MASK    (0x1ff) // 512 ticks
 #define STORAGE_IDLE_TICK(tick) (((tick) & STORAGE_SYSTICK_MASK) == 2)
+#if defined(MICROPY_HW_SPIFLASH_SIZE_BITS)
+#define USE_INTERNAL (0)
+#else
+#define USE_INTERNAL (1)
+#endif
 
 // mpy automatically flush flash cache in a timely manner, to avoid doing it in high priority SysTick IRQ handler,
 // it manually fires another low priority IRQ just like Pend SV's style, we borrow the reserved 46 IRQ in LPC546xx
 #define TRIGGER_FLASH_IRQ()	NVIC->STIR = Reserved46_IRQn	// borrow this reserved IRQ number to simulate flash IRQ
+
+typedef enum cur_media_enum
+{
+	cur_media_iflash,
+	cur_media_spi,
+	cur_media_mspi,	// multi line spi
+	cur_media_sdcard,
+}cur_media_enum;
+
+#ifdef _STORAGE_C_
+uint8_t s_curMedia;
+#else
+const uint8_t s_curMedia;	// current media type
+#endif
 
 void storage_init(void);
 uint32_t storage_get_block_size(void);
