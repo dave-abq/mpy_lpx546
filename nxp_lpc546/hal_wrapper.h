@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _HAL_WRAPPER_H_
+#define _HAL_WRAPPER_H_
 
 typedef enum 
 {
@@ -194,4 +195,4 @@ uint32_t HAL_GetHalVersion(void);
 uint32_t HAL_GetREVID(void);
 uint32_t HAL_GetDEVID(void);
 void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority);
-
+#endif

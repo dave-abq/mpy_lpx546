@@ -29,7 +29,7 @@
  */
 
 #include "event.h"
-
+#include "hal_wrapper.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -53,8 +53,6 @@ static volatile uint32_t g_eventCardDetect;
 /*! @brief transfer complete event. */
 static volatile uint32_t g_eventTransferComplete;
 
-/*! @brief Time variable unites as milliseconds. */
-volatile uint32_t g_timeMilliseconds;
 
 /*******************************************************************************
  * Code
@@ -62,12 +60,7 @@ volatile uint32_t g_timeMilliseconds;
 void EVENT_InitTimer(void)
 {
     /* Set systick reload value to generate 1ms interrupt */
-    SysTick_Config(CLOCK_GetFreq(kCLOCK_CoreSysClk) / 1000U);
-}
-
-void SysTick_Handler(void)
-{
-    g_timeMilliseconds++;
+    // SysTick_Config(CLOCK_GetFreq(kCLOCK_CoreSysClk) / 1000U);
 }
 
 static volatile uint32_t *EVENT_GetInstance(event_t eventType)
@@ -114,10 +107,10 @@ bool EVENT_Wait(event_t eventType, uint32_t timeoutMilliseconds)
 
     if (timeoutMilliseconds && event)
     {
-        startTime = g_timeMilliseconds;
+        startTime = HAL_GetTick();
         do
         {
-            elapsedTime = (g_timeMilliseconds - startTime);
+            elapsedTime = (HAL_GetTick() - startTime);
         } while ((*event == 0U) && (elapsedTime < timeoutMilliseconds));
         *event = 0U;
 
@@ -153,3 +146,4 @@ void EVENT_Delete(event_t eventType)
         *event = 0U;
     }
 }
+

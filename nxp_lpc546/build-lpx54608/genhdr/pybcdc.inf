@@ -1,7 +1,7 @@
-key = USB_VID val = f055
-key = USB_PID_CDC_MSC val = 9800
-key = USB_PID_CDC_HID val = 9801
-key = USB_PID_CDC val = 9802
+key = USB_VID val = 1FC9
+key = USB_PID_CDC_MSC val = 1403
+key = USB_PID_CDC_HID val = 140d
+key = USB_PID_CDC val = 1401
 ; Windows USB CDC ACM Setup File
 ; Based on INF files which were:
 ;     Copyright (c) 2000 Microsoft Corporation
@@ -81,10 +81,10 @@ ServiceBinary=%12%\usbser.sys
 [SourceDisksFiles]
 [SourceDisksNames]
 [DeviceList]
-%DESCRIPTION%=DriverInstall, USB\VID_f055&PID_9800&MI_00, USB\VID_f055&PID_9800&MI_01, USB\VID_f055&PID_9801&MI_00, USB\VID_f055&PID_9801&MI_01, USB\VID_f055&PID_9802
+%DESCRIPTION%=DriverInstall, USB\VID_1FC9&PID_1403&MI_00, USB\VID_1FC9&PID_1403&MI_01, USB\VID_1FC9&PID_140d&MI_00, USB\VID_1FC9&PID_140d&MI_01, USB\VID_1FC9&PID_1401
 
 [DeviceList.NTamd64]
-%DESCRIPTION%=DriverInstall, USB\VID_f055&PID_9800&MI_00, USB\VID_f055&PID_9800&MI_01, USB\VID_f055&PID_9801&MI_00, USB\VID_f055&PID_9801&MI_01, USB\VID_f055&PID_9802
+%DESCRIPTION%=DriverInstall, USB\VID_1FC9&PID_1403&MI_00, USB\VID_1FC9&PID_1403&MI_01, USB\VID_1FC9&PID_140d&MI_00, USB\VID_1FC9&PID_140d&MI_01, USB\VID_1FC9&PID_1401
 
 ;---------------------------------------------------------------------
 ;  String Definitions

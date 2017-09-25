@@ -32,7 +32,7 @@
 #define _USB_DEVICE_COMPOSITE_H_ 1
 
 #include "virtual_com.h"
-#include "disk.h"
+
 
 /*******************************************************************************
 * Definitions
@@ -51,6 +51,8 @@
 #endif
 
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
+#include "usbd_msc_storage.h"
+
 
 typedef struct _usb_device_composite_struct
 {

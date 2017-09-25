@@ -42,10 +42,9 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-
+#include "hal_wrapper.h"
 static sdif_handle_t g_sdifHandle;
 static uint32_t g_sdifDmaTable[SDIF_DMA_TABLE_WORDS];
-extern volatile uint32_t g_timeMilliseconds;
 static volatile bool g_sdifTransferSuccessFlag = true;
 
 /*******************************************************************************
@@ -55,11 +54,11 @@ static volatile bool g_sdifTransferSuccessFlag = true;
 /* Delay some time united in milliseconds. */
 static void Delay(uint32_t milliseconds)
 {
-    uint32_t startTime = g_timeMilliseconds;
+    uint32_t startTime = HAL_GetTick();
     uint32_t periodTime = 0;
     while (periodTime < milliseconds)
     {
-        periodTime = g_timeMilliseconds - startTime;
+        periodTime = HAL_GetTick() - startTime;
     }
 }
 
@@ -86,10 +85,10 @@ status_t CardInsertDetect(HOST_TYPE *hostBase)
     }
     else
     {
-        startTime = g_timeMilliseconds;
+        startTime = HAL_GetTick();
         do
         {
-            elapsedTime = (g_timeMilliseconds - startTime);
+            elapsedTime = (HAL_GetTick() - startTime);
         } while ((SDIF_DetectCardInsert(hostBase, false)) && (elapsedTime < timeoutMilliseconds));
         if (elapsedTime > timeoutMilliseconds)
         {

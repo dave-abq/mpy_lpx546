@@ -23,7 +23,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+#ifndef _SDCARD_H_
+#define _SDCARD_H_
+#include "mpconfigboard.h"
 // SD card detect switch
 #define MICROPY_HW_SDCARD_DETECT_PIN        (pin_33)
 #define MICROPY_HW_SDCARD_DETECT_PULL       (1) // (GPIO_PULLUP)
@@ -32,11 +34,13 @@
 // this is a fixed size and should not be changed
 #define SDCARD_BLOCK_SIZE (512)
 
-void sdcard_init(void);
+status_t sdcard_init(void);
+status_t sdcard_deinit(void);
 bool sdcard_is_present(void);
 bool sdcard_power_on(void);
 void sdcard_power_off(void);
 uint64_t sdcard_get_capacity_in_bytes(void);
+uint32_t sdcard_get_lba_count(void);
 
 // these return 0 on success, non-zero on error
 mp_uint_t sdcard_read_blocks(uint8_t *dest, uint32_t block_num, uint32_t num_blocks);
@@ -47,3 +51,4 @@ extern const struct _mp_obj_base_t pyb_sdcard_obj;
 
 struct _fs_user_mount_t;
 void sdcard_init_vfs(struct _fs_user_mount_t *vfs, int part);
+#endif

@@ -30,10 +30,14 @@
 #define PYB_USB_FLAG_USB_MODE_CALLED    (0x0002)
 
 // Windows needs a different PID to distinguish different device configurations
+// must use hex number directly to let python script that generate inf driver work normally
 #define USBD_VID         (0x1FC9)
-#define USBD_PID_CDC_MSC (0x1400 | USBD_MODE_CDC | USBD_MODE_MSC)
-#define USBD_PID_CDC_HID (0x1400 | USBD_MODE_CDC | USBD_MODE_HIDK | USBD_MODE_HIDM)
-#define USBD_PID_CDC     (0x1400 | USBD_MODE_CDC)
+// (0x1400 | USBD_MODE_CDC | USBD_MODE_MSC)
+#define USBD_PID_CDC_MSC (0x1403)
+// (0x1400 | USBD_MODE_CDC | USBD_MODE_HIDK | USBD_MODE_HIDM)
+#define USBD_PID_CDC_HID (0x140d)
+// (0x1400 | USBD_MODE_CDC)
+#define USBD_PID_CDC     (0x1401)
 
 typedef enum {
     PYB_USB_STORAGE_MEDIUM_NONE = 0,

@@ -149,7 +149,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
+          <Filename>D:\RTOS_MW\MicroPy\mpy191_port\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -165,7 +165,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
+          <Filename>D:\RTOS_MW\MicroPy\mpy191_port\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -181,7 +181,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
+          <Filename>D:\RTOS_MW\MicroPy\mpy191_port\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -380,104 +380,7 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0LPC5460x_512 -FS00 -FL080000 -FP0($$Device:LPC54608J512ET180$Flash\LPC5460x_512.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>40</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>285266</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\nxp_lpc546\mphalport.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mpynxp_lpc546\../nxp_lpc546/mphalport.c\40</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>652</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>165958</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\usb_device_msc_ufi.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mpynxp_lpc546\../nxp_lpc546/usb_cdc_msc/usb_device_msc_ufi.c\652</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>688</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>166186</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\usb_device_msc_ufi.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mpynxp_lpc546\../nxp_lpc546/usb_cdc_msc/usb_device_msc_ufi.c\688</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>125</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>163230</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mpynxp_lpc546\../nxp_lpc546/usb_cdc_msc/disk.c\125</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>128</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>163234</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mpynxp_lpc546\../nxp_lpc546/usb_cdc_msc/disk.c\128</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>133</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>163248</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mpynxp_lpc546\../nxp_lpc546/usb_cdc_msc/disk.c\133</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -487,7 +390,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_UsbDeviceDescriptor</ItemText>
+          <ItemText>g_sd</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
@@ -534,6 +437,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>g_msc_handle</ItemText>
         </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>s_rxRB</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
@@ -578,6 +486,12 @@
       <Lin2Executable></Lin2Executable>
       <Lin2ConfigFile></Lin2ConfigFile>
       <bLin2Auto>0</bLin2Auto>
+      <SystemViewers>
+        <Entry>
+          <Name>System Viewer\SYSCON</Name>
+          <WinId>35905</WinId>
+        </Entry>
+      </SystemViewers>
       <DebugDescription>
         <Enable>1</Enable>
         <EnableLog>0</EnableLog>
@@ -715,7 +629,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
+          <Filename>D:\RTOS_MW\MicroPy\mpy191_port\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -731,7 +645,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
+          <Filename>D:\RTOS_MW\MicroPy\mpy191_port\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -747,7 +661,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
+          <Filename>D:\RTOS_MW\MicroPy\mpy191_port\nxp_lpc546\usb_cdc_msc\disk.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -3698,7 +3612,7 @@
 
   <Group>
     <GroupName>build_lpx546</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -3766,7 +3680,7 @@
 
   <Group>
     <GroupName>port</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -5589,18 +5503,6 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nxp_lpc546\usb_cdc_msc\disk.c</PathWithFileName>
-      <FilenameWithoutPath>disk.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>11</GroupNumber>
-      <FileNumber>391</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
       <PathWithFileName>..\nxp_lpc546\usb_cdc_msc\usb_device_cdc_acm.c</PathWithFileName>
       <FilenameWithoutPath>usb_device_cdc_acm.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -5608,7 +5510,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>392</FileNumber>
+      <FileNumber>391</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5620,7 +5522,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>393</FileNumber>
+      <FileNumber>392</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5632,7 +5534,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>394</FileNumber>
+      <FileNumber>393</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5644,7 +5546,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>395</FileNumber>
+      <FileNumber>394</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5656,7 +5558,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>396</FileNumber>
+      <FileNumber>395</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5668,7 +5570,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>397</FileNumber>
+      <FileNumber>396</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5680,7 +5582,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>398</FileNumber>
+      <FileNumber>397</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5700,7 +5602,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>399</FileNumber>
+      <FileNumber>398</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5712,7 +5614,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>400</FileNumber>
+      <FileNumber>399</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5724,7 +5626,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>401</FileNumber>
+      <FileNumber>400</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5736,7 +5638,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>402</FileNumber>
+      <FileNumber>401</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5748,7 +5650,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>403</FileNumber>
+      <FileNumber>402</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5760,7 +5662,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>404</FileNumber>
+      <FileNumber>403</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5772,7 +5674,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>405</FileNumber>
+      <FileNumber>404</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5784,7 +5686,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>406</FileNumber>
+      <FileNumber>405</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5796,7 +5698,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>407</FileNumber>
+      <FileNumber>406</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5808,7 +5710,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>408</FileNumber>
+      <FileNumber>407</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5820,7 +5722,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>409</FileNumber>
+      <FileNumber>408</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5832,7 +5734,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>410</FileNumber>
+      <FileNumber>409</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5844,7 +5746,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>411</FileNumber>
+      <FileNumber>410</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5856,7 +5758,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>412</FileNumber>
+      <FileNumber>411</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5868,7 +5770,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>413</FileNumber>
+      <FileNumber>412</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5880,7 +5782,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>414</FileNumber>
+      <FileNumber>413</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5892,7 +5794,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>415</FileNumber>
+      <FileNumber>414</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5904,7 +5806,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>416</FileNumber>
+      <FileNumber>415</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -5916,13 +5818,93 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>417</FileNumber>
+      <FileNumber>416</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\nxp_lpc546\usb_cdc_msc\ring_buffer.h</PathWithFileName>
       <FilenameWithoutPath>ring_buffer.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>sdmmc</GroupName>
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>13</GroupNumber>
+      <FileNumber>417</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\nxp_lpc546\sdmmc\fsl_mmc.c</PathWithFileName>
+      <FilenameWithoutPath>fsl_mmc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>13</GroupNumber>
+      <FileNumber>418</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\nxp_lpc546\sdmmc\fsl_sd.c</PathWithFileName>
+      <FilenameWithoutPath>fsl_sd.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>13</GroupNumber>
+      <FileNumber>419</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\nxp_lpc546\sdmmc\fsl_sdmmc.c</PathWithFileName>
+      <FilenameWithoutPath>fsl_sdmmc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>13</GroupNumber>
+      <FileNumber>420</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\nxp_lpc546\sdmmc\fsl_sdspi.c</PathWithFileName>
+      <FilenameWithoutPath>fsl_sdspi.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>13</GroupNumber>
+      <FileNumber>421</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\nxp_lpc546\sdmmc\port_event_irq.c</PathWithFileName>
+      <FilenameWithoutPath>port_event_irq.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>13</GroupNumber>
+      <FileNumber>422</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\nxp_lpc546\sdmmc\port_host_irq.c</PathWithFileName>
+      <FilenameWithoutPath>port_host_irq.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

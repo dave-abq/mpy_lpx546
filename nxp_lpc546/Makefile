@@ -49,6 +49,7 @@ INC += -I$(HAL_DIR)
 INC += -I$(HAL_DIR)/drivers
 INC += -I$(HAL_DIR)/utilities
 INC += -Iusb_cdc_msc
+INC += -Isdmmc
 INC += -I$(USBDEV_DIR)/include
 INC += -I$(USBDEV_DIR)/device
 INC += -I$(USBDEV_DIR)/osa
@@ -148,6 +149,7 @@ SRC_C = \
 	flash.c \
 	storage.c \
 	fatfs_port.c \
+	sdcard.c \
 	$(wildcard boards/$(BOARD)/*.c)
 
 SRC_C_BKUP = \

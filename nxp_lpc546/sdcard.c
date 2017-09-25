@@ -31,6 +31,7 @@
 #include "py/mphal.h"
 #include "lib/oofatfs/ff.h"
 #include "extmod/vfs_fat.h"
+#include "fsl_debug_console.h"
 #include "fsl_host.h"
 #include "fsl_card.h"
 
@@ -42,7 +43,7 @@
 #include "irq.h"
 
 #if MICROPY_HW_HAS_SDCARD
-
+/*
 #if defined(MCU_SERIES_F7) || defined(MCU_SERIES_L4)
 
 // The F7 has 2 SDMMC units but at the moment we only support using one of them in
@@ -97,7 +98,7 @@
 #define SDMMC_RX_DMA dma_SDIO_0_RX
 
 #endif
-
+*/
 // TODO: Since SDIO is fundamentally half-duplex, we really only need to
 //       tie up one DMA channel. However, the HAL DMA API doesn't
 // seem to provide a convenient way to change the direction. I believe that
@@ -107,248 +108,295 @@
 // TODO: I think that as an optimization, we can allocate these dynamically
 //       if an sd card is detected. This will save approx 260 bytes of RAM
 //       when no sdcard was being used.
-static SD_HandleTypeDef sd_handle;
-static DMA_HandleTypeDef sd_rx_dma, sd_tx_dma;
+// static SD_HandleTypeDef g_sd;
+// static DMA_HandleTypeDef sd_rx_dma, sd_tx_dma;
 
 /* State in Card driver. */
+typedef sd_card_t SD_HandleTypeDef;
 sd_card_t g_sd;
 
-sd_card_t *usbDeviceMscCard;
+#define IOCON_PIO_DIGITAL_EN        0x0100u   /*!< Enables digital function */
+#define IOCON_PIO_FUNC1               0x01u   /*!< Selects pin function 1 */
+#define IOCON_PIO_FUNC2               0x02u   /*!< Selects pin function 2 */
+#define IOCON_PIO_FUNC7               0x07u   /*!< Selects pin function 7 */
+#define IOCON_PIO_INPFILT_OFF       0x0200u   /*!< Input filter disabled */
+#define IOCON_PIO_INV_DI              0x00u   /*!< Input function is not inverted */
+#define IOCON_PIO_MODE_INACT          0x00u   /*!< No addition pin function */
+#define IOCON_PIO_MODE_PULLUP         0x20u   /*!< Selects pull-up function */
+#define IOCON_PIO_OPENDRAIN_DI        0x00u   /*!< Open drain is disabled */
+#define IOCON_PIO_SLEW_FAST         0x0400u   /*!< Fast mode, slew rate control is disabled */
+#define IOCON_PIO_SLEW_STANDARD       0x00u   /*!< Standard mode, output slew rate control is enabled */
+#define PIN3_IDX                         3u   /*!< Pin number for pin 3 in a port 2 */
+#define PIN4_IDX                         4u   /*!< Pin number for pin 4 in a port 2 */
+#define PIN5_IDX                         5u   /*!< Pin number for pin 5 in a port 2 */
+#define PIN6_IDX                         6u   /*!< Pin number for pin 6 in a port 2 */
+#define PIN7_IDX                         7u   /*!< Pin number for pin 7 in a port 2 */
+#define PIN8_IDX                         8u   /*!< Pin number for pin 8 in a port 2 */
+#define PIN9_IDX                         9u   /*!< Pin number for pin 9 in a port 2 */
+#define PIN10_IDX                       10u   /*!< Pin number for pin 10 in a port 2 */
+#define PIN15_IDX                       15u   /*!< Pin number for pin 15 in a port 3 */
+#define PIN22_IDX                       22u   /*!< Pin number for pin 22 in a port 0 */
+#define PIN27_IDX                       27u   /*!< Pin number for pin 27 in a port 1 */
+#define PIN28_IDX                       28u   /*!< Pin number for pin 28 in a port 1 */
+#define PIN29_IDX                       29u   /*!< Pin number for pin 29 in a port 0 */
+#define PIN30_IDX                       30u   /*!< Pin number for pin 30 in a port 0 */
+#define PORT0_IDX                        0u   /*!< Port index */
+#define PORT1_IDX                        1u   /*!< Port index */
+#define PORT2_IDX                        2u   /*!< Port index */
+#define PORT3_IDX                        3u   /*!< Port index */
+
+void _sdcard_pin_init(void)
+{
+	const uint32_t port1_pin27_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(4) */
+	  IOCON_PIO_MODE_PULLUP |								   /* Selects pull-up function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT1_IDX, PIN27_IDX, port1_pin27_config); /* PORT1 PIN27 (coords: F10) is configured as SD_D(4) */
+	const uint32_t port1_pin28_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(5) */
+	  IOCON_PIO_MODE_PULLUP |								   /* Selects pull-up function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT1_IDX, PIN28_IDX, port1_pin28_config); /* PORT1 PIN28 (coords: E12) is configured as SD_D(5) */
+	const uint32_t port1_pin29_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(6) */
+	  IOCON_PIO_MODE_PULLUP |								   /* Selects pull-up function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT1_IDX, PIN29_IDX, port1_pin29_config); /* PORT1 PIN29 (coords: C11) is configured as SD_D(6) */
+	const uint32_t port1_pin30_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(7) */
+	  IOCON_PIO_MODE_PULLUP |								   /* Selects pull-up function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT1_IDX, PIN30_IDX, port1_pin30_config); /* PORT1 PIN30 (coords: A8) is configured as SD_D(7) */
+	const uint32_t port2_pin10_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_CARD_DET_N */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN10_IDX, port2_pin10_config); /* PORT2 PIN10 (coords: P1) is configured as SD_CARD_DET_N */
+	const uint32_t port2_pin3_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_CLK */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_FAST | 								   /* Fast mode, slew rate control is disabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN3_IDX, port2_pin3_config); /* PORT2 PIN3 (coords: B1) is configured as SD_CLK */
+	const uint32_t port2_pin4_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_CMD */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_FAST | 								   /* Fast mode, slew rate control is disabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN4_IDX, port2_pin4_config); /* PORT2 PIN4 (coords: D3) is configured as SD_CMD */
+	const uint32_t port2_pin5_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_POW_EN */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN5_IDX, port2_pin5_config); /* PORT2 PIN5 (coords: C1) is configured as SD_POW_EN */
+	const uint32_t port2_pin6_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(0) */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_FAST | 								   /* Fast mode, slew rate control is disabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN6_IDX, port2_pin6_config); /* PORT2 PIN6 (coords: F3) is configured as SD_D(0) */
+	const uint32_t port2_pin7_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(1) */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_FAST | 								   /* Fast mode, slew rate control is disabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN7_IDX, port2_pin7_config); /* PORT2 PIN7 (coords: J2) is configured as SD_D(1) */
+	const uint32_t port2_pin8_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(2) */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_FAST | 								   /* Fast mode, slew rate control is disabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN8_IDX, port2_pin8_config); /* PORT2 PIN8 (coords: F4) is configured as SD_D(2) */
+	const uint32_t port2_pin9_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_D(3) */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_FAST | 								   /* Fast mode, slew rate control is disabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT2_IDX, PIN9_IDX, port2_pin9_config); /* PORT2 PIN9 (coords: K2) is configured as SD_D(3) */
+	const uint32_t port3_pin15_config = (
+	  IOCON_PIO_FUNC2 | 									   /* Pin is configured as SD_WR_PRT */
+	  IOCON_PIO_MODE_INACT |								   /* No addition pin function */
+	  IOCON_PIO_INV_DI |									   /* Input function is not inverted */
+	  IOCON_PIO_DIGITAL_EN |								   /* Enables digital function */
+	  IOCON_PIO_INPFILT_OFF |								   /* Input filter disabled */
+	  IOCON_PIO_SLEW_STANDARD | 							   /* Standard mode, output slew rate control is enabled */
+	  IOCON_PIO_OPENDRAIN_DI								   /* Open drain is disabled */
+	);
+	IOCON_PinMuxSet(IOCON, PORT3_IDX, PIN15_IDX, port3_pin15_config); /* PORT3 PIN15 (coords: D2) is configured as SD_WR_PRT */
+
+}
+
+#include "composite.h"	// for "USB_DEVICE_INTERRUPT_PRIORITY" macro
+status_t sdcard_init(void) {
+    // invalidate the g_sd
+    g_sd.isHostReady = 0;
+	_sdcard_pin_init();
+        /* attach main clock to SDIF */
+    CLOCK_AttachClk(BOARD_SDIF_CLK_ATTACH);
+
+    /* need call this function to clear the halt bit in clock divider register */
+    CLOCK_SetClkDiv(kCLOCK_DivSdioClk, 2U, true);
 
 
-void sdcard_init(void) {
-    // invalidate the sd_handle
-    sd_handle.Instance = NULL;
+    status_t error = kStatus_Success;
 
-    // configure SD GPIO
-    // we do this here an not in HAL_SD_MspInit because it apparently
-    // makes it more robust to have the pins always pulled high
-    // Note: the mp_hal_pin_config function will configure the GPIO in
-    // fast mode which can do up to 50MHz.  This should be plenty for SDIO
-    // which clocks up to 25MHz maximum.
-    #if defined(MICROPY_HW_SDMMC2_CK)
-    // Use SDMMC2 peripheral with pins provided by the board's config
-    mp_hal_pin_config_alt(&MICROPY_HW_SDMMC2_CK, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, AF_FN_SDMMC, 2);
-    mp_hal_pin_config_alt(&MICROPY_HW_SDMMC2_CMD, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, AF_FN_SDMMC, 2);
-    mp_hal_pin_config_alt(&MICROPY_HW_SDMMC2_D0, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, AF_FN_SDMMC, 2);
-    mp_hal_pin_config_alt(&MICROPY_HW_SDMMC2_D1, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, AF_FN_SDMMC, 2);
-    mp_hal_pin_config_alt(&MICROPY_HW_SDMMC2_D2, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, AF_FN_SDMMC, 2);
-    mp_hal_pin_config_alt(&MICROPY_HW_SDMMC2_D3, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, AF_FN_SDMMC, 2);
-    #else
-    // Default SDIO/SDMMC1 config
-    mp_hal_pin_config(&pin_C8, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, GPIO_AF12_SDIO);
-    mp_hal_pin_config(&pin_C9, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, GPIO_AF12_SDIO);
-    mp_hal_pin_config(&pin_C10, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, GPIO_AF12_SDIO);
-    mp_hal_pin_config(&pin_C11, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, GPIO_AF12_SDIO);
-    mp_hal_pin_config(&pin_C12, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, GPIO_AF12_SDIO);
-    mp_hal_pin_config(&pin_D2, MP_HAL_PIN_MODE_ALT, MP_HAL_PIN_PULL_UP, GPIO_AF12_SDIO);
-    #endif
+    NVIC_SetPriority(SD_HOST_IRQ, (USB_DEVICE_INTERRUPT_PRIORITY - 1U));
+    g_sd.host.base = SD_HOST_BASEADDR;
+    g_sd.host.sourceClock_Hz = SD_HOST_CLK_FREQ;
 
-    // configure the SD card detect pin
-    // we do this here so we can detect if the SD card is inserted before powering it on
-    mp_hal_pin_config(&MICROPY_HW_SDCARD_DETECT_PIN, MP_HAL_PIN_MODE_INPUT, MICROPY_HW_SDCARD_DETECT_PULL, 0);
+    /* Init card. */
+    if (SD_Init(&g_sd))
+    {
+        PRINTF("\n SD card init failed \n");
+        error = kStatus_Fail;
+    } else {
+		
+    }
+
+    return error;
+}
+
+status_t sdcard_deinit(void)
+{
+	SD_Deinit(&g_sd);
+	return kStatus_Success;
 }
 
 void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
-    // enable SDIO clock
-    SDMMC_CLK_ENABLE();
-
-    // NVIC configuration for SDIO interrupts
-    HAL_NVIC_SetPriority(SDMMC_IRQn, IRQ_PRI_SDIO, IRQ_SUBPRI_SDIO);
-    HAL_NVIC_EnableIRQ(SDMMC_IRQn);
-
-    // GPIO have already been initialised by sdcard_init
+	// todo: low level init
 }
 
 void HAL_SD_MspDeInit(SD_HandleTypeDef *hsd) {
-    HAL_NVIC_DisableIRQ(SDMMC_IRQn);
-    SDMMC_CLK_DISABLE();
+	// todo: low level deinit
 }
 
 bool sdcard_is_present(void) {
-    return HAL_GPIO_ReadPin(MICROPY_HW_SDCARD_DETECT_PIN.gpio, MICROPY_HW_SDCARD_DETECT_PIN.pin_mask) == MICROPY_HW_SDCARD_DETECT_PRESENT;
-}
+	if (CardInsertDetect(g_sd.host.base) == kStatus_Success && g_sd.isHostReady)
+		return 1;
+	return 0;}
 
 bool sdcard_power_on(void) {
     if (!sdcard_is_present()) {
         return false;
     }
-    if (sd_handle.Instance) {
+    if (g_sd.isHostReady) {
         return true;
     }
-
-    // SD device interface configuration
-    sd_handle.Instance = SDIO;
-    sd_handle.Init.ClockEdge           = SDIO_CLOCK_EDGE_RISING;
-    sd_handle.Init.ClockBypass         = SDIO_CLOCK_BYPASS_DISABLE;
-    sd_handle.Init.ClockPowerSave      = SDIO_CLOCK_POWER_SAVE_ENABLE;
-    sd_handle.Init.BusWide             = SDIO_BUS_WIDE_1B;
-    sd_handle.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
-    sd_handle.Init.ClockDiv            = SDIO_TRANSFER_CLK_DIV;
-
-    // init the SD interface, with retry if it's not ready yet
-    HAL_SD_CardInfoTypedef cardinfo;
-    for (int retry = 10; HAL_SD_Init(&sd_handle, &cardinfo) != SD_OK; retry--) {
-        if (retry == 0) {
-            goto error;
-        }
-        mp_hal_delay_ms(50);
-    }
-
-    // configure the SD bus width for wide operation
-    if (HAL_SD_WideBusOperation_Config(&sd_handle, SDIO_BUS_WIDE_4B) != SD_OK) {
-        HAL_SD_DeInit(&sd_handle);
-        goto error;
-    }
-
-    return true;
-
-error:
-    sd_handle.Instance = NULL;
-    return false;
+	if (sdcard_init() == kStatus_Success)
+		return 1;
+	sdcard_deinit();
+    return 0;
 }
 
 void sdcard_power_off(void) {
-    if (!sd_handle.Instance) {
+    if (!g_sd.isHostReady) {
         return;
     }
-    HAL_SD_DeInit(&sd_handle); 
-    sd_handle.Instance = NULL;
+    SD_Deinit(&g_sd);
+}
+
+uint32_t sdcard_get_lba_count(void)
+{
+	return g_sd.blockCount;
 }
 
 uint64_t sdcard_get_capacity_in_bytes(void) {
-    if (sd_handle.Instance == NULL) {
+    if (g_sd.isHostReady == NULL) {
         return 0;
     }
-    HAL_SD_CardInfoTypedef cardinfo;
-    HAL_SD_Get_CardInfo(&sd_handle, &cardinfo);
-    return cardinfo.CardCapacity;
+	return (uint64_t)g_sd.blockCount * g_sd.blockSize;
 }
 
-void SDIO_IRQHandler(void) {
-    IRQ_ENTER(SDIO_IRQn);
-    HAL_SD_IRQHandler(&sd_handle);
-    IRQ_EXIT(SDIO_IRQn);
+__STATIC_INLINE uint32_t MyNVIC_GetEnabledIRQ(IRQn_Type IRQn)
+{
+  return((uint32_t)(((NVIC->ISER[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
 }
-
-#if defined(MCU_SERIES_F7)
-void SDMMC2_IRQHandler(void) {
-    IRQ_ENTER(SDMMC2_IRQn);
-    HAL_SD_IRQHandler(&sd_handle);
-    IRQ_EXIT(SDMMC2_IRQn);
-}
-#endif
 
 mp_uint_t sdcard_read_blocks(uint8_t *dest, uint32_t block_num, uint32_t num_blocks) {
     // check that SD card is initialised
-    if (sd_handle.Instance == NULL) {
-        return SD_ERROR;
+    status_t ret;
+    if (g_sd.isHostReady == NULL) {
+        return kStatus_Fail;
     }
-
-    HAL_SD_ErrorTypedef err = SD_OK;
-
-    // check that dest pointer is aligned on a 4-byte boundary
-    uint8_t *orig_dest = NULL;
-    uint32_t saved_word;
-    if (((uint32_t)dest & 3) != 0) {
-        // Pointer is not aligned so it needs fixing.
-        // We could allocate a temporary block of RAM (as sdcard_write_blocks
-        // does) but instead we are going to use the dest buffer inplace.  We
-        // are going to align the pointer, save the initial word at the aligned
-        // location, read into the aligned memory, move the memory back to the
-        // unaligned location, then restore the initial bytes at the aligned
-        // location.  We should have no trouble doing this as those initial
-        // bytes at the aligned location should be able to be changed for the
-        // duration of this function call.
-        orig_dest = dest;
-        dest = (uint8_t*)((uint32_t)dest & ~3);
-        saved_word = *(uint32_t*)dest;
-    }
-
-    if (query_irq() == IRQ_STATE_ENABLED) {
-        // we must disable USB irqs to prevent MSC contention with SD card
-        uint32_t basepri = raise_irq_pri(IRQ_PRI_OTG_FS);
-
-        dma_init(&sd_rx_dma, &SDMMC_RX_DMA, &sd_handle);
-        sd_handle.hdmarx = &sd_rx_dma;
-
-        // make sure cache is flushed and invalidated so when DMA updates the RAM
-        // from reading the peripheral the CPU then reads the new data
-        MP_HAL_CLEANINVALIDATE_DCACHE(dest, num_blocks * SDCARD_BLOCK_SIZE);
-
-        err = HAL_SD_ReadBlocks_BlockNumber_DMA(&sd_handle, (uint32_t*)dest, block_num, SDCARD_BLOCK_SIZE, num_blocks);
-        if (err == SD_OK) {
-            // wait for DMA transfer to finish, with a large timeout
-            err = HAL_SD_CheckReadOperation(&sd_handle, 100000000);
-        }
-
-        dma_deinit(&SDMMC_RX_DMA);
-        sd_handle.hdmarx = NULL;
-
-        restore_irq_pri(basepri);
-    } else {
-        err = HAL_SD_ReadBlocks_BlockNumber(&sd_handle, (uint32_t*)dest, block_num, SDCARD_BLOCK_SIZE, num_blocks);
-    }
-
-    if (orig_dest != NULL) {
-        // move the read data to the non-aligned position, and restore the initial bytes
-        memmove(orig_dest, dest, num_blocks * SDCARD_BLOCK_SIZE);
-        memcpy(dest, &saved_word, orig_dest - dest);
-    }
-
-    return err;
+	uint32_t usbIrqEn = MyNVIC_GetEnabledIRQ(USB0_IRQn);
+	if (usbIrqEn)
+		NVIC_DisableIRQ(USB0_IRQn);
+	
+	ret = SD_ReadBlocks(&g_sd, dest, block_num, num_blocks);
+	if (usbIrqEn)
+		NVIC_EnableIRQ(USB0_IRQn);
+    return ret;
 }
 
 mp_uint_t sdcard_write_blocks(const uint8_t *src, uint32_t block_num, uint32_t num_blocks) {
     // check that SD card is initialised
-    if (sd_handle.Instance == NULL) {
-        return SD_ERROR;
+    // check that SD card is initialised
+    status_t ret;
+    if (g_sd.isHostReady == NULL) {
+        return kStatus_Fail;
     }
-
-    HAL_SD_ErrorTypedef err = SD_OK;
-
-    // check that src pointer is aligned on a 4-byte boundary
-    if (((uint32_t)src & 3) != 0) {
-        // pointer is not aligned, so allocate a temporary block to do the write
-        uint8_t *src_aligned = m_new_maybe(uint8_t, SDCARD_BLOCK_SIZE);
-        if (src_aligned == NULL) {
-            return SD_ERROR;
-        }
-        for (size_t i = 0; i < num_blocks; ++i) {
-            memcpy(src_aligned, src + i * SDCARD_BLOCK_SIZE, SDCARD_BLOCK_SIZE);
-            err = sdcard_write_blocks(src_aligned, block_num + i, 1);
-            if (err != SD_OK) {
-                break;
-            }
-        }
-        m_del(uint8_t, src_aligned, SDCARD_BLOCK_SIZE);
-        return err;
-    }
-
-    if (query_irq() == IRQ_STATE_ENABLED) {
-        // we must disable USB irqs to prevent MSC contention with SD card
-        uint32_t basepri = raise_irq_pri(IRQ_PRI_OTG_FS);
-
-        dma_init(&sd_tx_dma, &SDMMC_TX_DMA, &sd_handle);
-        sd_handle.hdmatx = &sd_tx_dma;
-
-        // make sure cache is flushed to RAM so the DMA can read the correct data
-        MP_HAL_CLEAN_DCACHE(src, num_blocks * SDCARD_BLOCK_SIZE);
-
-        err = HAL_SD_WriteBlocks_BlockNumber_DMA(&sd_handle, (uint32_t*)src, block_num, SDCARD_BLOCK_SIZE, num_blocks);
-        if (err == SD_OK) {
-            // wait for DMA transfer to finish, with a large timeout
-            err = HAL_SD_CheckWriteOperation(&sd_handle, 100000000);
-        }
-        dma_deinit(&SDMMC_TX_DMA);
-        sd_handle.hdmatx = NULL;
-
-        restore_irq_pri(basepri);
-    } else {
-        err = HAL_SD_WriteBlocks_BlockNumber(&sd_handle, (uint32_t*)src, block_num, SDCARD_BLOCK_SIZE, num_blocks);
-    }
-
-    return err;
+	uint32_t usbIrqEn = MyNVIC_GetEnabledIRQ(USB0_IRQn);
+	if (usbIrqEn)
+		NVIC_DisableIRQ(USB0_IRQn);
+	
+	ret = SD_WriteBlocks(&g_sd, src, block_num, num_blocks);
+	if (usbIrqEn)
+		NVIC_EnableIRQ(USB0_IRQn);
+    return ret;
 }
 
 /******************************************************************************/
@@ -385,16 +433,14 @@ STATIC mp_obj_t sd_power(mp_obj_t self, mp_obj_t state) {
 STATIC MP_DEFINE_CONST_FUN_OBJ_2(sd_power_obj, sd_power);
 
 STATIC mp_obj_t sd_info(mp_obj_t self) {
-    if (sd_handle.Instance == NULL) {
+    if (g_sd.isHostReady == NULL || CardInsertDetect(g_sd.host.base) == NULL) {
         return mp_const_none;
     }
-    HAL_SD_CardInfoTypedef cardinfo;
-    HAL_SD_Get_CardInfo(&sd_handle, &cardinfo);
     // cardinfo.SD_csd and cardinfo.SD_cid have lots of info but we don't use them
     mp_obj_t tuple[3] = {
-        mp_obj_new_int_from_ull(cardinfo.CardCapacity),
-        mp_obj_new_int_from_uint(cardinfo.CardBlockSize),
-        mp_obj_new_int(cardinfo.CardType),
+        mp_obj_new_int_from_ull(g_sd.blockCount * g_sd.blockSize),
+        mp_obj_new_int_from_uint(g_sd.blockSize),
+        mp_obj_new_int(g_sd.busClock_Hz / 1000),
     };
     return mp_obj_new_tuple(3, tuple);
 }
