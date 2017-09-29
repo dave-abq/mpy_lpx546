@@ -151,7 +151,7 @@ usb_status_t USB_DeviceMscCallback(class_handle_t handle, uint32_t event, void *
 					if (sdcard_is_present())
 						t1 = sdcard_write_blocks(lba->buffer,lba->offset, lba->size >> USB_MSC_BLOCK_SIZE_LOG2);
 				} else {
-					t1 = storage_write_blocks(lba->buffer,lba->offset, lba->size >> USB_MSC_BLOCK_SIZE_LOG2);
+					t1 = storage_write_blocks(lba->buffer,lba->offset + storage_get_block_offset(), lba->size >> USB_MSC_BLOCK_SIZE_LOG2);
 				}
 				
 				if (0 != t1)
@@ -176,7 +176,7 @@ usb_status_t USB_DeviceMscCallback(class_handle_t handle, uint32_t event, void *
 				if (sdcard_is_present())
 					t1 = sdcard_read_blocks(lba->buffer,lba->offset, lba->size >> USB_MSC_BLOCK_SIZE_LOG2);
 			} else {
-				t1 = storage_read_blocks(lba->buffer,lba->offset, lba->size >> USB_MSC_BLOCK_SIZE_LOG2);
+				t1 = storage_read_blocks(lba->buffer,lba->offset + storage_get_block_offset(), lba->size >> USB_MSC_BLOCK_SIZE_LOG2);
 			}
 
 			if (0 != t1)

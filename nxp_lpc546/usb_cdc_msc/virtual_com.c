@@ -264,7 +264,7 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
             len = (uint32_t)(NOTIF_PACKET_SIZE + UART_BITMAP_SIZE);
             if (0 == ((usb_device_cdc_acm_struct_t *)handle)->hasSentState)
             {
-                error = USB_DeviceCdcAcmSend(handle, USB_CDC_VCOM_CIC_INTERRUPT_IN_ENDPOINT, acmInfo->serialStateBuf, len);
+                error = USB_DeviceCdcAcmSend(handle, g_cfgFix.roCdcDicEpInNdx, acmInfo->serialStateBuf, len);
                 if (kStatus_USB_Success != error)
                 {
                     usb_echo("kUSB_DeviceCdcEventSetControlLineState error!");

@@ -55,6 +55,8 @@ extern const uint8_t s_curMedia;	// current media type
 void storage_init(void);
 uint32_t storage_get_block_size(void);
 uint32_t storage_get_block_count(void);
+uint32_t storage_get_block_offset(void);
+
 void storage_irq_handler(void);
 void storage_flush(void);
 bool storage_read_block(uint8_t *dest, uint32_t block);

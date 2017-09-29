@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'mpylpc546' 
- * Target:  'debug' 
+ * Target:  'rel' 
  */
 
 #ifndef RTE_COMPONENTS_H

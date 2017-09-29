@@ -4,7 +4,7 @@
 ; must use "VECTOR_RAM", "RW_m_data", "VECTOR_ROM" as names to work with "InstallIRQHandler()" API
 
 
-LR_IROM2 0x00020000 384*1024 {
+LR_IROM2 0x00000000 384*1024 {
   ; >>> RO regions
 	  VECTOR_ROM +0 0x200 { ; vector table
 		* (RESET,+FIRST)
@@ -21,7 +21,7 @@ LR_IROM2 0x00020000 384*1024 {
   ; >>> RAMX regions
 	  ; RAM vector table, unless "InstallIRQHandler()" is called, not used
 
-	  FAST_RAM 0x04000000 32*1024- STACK_SIZE {
+	  FAST_RAM 0x04000000 32*1024-STACK_SIZE {
 		 .ANY (+RW +ZI)
 	  }
 	  

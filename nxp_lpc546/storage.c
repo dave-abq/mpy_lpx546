@@ -173,6 +173,10 @@ uint32_t storage_get_block_count(void) {
 	return FLASH_PART1_NUM_BLOCKS;
 }
 
+uint32_t storage_get_block_offset(void)
+{
+	return FLASH_PART1_START_BLOCK;
+}
 
 void storage_flush(void) {
     #if USE_INTERNAL
